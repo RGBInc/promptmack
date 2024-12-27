@@ -1,5 +1,6 @@
 import { convertToCoreMessages, Message, streamText } from "ai";
 import { z } from "zod";
+import axios from "axios";
 
 import { geminiProModel } from "@/ai";
 import {
@@ -35,12 +36,14 @@ export async function POST(request: Request) {
   const result = await streamText({
     model: geminiProModel,
     system: `\n
-        - you help users book flights!
+        - you help users book flights and find news!
+        - don't rush things perhaps you may help people find clarity
+        - don't be a bitch
         - keep your responses limited to a sentence.
         - DO NOT output lists.
-        - after every tool call, pretend you're showing the result to the user and keep your response limited to a phrase.
+        - after every tool call, DON'T pretend you're showing the result to the user and keep your response limited to a phrase.
         - today's date is ${new Date().toLocaleDateString()}.
-        - ask follow up questions to nudge user into the optimal flow
+        - go with the flow
         - ask for any details you don't know, like name of passenger, etc.'
         - C and D are aisle seats, A and F are window seats, B and E are middle seats
         - assume the most popular airports for the origin and destination
@@ -211,6 +214,32 @@ export async function POST(request: Request) {
         }),
         execute: async (boardingPass) => {
           return boardingPass;
+        },
+      },
+      getNews: {
+        description: "Get news articles based on a search query",
+        parameters: z.object({
+          query: z.string().describe("Search query for news"),
+        }),
+        execute: async ({ query }) => {
+          try {
+            const response = await axios.get(
+              `https://google.serper.dev/news`,
+              {
+                params: {
+                  q: query,
+                  location: "United States",
+                },
+                headers: {
+                  'X-API-KEY': process.env.SERPER_API_KEY,
+                },
+              }
+            );
+            return response.data;
+          } catch (error) {
+            console.error("News API error:", error);
+            throw error;
+          }
         },
       },
     },

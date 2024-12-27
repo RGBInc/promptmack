@@ -21,15 +21,35 @@ import { Textarea } from "../ui/textarea";
 
 const suggestedActions = [
   {
-    title: "Help me book a flight",
-    label: "from San Francisco to London",
+    title: "Book a flight",
+    label: "SF to London",
     action: "Help me book a flight from San Francisco to London",
   },
   {
-    title: "What is the status",
-    label: "of flight BA142 flying tmrw?",
+    title: "Flight status",
+    label: "BA142",
     action: "What is the status of flight BA142 flying tmrw?",
   },
+  {
+    title: "Tech news",
+    label: "Latest",
+    action: "Show me the latest technology news",
+  },
+  {
+    title: "Weather",
+    label: "Today",
+    action: "What's the weather like today?",
+  },
+  {
+    title: "Stocks",
+    label: "AAPL",
+    action: "How is Apple stock performing?",
+  },
+  {
+    title: "Sports",
+    label: "NBA",
+    action: "Show me today's NBA scores",
+  }
 ];
 
 export function MultimodalInput({
@@ -156,7 +176,7 @@ export function MultimodalInput({
       {messages.length === 0 &&
         attachments.length === 0 &&
         uploadQueue.length === 0 && (
-          <div className="grid sm:grid-cols-2 gap-4 w-full md:px-0 mx-auto md:max-w-[500px]">
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-2 w-full">
             {suggestedActions.map((suggestedAction, index) => (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -164,7 +184,7 @@ export function MultimodalInput({
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ delay: 0.05 * index }}
                 key={index}
-                className={index > 1 ? "hidden sm:block" : "block"}
+                className="w-full"
               >
                 <button
                   onClick={async () => {
@@ -173,7 +193,7 @@ export function MultimodalInput({
                       content: suggestedAction.action,
                     });
                   }}
-                  className="border-none bg-muted/50 w-full text-left border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-300 rounded-lg p-3 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex flex-col"
+                  className="border-none bg-muted/50 text-center border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-300 rounded-lg px-2 py-1.5 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex flex-col w-full"
                 >
                   <span className="font-medium">{suggestedAction.title}</span>
                   <span className="text-zinc-500 dark:text-zinc-400">

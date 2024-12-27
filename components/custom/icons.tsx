@@ -646,6 +646,25 @@ export const ArrowUpRightIcon = ({ size = 16 }: { size?: number }) => {
   );
 };
 
+export const MagicWandIcon = ({ size = 16 }: { size?: number }) => {
+  return (
+    <svg
+      height={size}
+      strokeLinejoin="round"
+      viewBox="0 0 16 16"
+      width={size}
+      style={{ color: "currentcolor" }}
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M14.9 1.1c.2.2.2.5 0 .7L6.5 10.2c-.2.2-.5.2-.7 0s-.2-.5 0-.7l8.4-8.4c.2-.2.5-.2.7 0zM4.5 5L5 3.5 6.5 3 5 2.5 4.5 1 4 2.5 2.5 3 4 3.5 4.5 5zM12 13.5l.5-1.5L14 11.5l-1.5-.5-.5-1.5-.5 1.5-1.5.5 1.5.5.5 1.5zM8.5 4L9 2.5 10.5 2 9 1.5 8.5 0 8 1.5 6.5 2 8 2.5 8.5 4z"
+        fill="currentColor"
+      ></path>
+    </svg>
+  );
+};
+
 export const ArrowDownRightIcon = ({ size = 16 }: { size?: number }) => {
   return (
     <svg

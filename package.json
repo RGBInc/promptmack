@@ -1,7 +1,8 @@
 {
-  "name": "gemini-chatbot",
+  "name": "promptmack",
   "version": "0.1.0",
   "private": true,
+  "description": "A versatile AI that automates tasks and delivers exceptional results through an elegant interface",
   "scripts": {
     "dev": "next dev --turbo",
     "build": "tsx db/migrate && next build",
@@ -22,6 +23,7 @@
     "@vercel/blob": "^0.24.1",
     "@vercel/postgres": "^0.10.0",
     "ai": "3.4.9",
+    "axios": "^1.7.9",
     "bcrypt-ts": "^5.0.2",
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
@@ -66,5 +68,6 @@
     "tailwindcss": "^3.4.1",
     "tsx": "^4.19.1",
     "typescript": "^5"
-  }
+  },
+  "packageManager": "pnpm@9.10.0+sha512.73a29afa36a0d092ece5271de5177ecbf8318d454ecd701343131b8ebc0c1a91c487da46ab77c8e596d6acf1461e3594ced4becedf8921b074fbd8653ed7051c"
 }
