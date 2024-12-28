@@ -1,6 +1,5 @@
-This is a Vercel AI SDK chatbot that can stream components and really present a dynamic ui. Given an API here's current ways we've been implementing it. if you find a much better, more holistic or efficient way, please advise when needing to change things:
-
-  
+This is a Vercel AI SDK chatbot that can stream components and really present a dynamic ui. Given an API and we want to add it to our chatbot. Here's the process:
+ 
 
 Files to modify:
 
