@@ -6,8 +6,8 @@ import { ReactNode } from "react";
 
 import { Markdown } from "./markdown";
 import { PreviewAttachment } from "./preview-attachment";
-import { Weather } from "./weather";
-import { News } from "./news";
+import { Weather } from "../weather/weather";
+import { News } from "../news/news";
 import { AuthorizePayment } from "../flights/authorize-payment";
 import { DisplayBoardingPass } from "../flights/boarding-pass";
 import { CreateReservation } from "../flights/create-reservation";
