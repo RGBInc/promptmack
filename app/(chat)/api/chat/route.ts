@@ -242,6 +242,124 @@ export async function POST(request: Request) {
           }
         },
       },
+      getVideos: {
+        description: "Get videos based on a search query",
+        parameters: z.object({
+          query: z.string().describe("Search query for videos"),
+        }),
+        execute: async ({ query }) => {
+          try {
+            const response = await axios.get(
+              `https://google.serper.dev/videos`,
+              {
+                params: {
+                  q: query,
+                },
+                headers: {
+                  'X-API-KEY': process.env.SERPER_API_KEY,
+                },
+              }
+            );
+            return response.data;
+          } catch (error) {
+            console.error("Videos API error:", error);
+            throw error;
+          }
+        },
+      },
+      getShopping: {
+        description: "Get shopping products based on a search query",
+        parameters: z.object({
+          query: z.string().describe("Search query for shopping products"),
+        }),
+        execute: async ({ query }) => {
+          try {
+            const response = await axios.get(
+              `https://google.serper.dev/shopping`,
+              {
+                params: {
+                  q: query,
+                },
+                headers: {
+                  'X-API-KEY': process.env.SERPER_API_KEY,
+                },
+              }
+            );
+            return response.data;
+          } catch (error) {
+            console.error("Shopping API error:", error);
+            throw error;
+          }
+        },
+      },
+      getScholar: {
+        description: "Get scholarly articles based on a search query",
+        parameters: z.object({
+          query: z.string().describe("Search query for scholarly articles"),
+        }),
+        execute: async ({ query }) => {
+          try {
+            const response = await axios.get(
+              `https://google.serper.dev/scholar`,
+              {
+                params: {
+                  q: query,
+                },
+                headers: {
+                  'X-API-KEY': process.env.SERPER_API_KEY,
+                },
+              }
+            );
+            return response.data;
+          } catch (error) {
+            console.error("Scholar API error:", error);
+            throw error;
+          }
+        },
+      },
+      findSimilar: {
+        description: "Find similar websites based on a URL",
+        parameters: z.object({
+          url: z.string().describe("URL to find similar websites for"),
+        }),
+        execute: async ({ url }) => {
+          try {
+            // Extract base domain and company name
+            const baseDomain = url.replace(/^https?:\/\//, '')  // Remove protocol
+                                .replace(/^www\./, '')          // Remove www
+                                .split('/')[0];                 // Remove path
+            
+            // Get company name (e.g., "lemlist" from "lemlist.com")
+            const companyName = baseDomain.split('.')[0];
+
+            const response = await axios.post(
+              'https://api.exa.ai/findSimilar',
+              {
+                query: url,
+                url: url,
+                numResults: 10,
+                excludeDomains: [baseDomain],
+                excludeText: [companyName],
+                contents: {
+                  highlights: true,
+                  summary: true
+                }
+              },
+              {
+                headers: {
+                  'accept': 'application/json',
+                  'content-type': 'application/json',
+                  'x-api-key': process.env.EXA_API_KEY
+                }
+              }
+            );
+            return response.data;
+          } catch (error) {
+            console.error("Exa API error:", error);
+            throw error;
+          }
+        },
+      },
     },
     onFinish: async ({ responseMessages }) => {
       if (session.user && session.user.id) {

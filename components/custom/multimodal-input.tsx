@@ -20,36 +20,56 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 
 const suggestedActions = [
+  // {
+  //   title: "Book a flight",
+  //   label: "SF to London",
+  //   action: "Help me book a flight from San Francisco to London",
+  // },
+  // {
+  //   title: "Flight status",
+  //   label: "BA142",
+  //   action: "What is the status of flight BA142 flying tmrw?",
+  // },
   {
-    title: "Book a flight",
-    label: "SF to London",
-    action: "Help me book a flight from San Francisco to London",
-  },
-  {
-    title: "Flight status",
-    label: "BA142",
-    action: "What is the status of flight BA142 flying tmrw?",
-  },
-  {
-    title: "Tech news",
+    title: "News",
     label: "Latest",
-    action: "Show me the latest technology news",
+    action: "Show me the latest news",
   },
   {
-    title: "Weather",
-    label: "Today",
-    action: "What's the weather like today?",
+    title: "Videos",
+    label: "Trending",
+    action: "Show me trending videos",
   },
   {
-    title: "Stocks",
-    label: "AAPL",
-    action: "How is Apple stock performing?",
+    title: "Shopping",
+    label: "Products",
+    action: "Find me popular products to buy",
   },
   {
-    title: "Sports",
-    label: "NBA",
-    action: "Show me today's NBA scores",
-  }
+    title: "Scholar",
+    label: "Research",
+    action: "Find scholarly articles about AI",
+  },
+  {
+    title: "Similar",
+    label: "Websites",
+    action: "Find websites similar to",
+  },
+  // {
+  //   title: "Weather",
+  //   label: "Today",
+  //   action: "What's the weather like today?",
+  // },
+  // {
+  //   title: "Stocks",
+  //   label: "AAPL",
+  //   action: "How is Apple stock performing?",
+  // },
+  // {
+  //   title: "Sports",
+  //   label: "NBA",
+  //   action: "Show me today's NBA scores",
+  // }
 ];
 
 export function MultimodalInput({
