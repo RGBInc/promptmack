@@ -12,6 +12,7 @@ import React, {
   ChangeEvent,
 } from "react";
 import { toast } from "sonner";
+import Link from "next/link";
 
 import { ArrowUpIcon, PaperclipIcon, StopIcon } from "./icons";
 import { PreviewAttachment } from "./preview-attachment";
@@ -48,7 +49,7 @@ const suggestedActions = [
   {
     title: "Scholar",
     label: "Research",
-    action: "Find scholarly articles about AI",
+    action: "Find scholarly articles",
   },
   {
     title: "Similar",
@@ -256,7 +257,7 @@ export function MultimodalInput({
 
       <Textarea
         ref={textareaRef}
-        placeholder="Send a message..."
+        placeholder="Ask anything or describe what you'd like to do..."
         value={input}
         onChange={handleInput}
         className="min-h-[24px] overflow-hidden resize-none rounded-lg text-base bg-muted border-none"

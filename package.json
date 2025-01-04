@@ -2,7 +2,7 @@
   "name": "promptmack",
   "version": "0.1.0",
   "private": true,
-  "description": "A versatile AI that automates tasks and delivers exceptional results through an elegant interface",
+  "description": "An adaptive AI agent that performs tasks and actions online for users.",
   "scripts": {
     "dev": "next dev --turbo",
     "build": "tsx db/migrate && next build",

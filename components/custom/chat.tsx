@@ -8,7 +8,8 @@ import { Message as PreviewMessage } from "./message";
 import { useScrollToBottom } from "./use-scroll-to-bottom";
 
 import { MultimodalInput } from "./multimodal-input";
-import { Overview } from "./overview";
+import { Footer } from "./footer";
+// import { Overview } from "./overview";
 
 export function Chat({
   id,
@@ -38,9 +39,9 @@ export function Chat({
       <div className="flex flex-col justify-between items-center gap-4">
         <div
           ref={messagesContainerRef}
-          className="flex flex-col gap-4 h-full w-dvw items-center overflow-y-scroll md:max-w-[750px]"
+          className="flex flex-col gap-3 h-full w-dvw items-center overflow-y-scroll md:max-w-[850px] px-0 md:px-4"
         >
-          {messages.length === 0 && <Overview />}
+          {/* {messages.length === 0 && <Overview />} */}
 
           {messages.map((message) => (
             <PreviewMessage
@@ -59,7 +60,7 @@ export function Chat({
           />
         </div>
 
-        <form className="flex flex-row gap-2 relative items-end w-full md:max-w-[750px] max-w-[calc(100dvw-32px) px-4 md:px-0">
+        <form className="sticky bottom-0 flex flex-row gap-2 items-end w-full md:max-w-[850px] px-4 md:px-0 bg-background/80 backdrop-blur-sm py-4">
           <MultimodalInput
             input={input}
             setInput={setInput}
@@ -73,6 +74,7 @@ export function Chat({
           />
         </form>
       </div>
+      <Footer />
     </div>
   );
 }

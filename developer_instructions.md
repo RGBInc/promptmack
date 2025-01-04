@@ -1,4 +1,4 @@
-This is a Vercel AI SDK chatbot that can stream components and really present a dynamic ui. Given an API and we want to add it to our chatbot. Here's the process:
+This is a Vercel AI SDK adaptive AI agent that performs tasks and actions online for users. It can stream components and really present a dynamic ui. Given an API and we want to add it to the agent. Here's the process:
  
 
 Files to modify:
@@ -34,3 +34,5 @@ Implementation Requirements:
 - Update system prompt to include new capability
 
 - Remove any duplicate config files (next.config.js)
+
+- Use getNews functionality as an example of how to properly implement ne functionalities in the chat > route.ts, message.tsx, the custom component(s), and the multimodal-input suggested action
