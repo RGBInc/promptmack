@@ -38,19 +38,25 @@ export const Navbar = async () => {
           </div>
 
           <div className="flex items-center gap-4">
+            <History user={session?.user} />
+            <VisualModeToggle />
+            <ThemeToggle />
             {session ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
-                    className="py-1.5 px-2 h-fit font-normal max-w-[120px] sm:max-w-none"
-                    variant="secondary"
+                    className="py-1.5 px-2 h-fit font-normal flex items-center gap-2 hover:bg-transparent"
+                    variant="ghost"
                   >
-                    <span className="truncate">
-                      {session.user?.email}
-                    </span>
+                    <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
+                      {session.user?.email?.[0].toUpperCase()}
+                    </div>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                  <DropdownMenuItem className="cursor-default">
+                    <span className="text-sm text-muted-foreground">{session.user?.email}</span>
+                  </DropdownMenuItem>
                   <DropdownMenuItem className="p-1 z-50">
                     <form
                       className="w-full"
@@ -77,9 +83,6 @@ export const Navbar = async () => {
                 <Link href="/login">Login</Link>
               </Button>
             )}
-            <History user={session?.user} />
-            <VisualModeToggle />
-            <ThemeToggle />
           </div>
         </div>
       </nav>

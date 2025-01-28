@@ -12,7 +12,7 @@ import useSWR from "swr";
 import { Chat } from "@/db/schema";
 import { fetcher, getTitleFromChat } from "@/lib/utils";
 
-import { Menu } from "lucide-react";
+import { History as HistoryIcon } from "lucide-react";
 import {
   InfoIcon,
   MoreHorizontalIcon,
@@ -95,7 +95,7 @@ export const History = ({ user }: { user: User | undefined }) => {
             className="h-9 w-9 p-0"
             aria-label="Toggle history menu"
           >
-            <Menu className="h-4 w-4" />
+            <HistoryIcon className="h-[1.2rem] w-[1.2rem]" />
           </Button>
         </SheetTrigger>
         <SheetContent
@@ -106,7 +106,7 @@ export const History = ({ user }: { user: User | undefined }) => {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <div className="text-xl font-semibold text-zinc-900 dark:bg-gradient-to-r dark:from-white dark:to-zinc-400 dark:bg-clip-text dark:text-transparent">
-                  Threads
+                  History
                 </div>
                 <div className="px-2 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800/50 text-xs font-medium text-zinc-600 dark:text-zinc-400">
                   {history === undefined ? "..." : history.length}
@@ -119,7 +119,7 @@ export const History = ({ user }: { user: User | undefined }) => {
                 onClick={() => (window.location.href = "/")}
               >
                 <PencilEditIcon size={14} className="mr-2" />
-                New Thread
+                New Chat
               </Button>
             )}
           </div>
@@ -225,7 +225,7 @@ export const History = ({ user }: { user: User | undefined }) => {
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete your
-              thread and remove it from our servers.
+              chat and remove it from our servers.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

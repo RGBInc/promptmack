@@ -1,4 +1,4 @@
-This is a Vercel AI SDK adaptive AI agent that performs tasks and actions online for users. It can stream components and really present a dynamic ui. Given an API and we want to add it to the agent. Here's the process:
+This is a Vercel AI SDK adaptive AI agent that performs tasks and actions for users. It can stream components and present a dynamic ui. Given an API and we want to add it to the agent. Here's the process:
  
 
 Files to modify:
@@ -14,8 +14,6 @@ components/custom/component.tsx // Create human friendly components with seamles
 components/custom/multimodal-input.tsx // Add trigger action
 
 .env.local // Add API keys
-
-next.config.mjs // Allow media domains
 
 </relevant_files>
 
@@ -33,6 +31,4 @@ Implementation Requirements:
 
 - Update system prompt to include new capability
 
-- Remove any duplicate config files (next.config.js)
-
-- Use getNews functionality as an example of how to properly implement ne functionalities in the chat > route.ts, message.tsx, the custom component(s), and the multimodal-input suggested action
+- Use getNews functionality as an example of how to properly implement new functionalities in the chat > route.ts, message.tsx, the custom component(s), and the multimodal-input suggested action
