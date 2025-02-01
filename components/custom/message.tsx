@@ -41,8 +41,8 @@ export const Message = ({
   }, []);
 
   const mechanicalStyles = {
-    user: "",
-    assistant: "",
+    user: "pb-4",
+    assistant: "pb-4",
   };
 
   const bubbleStyles = {
@@ -62,14 +62,16 @@ export const Message = ({
         visualMode === 'bubble' ? (role === "user" ? "justify-end" : "justify-start") : ""
       }`}>
         {visualMode === 'mechanical' && (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center h-fit">
             <div className="h-5 w-5 mt-1 flex-shrink-0">
-              {role === 'user' 
+              {role === 'user'
                 ? <User className="h-5 w-5 text-blue-400" />
                 : <Bot className="h-5 w-5 text-zinc-400" />
               }
             </div>
-            <div className="w-[1px] h-full bg-zinc-200 dark:bg-zinc-700 mt-2" />
+            {content && typeof content === "string" && (
+              <div className="w-[1px] h-full bg-zinc-200 dark:bg-zinc-700 mt-2" style={{ height: 'calc(100% - 1.75rem)' }} />
+            )}
           </div>
         )}
         <div 

@@ -13,7 +13,7 @@ components/custom/component.tsx // Create human friendly components with seamles
 
 components/custom/multimodal-input.tsx // Add trigger action
 
-.env.local // Add API keys
+.env.example // Add API keys
 
 </relevant_files>
 
