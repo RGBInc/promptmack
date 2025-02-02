@@ -3,6 +3,7 @@
 import { MessageSquare, Terminal } from "lucide-react";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
+import { useVisualMode } from "./visual-mode-context";
 
 interface VisualModeToggleProps {
   onChange?: (mode: 'bubble' | 'mechanical') => void;
@@ -10,26 +11,21 @@ interface VisualModeToggleProps {
 
 export const VisualModeToggle = ({ onChange }: VisualModeToggleProps) => {
   const [mounted, setMounted] = useState(false);
-  const [mode, setMode] = useState<'bubble' | 'mechanical'>('bubble');
+  const { mode, toggleMode: contextToggleMode } = useVisualMode();
 
   useEffect(() => {
     setMounted(true);
-    const savedMode = localStorage.getItem('chatVisualMode') as 'bubble' | 'mechanical';
-    if (savedMode) {
-      setMode(savedMode);
-      onChange?.(savedMode);
-    }
-  }, [onChange]);
+    onChange?.(mode);
+  }, [onChange, mode]);
 
   if (!mounted) {
     return null;
   }
 
-  const toggleMode = () => {
-    const next = mode === 'bubble' ? 'mechanical' : 'bubble';
-    localStorage.setItem('chatVisualMode', next);
-    setMode(next);
-    onChange?.(next);
+  const handleToggle = () => {
+    const nextMode = mode === 'bubble' ? 'mechanical' : 'bubble';
+    contextToggleMode();
+    onChange?.(nextMode);
   };
 
   return (
@@ -37,7 +33,7 @@ export const VisualModeToggle = ({ onChange }: VisualModeToggleProps) => {
       variant="ghost"
       size="icon"
       className="h-9 w-9 relative"
-      onClick={toggleMode}
+      onClick={handleToggle}
     >
       <MessageSquare
         className={`h-[1.2rem] w-[1.2rem] absolute transition-all duration-500 ${

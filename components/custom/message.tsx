@@ -1,5 +1,6 @@
 "use client";
 
+import { useVisualMode } from "./visual-mode-context";
 import { Attachment, ToolInvocation } from "ai";
 import { motion } from "framer-motion";
 import { ReactNode, useEffect, useState } from "react";
@@ -34,11 +35,7 @@ export const Message = ({
   toolInvocations: Array<ToolInvocation> | undefined;
   attachments?: Array<Attachment>;
 }) => {
-  const [visualMode, setVisualMode] = useState<'bubble' | 'mechanical'>('bubble');
-
-  useEffect(() => {
-    setVisualMode(localStorage.getItem('chatVisualMode') as 'bubble' | 'mechanical' || 'bubble');
-  }, []);
+  const { mode: visualMode } = useVisualMode();
 
   const mechanicalStyles = {
     user: "pb-4",

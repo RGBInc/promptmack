@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 
 import { Navbar } from "@/components/custom/navbar";
 import { ThemeProvider } from "@/components/custom/theme-provider";
+import { VisualModeProvider } from "@/components/custom/visual-mode-context";
 
 import "./globals.css";
 
@@ -29,9 +30,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Toaster position="top-center" />
-          <Navbar />
-          {children}
+          <VisualModeProvider>
+            <Toaster position="top-center" />
+            <Navbar />
+            {children}
+          </VisualModeProvider>
         </ThemeProvider>
       </body>
     </html>
