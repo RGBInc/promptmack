@@ -38,24 +38,24 @@ export const Message = ({
   const { mode: visualMode } = useVisualMode();
 
   const mechanicalStyles = {
-    user: "pb-4",
-    assistant: "pb-4",
+    user: "pb-1",
+    assistant: "pb-1",
   };
 
   const bubbleStyles = {
-    user: "bg-blue-100 dark:bg-blue-900 p-3 rounded-2xl rounded-tr-sm",
-    assistant: "bg-gray-100 dark:bg-gray-900 p-3 rounded-2xl rounded-tl-sm",
+    user: "bg-blue-100 dark:bg-blue-900 p-2.5 rounded-2xl rounded-tr-sm",
+    assistant: "bg-gray-100 dark:bg-gray-900 p-2.5 rounded-2xl rounded-tl-sm",
   };
 
   return (
     <motion.div
-      className={`flex flex-col w-full max-w-full md:max-w-[850px] first-of-type:pt-20 py-3 ${
-        visualMode === 'bubble' ? (role === "user" ? "items-end px-2 sm:px-4 md:px-0" : "items-start px-2 sm:px-4 md:px-0") : ""
+      className={`flex flex-col w-full max-w-2xl first-of-type:pt-16 py-0.5 ${
+        visualMode === 'bubble' ? (role === "user" ? "items-end px-1 sm:px-2 md:px-0" : "items-start px-1 sm:px-2 md:px-0") : ""
       }`}
       initial={{ y: 5, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
     >
-      <div className={`flex gap-3 w-full ${
+      <div className={`flex gap-3 w-full px-1 sm:px-0 overflow-x-hidden ${
         visualMode === 'bubble' ? (role === "user" ? "justify-end" : "justify-start") : ""
       }`}>
         {visualMode === 'mechanical' && (
@@ -72,18 +72,12 @@ export const Message = ({
           </div>
         )}
         <div 
-          className={`flex flex-col gap-2.5 ${
-            visualMode === 'mechanical' 
-              ? 'w-full md:w-[calc(850px-2rem)]' 
-              : 'max-w-[85%] sm:max-w-[80%]'
-          } ${
-            visualMode === 'bubble' 
-              ? bubbleStyles[role as keyof typeof bubbleStyles] 
-              : mechanicalStyles[role as keyof typeof mechanicalStyles]
+          className={`flex flex-col gap-2 ${visualMode === 'mechanical' ? 'w-full md:w-[calc(100%-2rem)]' : 'inline-block max-w-[80%]'} ${
+            visualMode === 'bubble' ? bubbleStyles[role as keyof typeof bubbleStyles] : mechanicalStyles[role as keyof typeof mechanicalStyles]
           }`}
         >
           {content && typeof content === "string" && (
-            <div className="text-zinc-800 dark:text-zinc-200 flex flex-col gap-4 leading-relaxed">
+            <div className="text-zinc-800 dark:text-zinc-200 flex flex-col gap-3 leading-relaxed">
               <Markdown>{content}</Markdown>
             </div>
           )}
@@ -91,15 +85,15 @@ export const Message = ({
       </div>
 
       {(toolInvocations || attachments) && (
-        <div className="w-full flex flex-col gap-4 mt-8">
+        <div className={`w-full flex flex-col gap-3 mt-4 ${visualMode === 'bubble' ? 'px-1 sm:px-2 md:px-0' : ''}`}>
           {toolInvocations && toolInvocations.map((toolInvocation) => {
             const { toolName, toolCallId, state } = toolInvocation;
-
+  
             if (state === "result") {
               const { result } = toolInvocation;
-
+  
               return (
-                <div key={toolCallId} className="w-full md:w-[calc(850px-2rem)]">
+                <div key={toolCallId} className="w-full overflow-x-hidden">
                   {toolName === "getWeather" ? (
                     <Weather weatherAtLocation={result} />
                   ) : toolName === "displayFlightStatus" ? (
@@ -135,7 +129,7 @@ export const Message = ({
               );
             } else {
               return (
-                <div key={toolCallId} className="skeleton w-full">
+                <div key={toolCallId} className="skeleton w-full overflow-x-hidden">
                   {toolName === "getWeather" ? (
                     <Weather />
                   ) : toolName === "displayFlightStatus" ? (
@@ -166,7 +160,7 @@ export const Message = ({
             }
           })}
           {attachments?.map((attachment) => (
-            <div key={attachment.url} className="w-full md:w-[calc(850px-2rem)]">
+            <div key={attachment.url} className="w-full overflow-x-hidden">
               <PreviewAttachment attachment={attachment} />
             </div>
           ))}

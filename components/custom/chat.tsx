@@ -36,13 +36,11 @@ export function Chat({
 
   return (
     <div className="flex flex-row justify-center pb-4 md:pb-8 h-dvh bg-background">
-      <div className="flex flex-col justify-between items-center gap-4">
+      <div className="flex flex-col justify-between items-center gap-4 w-full max-w-3xl px-4">
         <div
           ref={messagesContainerRef}
-          className="flex flex-col gap-3 h-full w-dvw items-center overflow-y-scroll md:max-w-[850px] px-0 md:px-4"
+          className="flex flex-col gap-3 h-full w-full items-center overflow-y-scroll"
         >
-          {/* {messages.length === 0 && <Overview />} */}
-
           {messages.map((message) => (
             <PreviewMessage
               key={message.id}
@@ -60,7 +58,7 @@ export function Chat({
           />
         </div>
 
-        <form className="sticky bottom-0 flex flex-row gap-2 items-end w-full md:max-w-[850px] px-4 md:px-0 bg-background/80 backdrop-blur-sm py-4">
+        <form className="sticky bottom-0 flex flex-row gap-2 items-end w-full bg-background/80 backdrop-blur-sm py-4">
           <MultimodalInput
             input={input}
             setInput={setInput}

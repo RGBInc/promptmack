@@ -15,6 +15,12 @@ components/custom/multimodal-input.tsx // Add trigger action
 
 .env.example // Add API keys
 
+For database operations i.e. not an external API
+
+db --> migrate.ts, queries.ts, schema.ts
+
+lib > drizzle and other stuff pertinent
+
 </relevant_files>
 
   
@@ -31,4 +37,4 @@ Implementation Requirements:
 
 - Update system prompt to include new capability
 
-- Use getNews functionality as an example of how to properly implement new functionalities in the chat > route.ts, message.tsx, the custom component(s), and the multimodal-input suggested action
+- See current implementation for how to properly implement new functionalities in the chat > route.ts, message.tsx, the custom component(s), and the multimodal-input suggested action.

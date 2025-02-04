@@ -37,7 +37,7 @@ export const Navbar = async () => {
             </Link>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <History user={session?.user} />
             <VisualModeToggle />
             <ThemeToggle />
