@@ -35,7 +35,7 @@ Implementation Requirements:
 - Maintain existing loading and result states pattern in `message.tsx` and don't forget to import the component.  
 - Add tool to existing `tools` object.  
 - Update system prompt to include new capability.  
-- See current implementation for how to properly implement new functionalities in:  
+- See current implementation of news functionality for how to properly implement new functionalities in:  
   - `chat/route.ts`  
   - `message.tsx`  
   - The custom component(s)  

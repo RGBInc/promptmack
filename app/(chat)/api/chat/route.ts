@@ -309,6 +309,45 @@ export async function POST(request: Request) {
           }
         },
       },
+      skyvernFormSubmit: {
+        description: "Submit forms and interact with web pages using Skyvern API",
+        parameters: z.object({
+          url: z.string().describe("Target URL for form submission"),
+          navigationGoal: z.string().describe("Goal for navigating the webpage"),
+          navigationPayload: z.object({
+            name: z.string(),
+            email: z.string(),
+            additionalInformation: z.string().optional()
+          })
+        }),
+        execute: async ({ url, navigationGoal, navigationPayload }) => {
+          try {
+            const response = await axios.post(
+              'https://api.skyvern.com/api/v1/tasks',
+              {
+                url,
+                webhook_callback_url: null,
+                navigation_goal: navigationGoal,
+                data_extraction_goal: null,
+                proxy_location: 'RESIDENTIAL',
+                error_code_mapping: null,
+                navigation_payload: navigationPayload,
+                extracted_information_schema: null
+              },
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  'x-api-key': process.env.SKYVERN_API_KEY
+                }
+              }
+            );
+            return response.data;
+          } catch (error) {
+            console.error("Skyvern API error:", error);
+            throw error;
+          }
+        },
+      },
       findSimilar: {
         description: "Find similar websites based on a URL",
         parameters: z.object({
