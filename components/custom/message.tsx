@@ -14,6 +14,7 @@ import { Videos } from "../paid/videos";
 import { Shopping } from "../paid/shopping";
 import { Scholar } from "../paid/scholar";
 import { Similar } from "../paid/similar";
+import { Skyvern } from "../paid/skyvern";
 import { AuthorizePayment } from "../flights/authorize-payment";
 import { DisplayBoardingPass } from "../flights/boarding-pass";
 import { CreateReservation } from "../flights/create-reservation";
@@ -122,6 +123,8 @@ export const Message = ({
                     <Scholar scholarData={result} />
                   ) : toolName === "findSimilar" ? (
                     <Similar similarData={result} />
+                  ) : toolName === "skyvernFormSubmit" ? (
+                    <Skyvern skyvernData={result as any} />
                   ) : (
                     <div>{JSON.stringify(result, null, 2)}</div>
                   )}
@@ -154,6 +157,8 @@ export const Message = ({
                     <Scholar />
                   ) : toolName === "findSimilar" ? (
                     <Similar />
+                  ) : toolName === "skyvernFormSubmit" ? (
+                    <Skyvern skyvernData={null as any} />
                   ) : null}
                 </div>
               );

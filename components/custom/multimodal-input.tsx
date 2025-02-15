@@ -32,6 +32,11 @@ const suggestedActions = [
   //   action: "What is the status of flight BA142 flying tmrw?",
   // },
   {
+    title: "Form",
+    label: "Submit",
+    action: "Fill out and submit a form on a website",
+  },
+  {
     title: "News",
     label: "Latest",
     action: "Show me the latest news",
