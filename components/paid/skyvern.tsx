@@ -6,17 +6,22 @@ import { CheckCircle, Clock, AlertCircle } from 'lucide-react';
 
 interface SkyvernTaskDetails {
   task_id: string;
-  status: string;
+  status: 'created' | 'queued' | 'running' | 'completed' | 'terminated' | 'failed' | 'canceled';
   created_at: string;
   modified_at: string;
   request?: {
     url?: string;
+    webhook_callback_url?: string;
     navigation_goal?: string;
+    data_extraction_goal?: string;
     navigation_payload?: {
       name?: string;
       email?: string;
       additionalInformation?: string;
+      [key: string]: any;
     };
+    proxy_location?: string;
+    extracted_information_schema?: any;
   };
   extracted_information?: any;
   screenshot_url?: string;
@@ -103,7 +108,7 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
       <div className="px-3 py-2 bg-green-100 dark:bg-green-800/30 rounded border border-green-300 dark:border-green-700">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-green-800 dark:text-green-200">Status</span>
-          <span className="text-sm px-2 py-0.5 rounded bg-green-200 dark:bg-green-700 text-green-800 dark:text-green-200">
+          <span className={`text-sm px-2 py-0.5 rounded ${taskDetails.status === 'completed' ? 'bg-green-200 dark:bg-green-700 text-green-800 dark:text-green-200' : taskDetails.status === 'running' ? 'bg-blue-200 dark:bg-blue-700 text-blue-800 dark:text-blue-200' : taskDetails.status === 'created' || taskDetails.status === 'queued' ? 'bg-yellow-200 dark:bg-yellow-700 text-yellow-800 dark:text-yellow-200' : 'bg-red-200 dark:bg-red-700 text-red-800 dark:text-red-200'}`}>
             {taskDetails.status}
           </span>
         </div>
