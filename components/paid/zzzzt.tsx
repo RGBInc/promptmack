@@ -124,14 +124,7 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
 
   const fetchTaskSteps = async (taskId: string, currentRetry = 0) => {
     try {
-      const response = await fetch(`/api/skyvern/tasks/${taskId}/steps`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'x-api-key': process.env.SKYVERN_API_KEY || ''
-        }
-      });
+      const response = await fetch(`/api/skyvern/tasks/${taskId}/steps`);
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to fetch task steps');
@@ -150,14 +143,7 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
     if (!skyvernData?.task_id) return;
     
     try {
-      const response = await fetch(`/api/skyvern/tasks/${skyvernData.task_id}`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'x-api-key': process.env.SKYVERN_API_KEY || ''
-        }
-      });
+      const response = await fetch(`/api/skyvern/tasks/${skyvernData.task_id}`);
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to fetch task details');
@@ -166,7 +152,7 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
       setTaskDetails(data);
       setError(null);
       setIsRetrying(false);
-  
+
       if (['created', 'queued', 'running'].includes(data.status)) {
         startPolling();
       } else {

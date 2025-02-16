@@ -1,31 +1,57 @@
-import { useEffect, useRef, RefObject } from "react";
+import { useEffect, useRef } from 'react';
 
-export function useScrollToBottom<T extends HTMLElement>(): [
-  RefObject<T>,
-  RefObject<T>,
-] {
+type ScrollToBottomReturn<T> = [React.RefObject<T>, React.RefObject<HTMLDivElement>];
+
+export function useScrollToBottom<T extends HTMLElement>(): ScrollToBottomReturn<T> {
   const containerRef = useRef<T>(null);
-  const endRef = useRef<T>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const lastUserInteractionRef = useRef<number>(Date.now());
+  const lastContentHeightRef = useRef<number>(0);
 
   useEffect(() => {
     const container = containerRef.current;
-    const end = endRef.current;
+    if (!container) return;
 
-    if (container && end) {
-      const observer = new MutationObserver(() => {
-        end.scrollIntoView({ behavior: "instant", block: "end" });
-      });
+    const observer = new MutationObserver((mutations) => {
+      const currentHeight = container.scrollHeight;
+      const timeSinceLastInteraction = Date.now() - lastUserInteractionRef.current;
+      const isNewContent = currentHeight > lastContentHeightRef.current;
 
-      observer.observe(container, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        characterData: true,
-      });
+      // Only auto-scroll if:
+      // 1. This is new content (height increased)
+      // 2. User hasn't interacted with the scroll in the last 2 seconds
+      // 3. We're already near the bottom (within 100px)
+      const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+      
+      if (isNewContent && (timeSinceLastInteraction > 2000 || isNearBottom)) {
+        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }
 
-      return () => observer.disconnect();
-    }
+      lastContentHeightRef.current = currentHeight;
+    });
+
+    observer.observe(container, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      characterData: true
+    });
+
+    const handleScroll = () => {
+      lastUserInteractionRef.current = Date.now();
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    container.addEventListener('wheel', handleScroll);
+    container.addEventListener('touchmove', handleScroll);
+
+    return () => {
+      observer.disconnect();
+      container.removeEventListener('scroll', handleScroll);
+      container.removeEventListener('wheel', handleScroll);
+      container.removeEventListener('touchmove', handleScroll);
+    };
   }, []);
 
-  return [containerRef, endRef];
+  return [containerRef, bottomRef];
 }
