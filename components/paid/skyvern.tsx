@@ -56,10 +56,15 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
   const MAX_BACKOFF_DELAY = 10000;
 
   const handleError = (err: unknown, errorMessage: string) => {
-    console.error(errorMessage, err);
+    const errorDetails = err instanceof Error ? err.message : errorMessage;
+    console.error(`Skyvern Error: ${errorMessage}`, {
+      error: err,
+      timestamp: new Date().toISOString(),
+      taskId: skyvernData?.task_id
+    });
     const currentTime = Date.now();
     if (currentTime - lastErrorTime >= MIN_ERROR_INTERVAL) {
-      setError(err instanceof Error ? err.message : errorMessage);
+      setError(`${errorMessage}: ${errorDetails}`);
       setLastErrorTime(currentTime);
     }
   };
@@ -82,17 +87,13 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
 
   const cancelTask = async (taskId: string) => {
     try {
-      const response = await fetch(`/api/skyvern/tasks/${taskId}/cancel`, {
+      await fetch(`/api/skyvern/tasks/${taskId}/cancel`, {
         method: 'POST'
       });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to cancel task');
-      }
       await fetchTaskDetails();
       await fetchTaskSteps(taskId);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to cancel task');
+      handleError(err, 'Failed to cancel task');
     }
   };
 
@@ -122,27 +123,17 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
     return colors[status as keyof typeof colors] || colors.created;
   };
 
-  const fetchTaskSteps = async (taskId: string, currentRetry = 0) => {
+  const fetchTaskSteps = async (taskId: string) => {
     try {
-      const response = await fetch(`/api/skyvern/tasks/${taskId}/steps`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'x-api-key': process.env.SKYVERN_API_KEY || ''
+      const response = await fetch(`/api/skyvern/tasks/${taskId}/steps`);
+      if (response.ok) {
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          setTaskSteps(data);
         }
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to fetch task steps');
       }
-      const data = await response.json();
-      setTaskSteps(data);
-      setError(null);
-      setIsRetrying(false);
     } catch (err) {
-      handleError(err, 'Failed to fetch task steps');
-      await retryWithBackoff(() => fetchTaskSteps(taskId, currentRetry + 1), currentRetry);
+      console.error('Error fetching task steps:', err);
     }
   };
 
@@ -235,9 +226,18 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
         transition={{ duration: 0.3 }}
         className="w-full bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4"
       >
-        <div className="flex items-center gap-2">
-          <AlertCircle className="h-5 w-5 text-red-500 dark:text-red-400" />
-          <span className="text-red-700 dark:text-red-300">{error || 'Failed to load task details'}</span>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="h-5 w-5 text-red-500 dark:text-red-400" />
+            <span className="text-red-700 dark:text-red-300 font-medium">Task Error</span>
+          </div>
+          <p className="text-sm text-red-600 dark:text-red-300">{error || 'Failed to load task details'}</p>
+          {isRetrying && (
+            <div className="flex items-center gap-2 text-yellow-600 dark:text-yellow-400">
+              <Clock className="h-4 w-4 animate-spin" />
+              <span className="text-sm">Retrying request...</span>
+            </div>
+          )}
         </div>
       </motion.div>
     );

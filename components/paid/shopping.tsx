@@ -21,8 +21,7 @@ interface ShoppingProps {
       type: string;
       engine: string;
     };
-    shopping: ShoppingItem[];
-    credits?: number;
+    organic: ShoppingItem[];
   };
 }
 
@@ -44,7 +43,7 @@ export const Shopping = ({ shoppingData }: ShoppingProps) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {shoppingData.shopping.map((item, index) => (
+      {shoppingData.organic.map((item, index) => (
         <a
           key={index}
           href={item.link}

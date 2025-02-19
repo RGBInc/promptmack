@@ -22,7 +22,6 @@ interface ScholarProps {
       engine: string;
     };
     organic: ScholarItem[];
-    credits?: number;
   };
 }
 

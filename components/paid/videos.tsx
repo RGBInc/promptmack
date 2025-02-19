@@ -20,7 +20,6 @@ interface VideosProps {
       engine: string;
     };
     videos: VideoItem[];
-    credits?: number;
   };
 }
 

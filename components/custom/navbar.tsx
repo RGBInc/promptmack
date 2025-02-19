@@ -21,23 +21,23 @@ export const Navbar = async () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-background/80 backdrop-blur-sm">
-        <div className="flex h-14 items-center justify-between px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2">
-            <Link href="/" className="flex items-center gap-2">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/60 dark:bg-background/60 backdrop-blur-xl">
+        <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-1.5 group">
               <Image
                 src="/images/promptmack-logo.svg"
-                height={40}
-                width={40}
+                height={36}
+                width={36}
                 alt="promptmack logo"
-                className="hover:scale-110 transition-transform"
+                className="hover:scale-110 transition-all duration-300 ease-out sm:h-10 sm:w-10"
               />
               <Logo />
-              <span className="text-base font-semibold tracking-wide -ml-2 font-inter">Promptmack</span>
+              <span className="text-lg font-bold tracking-tight -ml-1 font-inter bg-gradient-to-r from-zinc-800 to-zinc-500 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent hidden sm:inline transition-colors duration-300">Promptmack</span>
             </Link>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-1 sm:gap-2">
             <History user={session?.user} />
             <VisualModeToggle />
             <ThemeToggle />
@@ -45,17 +45,17 @@ export const Navbar = async () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
-                    className="py-1.5 px-2 h-fit font-normal flex items-center gap-2 hover:bg-transparent"
+                    className="py-1.5 px-2 h-fit font-normal flex items-center gap-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all duration-200"
                     variant="ghost"
                   >
-                    <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-medium shadow-md hover:shadow-lg transition-shadow">
                       {session.user?.email?.[0].toUpperCase()}
                     </div>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuItem className="cursor-default">
-                    <span className="text-sm text-muted-foreground">{session.user?.email}</span>
+                    <span className="text-sm text-muted-foreground truncate">{session.user?.email}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem className="p-1 z-50">
                     <form
@@ -70,7 +70,7 @@ export const Navbar = async () => {
                     >
                       <button
                         type="submit"
-                        className="w-full text-left px-1 py-0.5 text-red-500"
+                        className="w-full text-left px-2 py-1.5 text-red-500 hover:text-red-400 transition-colors rounded hover:bg-red-950/30"
                       >
                         Sign out
                       </button>
@@ -79,7 +79,7 @@ export const Navbar = async () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button className="py-1.5 px-2 h-fit font-normal text-white" asChild>
+              <Button className="py-2 px-4 h-fit font-medium text-white bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105" asChild>
                 <Link href="/login">Login</Link>
               </Button>
             )}
