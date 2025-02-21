@@ -1,6 +1,7 @@
 "use client";
 
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import React from "react";
+import { History as HistoryIcon } from "lucide-react";
 import cx from "classnames";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
@@ -12,7 +13,6 @@ import useSWR from "swr";
 import { Chat } from "@/db/schema";
 import { fetcher, getTitleFromChat } from "@/lib/utils";
 
-import { History as HistoryIcon } from "lucide-react";
 import {
   InfoIcon,
   MoreHorizontalIcon,
@@ -39,9 +39,7 @@ import {
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
+
   SheetTrigger,
 } from "../ui/sheet";
 
@@ -241,21 +239,6 @@ export const History = ({ user }: { user: User | undefined }) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      <style jsx global>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(161, 161, 170, 0.3);
-          border-radius: 3px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(161, 161, 170, 0.5);
-        }
-      `}</style>
     </>
   );
 };

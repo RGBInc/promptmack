@@ -1,3 +1,4 @@
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -5,7 +6,6 @@ import { auth, signOut } from "@/app/(auth)/auth";
 
 import { History } from "./history";
 import { ThemeToggle } from "./theme-toggle";
-import { Logo } from "./logo";
 import { Button } from "../ui/button";
 import { VisualModeToggle } from "./visual-mode-toggle";
 import {
@@ -14,25 +14,23 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { MessageSquare, Terminal } from "lucide-react";
 
 export const Navbar = async () => {
-  let session = await auth();
+  const session = await auth();
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/60 dark:bg-background/60 backdrop-blur-xl">
+      <nav className="fixed inset-x-0 top-0 z-50 bg-white/60 dark:bg-background/60 backdrop-blur-xl">
         <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
-            <Link href="/" className="flex items-center gap-1.5 group">
+            <Link href="/" className="flex items-center gap-2.5 group">
               <Image
                 src="/images/promptmack-logo.svg"
                 height={36}
                 width={36}
                 alt="promptmack logo"
-                className="hover:scale-110 transition-all duration-300 ease-out sm:h-10 sm:w-10"
+                className="hover:scale-110 transition-all duration-300 ease-out sm:size-10"
               />
-              <Logo />
               <span className="text-lg font-bold tracking-tight -ml-1 font-inter bg-gradient-to-r from-zinc-800 to-zinc-500 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent hidden sm:inline transition-colors duration-300">Promptmack</span>
             </Link>
           </div>
@@ -48,7 +46,7 @@ export const Navbar = async () => {
                     className="py-1.5 px-2 h-fit font-normal flex items-center gap-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all duration-200"
                     variant="ghost"
                   >
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-medium shadow-md hover:shadow-lg transition-shadow">
+                    <div className="size-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-medium shadow-md hover:shadow-lg transition-shadow">
                       {session.user?.email?.[0].toUpperCase()}
                     </div>
                   </Button>

@@ -7,7 +7,7 @@ export default function PrivacyPage() {
       <p className="text-sm text-muted-foreground mb-8">Effective: January 1, 2025</p>
       
       <div className="prose dark:prose-invert">
-        <p className="mb-6">We at Evolve Interfaces, Inc. (together with our affiliates, "Evolve Interfaces", "we", "our" or "us") respect your privacy and are strongly committed to keeping secure any information we obtain from you or about you. This Privacy Policy describes our practices with respect to Personal Data that we collect from or about you when you use our website, applications, and services (collectively, "Services").</p>
+        <p className="mb-6">We at Evolve Interfaces, Inc. (together with our affiliates, &ldquo;Evolve Interfaces&rdquo;, &ldquo;we&rdquo;, &ldquo;our&rdquo; or &ldquo;us&rdquo;) respect your privacy and are strongly committed to keeping secure any information we obtain from you or about you. This Privacy Policy describes our practices with respect to Personal Data that we collect from or about you when you use our website, applications, and services (collectively, &ldquo;Services&rdquo;).</p>
 
         <p className="mb-6">This Privacy Policy does not apply to content that we process on behalf of customers of our business offerings, such as our API. Our use of that data is governed by our customer agreements covering access to and use of those offerings.</p>
 
@@ -17,7 +17,7 @@ export default function PrivacyPage() {
         <h3 className="text-lg font-semibold mt-6 mb-3">Personal Data You Provide:</h3>
         <p className="mb-4">Account Information: When you create an account with us, we collect information associated with your account, including your name, contact information, account credentials, payment information, and transaction history.</p>
         
-        <p className="mb-4">User Content: We collect Personal Data that you provide in the input to our Services ("Content"), including your prompts and other content you upload, such as files and images, depending on the features you use.</p>
+        <p className="mb-4">User Content: We collect Personal Data that you provide in the input to our Services (&ldquo;Content&rdquo;), including your prompts and other content you upload, such as files and images, depending on the features you use.</p>
         
         <p className="mb-4">Communication Information: If you communicate with us, we may collect Personal Data like your name, contact information, and the contents of your messages.</p>
 
@@ -56,7 +56,7 @@ export default function PrivacyPage() {
         <p className="mb-3">• The right to restrict or object to our processing of your Personal Data;</p>
         <p className="mb-4">• The right to data portability.</p>
 
-        <h2 className="text-xl font-semibold mt-8 mb-4">6. Children's Privacy</h2>
+        <h2 className="text-xl font-semibold mt-8 mb-4">6. Children&rsquo;s Privacy</h2>
         <p className="mb-6">Our Services are not directed to children under 13. We do not knowingly collect Personal Data from children under 13. If you believe we have collected Personal Data from a child under 13, please contact us immediately. Users under 18 must have permission from their parent or guardian to use our Services.</p>
 
         <h2 className="text-xl font-semibold mt-8 mb-4">7. Changes to Privacy Policy</h2>

@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+// Third-party imports first
 import { CheckCircle, Clock, AlertCircle, XCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
 
+// Local imports last
 import { Button } from '../ui/button';
 
 interface SkyvernTaskDetails {

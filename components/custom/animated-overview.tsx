@@ -1,15 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { useTheme } from 'next-themes';
+
 export const AnimatedOverview = () => {
-  const { theme } = useTheme();
-  const [quote, setQuote] = useState("Every sufficiently advanced technology is indistinguishable from magic.");
-
-  useEffect(() => {
-  }, []);
-
   return (
     <motion.div
       className="relative w-full h-[400px] overflow-hidden rounded-3xl rounded-b-xl bg-white dark:bg-background flex items-center justify-center"

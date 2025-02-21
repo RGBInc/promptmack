@@ -1,15 +1,16 @@
 "use client";
 
-import Link from "next/link";
+import React from "react";
 import { Info } from "lucide-react";
+import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 
 export function Footer() {
   return (
@@ -18,8 +19,8 @@ export function Footer() {
         <span>Promptmack can make mistakes</span>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-6 w-6">
-              <Info className="h-3 w-3" />
+            <Button variant="ghost" size="icon" className="size-6">
+              <Info className="size-3" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

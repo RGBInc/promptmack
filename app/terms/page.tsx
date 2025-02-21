@@ -29,7 +29,7 @@ export default function TermsPage() {
         <p className="mb-4">What you can do. Subject to your compliance with these Terms, you may access and use our Services. In using our Services, you must comply with all applicable laws as well as our Usage Policies and any other documentation, guidelines, or policies we make available to you.</p>
 
         <p className="mb-6">What you cannot do. You may not use our Services for any illegal, harmful, or abusive activity. For example, you may not:</p>
-        <p className="mb-4">Use our Services in a way that infringes, misappropriates or violates anyone's rights.</p>
+        <p className="mb-4">Use our Services in a way that infringes, misappropriates or violates anyone&rsquo;s rights.</p>
         <p className="mb-4">Modify, copy, lease, sell or distribute any of our Services.</p>
         <p className="mb-4">Attempt to or assist anyone to reverse engineer, decompile or discover the source code or underlying components of our Services, including our models, algorithms, or systems (except to the extent this restriction is prohibited by applicable law).</p>
         <p className="mb-4">Automatically or programmatically extract data or Output.</p>
@@ -38,11 +38,11 @@ export default function TermsPage() {
         <p className="mb-6">Use Output to develop models that compete with Evolve Interfaces.</p>
 
         <h2 className="text-xl font-semibold mt-8 mb-4">Content and Ownership</h2>
-        <p className="mb-4">Your content. You may provide input to the Services ("Input"), and receive output from the Services based on the Input ("Output"). Input and Output are collectively "Content." You are responsible for Content, including ensuring that it does not violate any applicable law or these Terms. You represent and warrant that you have all rights, licenses, and permissions needed to provide Input to our Services.</p>
+        <p className="mb-4">Your content. You may provide input to the Services (&ldquo;Input&rdquo;), and receive output from the Services based on the Input (&ldquo;Output&rdquo;). Input and Output are collectively &ldquo;Content.&rdquo; You are responsible for Content, including ensuring that it does not violate any applicable law or these Terms. You represent and warrant that you have all rights, licenses, and permissions needed to provide Input to our Services.</p>
 
         <p className="mb-4">Ownership of content. As between you and Evolve Interfaces, and to the extent permitted by applicable law, you (a) retain your ownership rights in Input and (b) own the Output. We hereby assign to you all our right, title, and interest, if any, in and to Output.</p>
 
-        <p className="mb-4">Similarity of content. Due to the nature of our Services and artificial intelligence generally, output may not be unique and other users may receive similar output from our Services. Our assignment above does not extend to other users' output.</p>
+        <p className="mb-4">Similarity of content. Due to the nature of our Services and artificial intelligence generally, output may not be unique and other users may receive similar output from our Services. Our assignment above does not extend to other users&rsquo; output.</p>
 
         <p className="mb-4">Our use of content. We may use Content to provide, maintain, develop, and improve our Services, comply with applicable law, enforce our terms and policies, and keep our Services safe.</p>
 
@@ -55,13 +55,13 @@ export default function TermsPage() {
         <p className="mb-6">We and our affiliates own all rights, title, and interest in and to the Services. You may only use our name and logo in accordance with our Brand Guidelines.</p>
 
         <h2 className="text-xl font-semibold mt-8 mb-4">Paid Accounts</h2>
-        <p className="mb-4">Billing. If you purchase any Services, you will provide complete and accurate billing information, including a valid payment method. For paid subscriptions, we will automatically charge your payment method on each agreed-upon periodic renewal until you cancel. You're responsible for all applicable taxes, and we'll charge tax when required. If your payment cannot be completed, we may downgrade your account or suspend your access to our Services until payment is received.</p>
+        <p className="mb-4">Billing. If you purchase any Services, you will provide complete and accurate billing information, including a valid payment method. For paid subscriptions, we will automatically charge your payment method on each agreed-upon periodic renewal until you cancel. You&rsquo;re responsible for all applicable taxes, and we&rsquo;ll charge tax when required. If your payment cannot be completed, we may downgrade your account or suspend your access to our Services until payment is received.</p>
 
         <p className="mb-4">Service credits. You can pay for some Services in advance by purchasing service credits. All service credits are subject to our Service Credit Terms.</p>
 
         <p className="mb-4">Cancellation. You can cancel your paid subscription at any time. Payments are non-refundable, except where required by law.</p>
 
-        <p className="mb-6">Changes. We may change our prices from time to time. If we increase our subscription prices, we will give you at least 30 days' notice and any price increase will take effect on your next renewal so that you can cancel if you do not agree to the price increase.</p>
+        <p className="mb-6">Changes. We may change our prices from time to time. If we increase our subscription prices, we will give you at least 30 days&rsquo; notice and any price increase will take effect on your next renewal so that you can cancel if you do not agree to the price increase.</p>
 
         <h2 className="text-xl font-semibold mt-8 mb-4">Termination and Suspension</h2>
         <p className="mb-4">You are free to stop using our Services at any time. We reserve the right to suspend or terminate your access to our Services or delete your account if we determine that you have breached these Terms or our Usage Policies, if we must do so to comply with the law, or if your use of our Services could cause risk or harm to Evolve Interfaces, our users, or anyone else.</p>
@@ -69,7 +69,7 @@ export default function TermsPage() {
         <p className="mb-6">We also may terminate your account if it has been inactive for over a year and you do not have a paid account. If we do, we will provide you with advance notice.</p>
 
         <h2 className="text-xl font-semibold mt-8 mb-4">Disclaimer of Warranties</h2>
-        <p className="mb-6">OUR SERVICES ARE PROVIDED "AS IS." EXCEPT TO THE EXTENT PROHIBITED BY LAW, WE AND OUR AFFILIATES AND LICENSORS MAKE NO WARRANTIES (EXPRESS, IMPLIED, STATUTORY OR OTHERWISE) WITH RESPECT TO THE SERVICES, AND DISCLAIM ALL WARRANTIES INCLUDING, BUT NOT LIMITED TO, WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, SATISFACTORY QUALITY, NON-INFRINGEMENT, AND QUIET ENJOYMENT, AND ANY WARRANTIES ARISING OUT OF ANY COURSE OF DEALING OR TRADE USAGE. WE DO NOT WARRANT THAT THE SERVICES WILL BE UNINTERRUPTED, ACCURATE OR ERROR FREE, OR THAT ANY CONTENT WILL BE SECURE OR NOT LOST OR ALTERED.</p>
+        <p className="mb-6">OUR SERVICES ARE PROVIDED &ldquo;AS IS.&rdquo; EXCEPT TO THE EXTENT PROHIBITED BY LAW, WE AND OUR AFFILIATES AND LICENSORS MAKE NO WARRANTIES (EXPRESS, IMPLIED, STATUTORY OR OTHERWISE) WITH RESPECT TO THE SERVICES, AND DISCLAIM ALL WARRANTIES INCLUDING, BUT NOT LIMITED TO, WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, SATISFACTORY QUALITY, NON-INFRINGEMENT, AND QUIET ENJOYMENT, AND ANY WARRANTIES ARISING OUT OF ANY COURSE OF DEALING OR TRADE USAGE. WE DO NOT WARRANT THAT THE SERVICES WILL BE UNINTERRUPTED, ACCURATE OR ERROR FREE, OR THAT ANY CONTENT WILL BE SECURE OR NOT LOST OR ALTERED.</p>
 
         <h2 className="text-xl font-semibold mt-8 mb-4">Limitation of Liability</h2>
         <p className="mb-6">NEITHER WE NOR ANY OF OUR AFFILIATES OR LICENSORS WILL BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR EXEMPLARY DAMAGES, INCLUDING DAMAGES FOR LOSS OF PROFITS, GOODWILL, USE, OR DATA OR OTHER LOSSES, EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. OUR AGGREGATE LIABILITY UNDER THESE TERMS WILL NOT EXCEED THE GREATER OF THE AMOUNT YOU PAID FOR THE SERVICE THAT GAVE RISE TO THE CLAIM DURING THE 12 MONTHS BEFORE THE LIABILITY AROSE OR ONE HUNDRED DOLLARS ($100). THE LIMITATIONS IN THIS SECTION APPLY ONLY TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW.</p>

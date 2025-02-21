@@ -1,14 +1,14 @@
 "use client";
 
+import React from "react";
 import { Attachment, Message } from "ai";
 import { useChat } from "ai/react";
 import { useState } from "react";
 
-import { Message as PreviewMessage } from "./message";
-import { useScrollToBottom } from "./use-scroll-to-bottom";
-
-import { MultimodalInput } from "./multimodal-input";
 import { Footer } from "./footer";
+import { Message as PreviewMessage } from "./message";
+import { MultimodalInput } from "./multimodal-input";
+import { useScrollToBottom } from "./use-scroll-to-bottom";
 // import { Overview } from "./overview";
 
 export function Chat({
@@ -39,7 +39,7 @@ export function Chat({
       <div className="flex flex-col justify-between items-center gap-4 w-full max-w-3xl px-4">
         <div
           ref={messagesContainerRef}
-          className="flex flex-col gap-3 h-full w-full items-center overflow-y-scroll"
+          className="flex flex-col gap-3 size-full items-center overflow-y-scroll"
         >
           {messages.map((message) => (
             <PreviewMessage

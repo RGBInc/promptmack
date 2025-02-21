@@ -1,20 +1,18 @@
 "use client";
 
-import { useVisualMode } from "./visual-mode-context";
+// Third-party imports
+import React from "react";
+import { ReactNode } from "react";
+import { User, Bot } from "lucide-react";
 import { Attachment, ToolInvocation } from "ai";
 import { motion } from "framer-motion";
-import { ReactNode, useEffect, useState } from "react";
-import { User, Bot } from "lucide-react";
 
+// Local component imports
 import { Markdown } from "./markdown";
 import { PreviewAttachment } from "./preview-attachment";
-import { Weather } from "../weather/weather";
-import { News } from "../paid/news";
-import { Videos } from "../paid/videos";
-import { Shopping } from "../paid/shopping";
-import { Scholar } from "../paid/scholar";
-import { Similar } from "../paid/similar";
-import { Skyvern } from "../paid/skyvern";
+import { useVisualMode } from "./visual-mode-context";
+
+// Flight-related components
 import { AuthorizePayment } from "../flights/authorize-payment";
 import { DisplayBoardingPass } from "../flights/boarding-pass";
 import { CreateReservation } from "../flights/create-reservation";
@@ -22,6 +20,25 @@ import { FlightStatus } from "../flights/flight-status";
 import { ListFlights } from "../flights/list-flights";
 import { SelectSeats } from "../flights/select-seats";
 import { VerifyPayment } from "../flights/verify-payment";
+
+// Weather component
+import { Weather } from "../weather/weather";
+
+// Paid feature components
+import { News } from "../paid/news";
+import { Videos } from "../paid/videos";
+import { Shopping } from "../paid/shopping";
+import { Scholar } from "../paid/scholar";
+import { Similar } from "../paid/similar";
+import { Skyvern } from "../paid/skyvern";
+
+// Add this type near the top of the file, after imports
+type SkyvernData = {
+  task_id: string;
+  success: boolean;
+  data?: Record<string, unknown>;
+  error?: string;
+};
 
 export const Message = ({
   chatId,
@@ -124,7 +141,7 @@ export const Message = ({
                   ) : toolName === "findSimilar" ? (
                     <Similar similarData={result} />
                   ) : toolName === "skyvernFormSubmit" ? (
-                    <Skyvern skyvernData={result as any} />
+                    <Skyvern skyvernData={result as SkyvernData} />
                   ) : (
                     <div>{JSON.stringify(result, null, 2)}</div>
                   )}
@@ -158,7 +175,7 @@ export const Message = ({
                   ) : toolName === "findSimilar" ? (
                     <Similar />
                   ) : toolName === "skyvernFormSubmit" ? (
-                    <Skyvern skyvernData={null as any} />
+                    <Skyvern skyvernData={null as unknown as SkyvernData} />
                   ) : null}
                 </div>
               );

@@ -1,8 +1,9 @@
 "use client";
 
+import React from "react";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { Moon, Sun } from "lucide-react";
 
 export function ThemeToggle() {
   const { setTheme, theme } = useTheme();
@@ -22,9 +23,9 @@ export function ThemeToggle() {
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
     >
       {theme === "dark" ? (
-        <Sun className="h-5 w-5" />
+        <Sun className="size-5" />
       ) : (
-        <Moon className="h-5 w-5" />
+        <Moon className="size-5" />
       )}
       <span className="sr-only">Toggle theme</span>
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 
 interface ShoppingItem {
   title: string;
@@ -55,10 +56,12 @@ export const Shopping = ({ shoppingData }: ShoppingProps) => {
         >
           {item.imageUrl && (
             <div className="relative w-full h-48 overflow-hidden rounded-lg">
-              <img
+              <Image
                 src={item.imageUrl}
                 alt={item.title}
-                className="w-full h-full object-contain transition-transform duration-200 group-hover:scale-105"
+                fill
+                className="object-contain transition-transform duration-200 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
           )}

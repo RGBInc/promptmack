@@ -1,9 +1,14 @@
 "use client";
 
+import React from "react";
+
+// Third-party imports
 import { MessageSquare, Terminal } from "lucide-react";
-import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
+
+// Local imports
 import { useVisualMode } from "./visual-mode-context";
+import { Button } from "../ui/button";
 
 interface VisualModeToggleProps {
   onChange?: (mode: 'bubble' | 'mechanical') => void;
@@ -32,18 +37,18 @@ export const VisualModeToggle = ({ onChange }: VisualModeToggleProps) => {
     <Button
       variant="ghost"
       size="icon"
-      className="h-9 w-9 relative"
+      className="size-9 relative"
       onClick={handleToggle}
     >
       <MessageSquare
-        className={`h-[1.2rem] w-[1.2rem] absolute transition-all duration-500 ${
+        className={`size-[1.2rem] absolute transition-all duration-500 ${
           mode === 'bubble'
             ? 'scale-100 rotate-0 opacity-100'
             : 'scale-0 rotate-90 opacity-0'
         }`}
       />
       <Terminal
-        className={`h-[1.2rem] w-[1.2rem] absolute transition-all duration-500 ${
+        className={`size-[1.2rem] absolute transition-all duration-500 ${
           mode === 'mechanical'
             ? 'scale-100 rotate-0 opacity-100'
             : 'scale-0 -rotate-90 opacity-0'
