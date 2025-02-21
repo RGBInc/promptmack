@@ -12,7 +12,7 @@ export default function PrivacyPage() {
         <p className="mb-6">This Privacy Policy does not apply to content that we process on behalf of customers of our business offerings, such as our API. Our use of that data is governed by our customer agreements covering access to and use of those offerings.</p>
 
         <h2 className="text-xl font-semibold mt-8 mb-4">1. Personal Data We Collect</h2>
-        <p className="mb-4">We collect personal data relating to you ("Personal Data") as follows:</p>
+        <p className="mb-4">We collect personal data relating to you (&quot;Personal Data&quot;) as follows:</p>
 
         <h3 className="text-lg font-semibold mt-6 mb-3">Personal Data You Provide:</h3>
         <p className="mb-4">Account Information: When you create an account with us, we collect information associated with your account, including your name, contact information, account credentials, payment information, and transaction history.</p>

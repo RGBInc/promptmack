@@ -14,68 +14,49 @@ import React, {
 import { toast } from "sonner";
 import Link from "next/link";
 
-import { ArrowUpIcon, PaperclipIcon, StopIcon } from "./icons";
+import { ArrowUpIcon, PaperclipIcon, StopIcon, NewsIcon, ShoppingIcon, ScholarIcon, FileTextIcon, VideoIcon, NetworkIcon } from "./icons";
 import { PreviewAttachment } from "./preview-attachment";
 import useWindowSize from "./use-window-size";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 
 const suggestedActions = [
-  // {
-  //   title: "Book a flight",
-  //   label: "SF to London",
-  //   action: "Help me book a flight from San Francisco to London",
-  // },
-  // {
-  //   title: "Flight status",
-  //   label: "BA142",
-  //   action: "What is the status of flight BA142 flying tmrw?",
-  // },
   {
     title: "Form",
     label: "Submit",
     action: "Fill out and submit a form on a website",
+    icon: <FileTextIcon size={14} />
   },
   {
     title: "News",
     label: "Latest",
     action: "Show me the latest news",
+    icon: <NewsIcon size={14} />
   },
   {
     title: "Videos",
     label: "Trending",
     action: "Show me trending videos",
+    icon: <VideoIcon size={14} />
   },
   {
     title: "Shopping",
     label: "Products",
     action: "Find me popular products to buy",
+    icon: <ShoppingIcon size={14} />
   },
   {
     title: "Scholar",
     label: "Research",
     action: "Find scholarly articles",
+    icon: <ScholarIcon size={14} />
   },
   {
     title: "Similar",
     label: "Websites",
     action: "Find websites similar to",
-  },
-  // {
-  //   title: "Weather",
-  //   label: "Today",
-  //   action: "What's the weather like today?",
-  // },
-  // {
-  //   title: "Stocks",
-  //   label: "AAPL",
-  //   action: "How is Apple stock performing?",
-  // },
-  // {
-  //   title: "Sports",
-  //   label: "NBA",
-  //   action: "Show me today's NBA scores",
-  // }
+    icon: <NetworkIcon size={14} />
+  }
 ];
 
 export function MultimodalInput({
@@ -221,6 +202,9 @@ export function MultimodalInput({
                   }}
                   className="border-none bg-muted/50 text-center border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-300 rounded-lg px-2 py-1.5 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex flex-col w-full"
                 >
+                  <div className="flex items-center justify-center mb-1">
+                    {suggestedAction.icon}
+                  </div>
                   <span className="font-medium">{suggestedAction.title}</span>
                   <span className="text-zinc-500 dark:text-zinc-400">
                     {suggestedAction.label}

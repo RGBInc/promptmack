@@ -9,7 +9,7 @@ export default function TermsPage() {
       <div className="prose dark:prose-invert">
         <p className="lead mb-8">Thank you for using Evolve Interfaces!</p>
 
-        <p className="mb-6">These Terms of Use apply to your use of Promptmack and Evolve Interfaces' other services for individuals, along with any associated software applications and websites (all together, "Services"). These Terms form an agreement between you and Evolve Interfaces, Inc., a Delaware company, and they include our Service Terms and important provisions for resolving disputes through arbitration. By using our Services, you agree to these Terms.</p>
+        <p className="mb-6">These Terms of Use apply to your use of Promptmack and Evolve Interfaces&apos; other services for individuals, along with any associated software applications and websites (all together, &quot;Services&quot;). These Terms form an agreement between you and Evolve Interfaces, Inc., a Delaware company, and they include our Service Terms and important provisions for resolving disputes through arbitration. By using our Services, you agree to these Terms.</p>
 
         <p className="mb-6">If you reside in the European Economic Area, Switzerland, or the UK, your use of the Services is governed by these terms.</p>
 
@@ -21,7 +21,7 @@ export default function TermsPage() {
         <p className="mb-6">Evolve Interfaces is an artificial intelligence company focused on advancing human-computer interaction. Our mission is to create intuitive and powerful interfaces that enhance human capabilities and creativity. For more information about Evolve Interfaces, please visit https://evolveinterfaces.com/about.</p>
 
         <h2 className="text-xl font-semibold mt-8 mb-4">Registration and Access</h2>
-        <p className="mb-4">Minimum age. You must be at least 13 years old or the minimum age required in your country to consent to use the Services. If you are under 18 you must have your parent or legal guardian's permission to use the Services.</p>
+        <p className="mb-4">Minimum age. You must be at least 13 years old or the minimum age required in your country to consent to use the Services. If you are under 18 you must have your parent or legal guardian&apos;s permission to use the Services.</p>
         
         <p className="mb-6">Registration. You must provide accurate and complete information to register for an account to use our Services. You may not share your account credentials or make your account available to anyone else and are responsible for all activities that occur under your account. If you create an account or use the Services on behalf of another person or entity, you must have the authority to accept these Terms on their behalf.</p>
 
@@ -49,7 +49,7 @@ export default function TermsPage() {
         <p className="mb-6">Accuracy. Artificial intelligence and machine learning are rapidly evolving fields of study. We are constantly working to improve our Services to make them more accurate, reliable, safe, and beneficial. Given the probabilistic nature of machine learning, use of our Services may, in some situations, result in Output that does not accurately reflect real people, places, or facts.</p>
 
         <h2 className="text-xl font-semibold mt-8 mb-4">Important Disclaimers</h2>
-        <p className="mb-6">When you use our Services you understand and agree that Output may not always be accurate. You should not rely on Output from our Services as a sole source of truth or factual information, or as a substitute for professional advice. You must evaluate Output for accuracy and appropriateness for your use case, including using human review as appropriate, before using or sharing Output from the Services. You must not use any Output relating to a person for any purpose that could have a legal or material impact on that person, such as making educational, employment, housing, insurance, legal, medical, or other important decisions about them. Our Services may provide incomplete, incorrect, or offensive Output that does not represent Evolve Interfaces' views.</p>
+        <p className="mb-6">When you use our Services you understand and agree that Output may not always be accurate. You should not rely on Output from our Services as a sole source of truth or factual information, or as a substitute for professional advice. You must evaluate Output for accuracy and appropriateness for your use case, including using human review as appropriate, before using or sharing Output from the Services. You must not use any Output relating to a person for any purpose that could have a legal or material impact on that person, such as making educational, employment, housing, insurance, legal, medical, or other important decisions about them. Our Services may provide incomplete, incorrect, or offensive Output that does not represent Evolve Interfaces&apos; views.</p>
 
         <h2 className="text-xl font-semibold mt-8 mb-4">Intellectual Property Rights</h2>
         <p className="mb-6">We and our affiliates own all rights, title, and interest in and to the Services. You may only use our name and logo in accordance with our Brand Guidelines.</p>
@@ -85,6 +85,12 @@ export default function TermsPage() {
         Evolve Interfaces, Inc.<br />
         Los Angeles, CA 91365<br />
         info@evolveinterfaces.com</p>
+      </div>
+      <div className="text-sm text-muted-foreground">
+        Don&apos;t hesitate to reach out if you have any questions about our terms.
+      </div>
+      <div className="text-sm text-muted-foreground">
+        We&apos;re here to help you understand our &quot;Terms of Service&quot; and make your experience better.
       </div>
     </div>
   );

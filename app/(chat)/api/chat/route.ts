@@ -1,6 +1,6 @@
 import { convertToCoreMessages, Message, streamText } from "ai";
-import { z } from "zod";
 import axios from "axios";
+import { z } from "zod";
 
 import { geminiProModel } from "@/ai";
 import {
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
         - you help users use these tools you have: news, scholar, shopping, similar, and videos!
         - do not include travel or weather at the moment
         - you're always terse and hyperintelligent
-        - never give components without at least a line of precursor so user knows what component is for
+        - after every tool call keep the user in the loop so user knows what a component is for
         - for every tool call you make give the user a brief explanation of what you did and why you did it for example "I went and searched for blah blah blah and then found some schorly blah blah
         - it's important that after every component served that you give more context
         - don't rush things perhaps you may help people find clarity

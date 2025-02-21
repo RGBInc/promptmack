@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
 import { CheckCircle, Clock, AlertCircle, XCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
+
 import { Button } from '../ui/button';
 
 interface SkyvernTaskDetails {
@@ -19,12 +20,12 @@ interface SkyvernTaskDetails {
       name?: string;
       email?: string;
       additionalInformation?: string;
-      [key: string]: any;
+      [key: string]: string | undefined;
     };
     proxy_location?: string;
-    extracted_information_schema?: any;
+    extracted_information_schema?: Record<string, unknown>;
   };
-  extracted_information?: any;
+  extracted_information?: Record<string, unknown>;
   screenshot_url?: string;
   recording_url?: string;
   action_screenshot_urls?: string[];
@@ -48,7 +49,6 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null);
-  const [retryCount, setRetryCount] = useState(0);
   const [lastErrorTime, setLastErrorTime] = useState(0);
   const [isRetrying, setIsRetrying] = useState(false);
   const MAX_RETRIES = 5;

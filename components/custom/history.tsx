@@ -169,6 +169,7 @@ export const History = ({ user }: { user: User | undefined }) => {
                   <Link
                     key={chat.id}
                     href={`/chat/${chat.id}`}
+                    onClick={() => setIsHistoryVisible(false)}
                     className={cx(
                       "group p-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all duration-200",
                       {
