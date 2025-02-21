@@ -60,13 +60,13 @@ export const Message = ({
 
   return (
     <motion.div
-      className="flex flex-col w-full max-w-2xl first-of-type:pt-16 py-0.5"
+      className="flex flex-col w-full max-w-2xl first-of-type:pt-16 py-3"
       initial={{ y: 5, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
     >
       {/* Regular message content with avatar and bubble */}
       {content && typeof content === "string" && !toolInvocations?.length && !attachments?.length && (
-        <div className={`flex gap-3 w-full px-1 sm:px-0 overflow-x-hidden ${visualMode === 'bubble' ? (role === "user" ? "justify-end" : "justify-start") : ""}`}>
+        <div className={`flex gap-3 w-full px-1 sm:px-0 overflow-x-hidden mb-2 ${visualMode === 'bubble' ? (role === "user" ? "justify-end" : "justify-start") : ""}`}>
           {visualMode === 'mechanical' && (
             <div className="flex flex-col items-center h-fit">
               <div className="size-5 mt-1 shrink-0">
@@ -87,10 +87,10 @@ export const Message = ({
           </div>
         </div>
       )}
-
+    
       {/* Message content when tool results are present */}
       {content && typeof content === "string" && (toolInvocations?.length || attachments?.length) && (
-        <div className="w-full px-1 sm:px-0 mb-3">
+        <div className="w-full px-1 sm:px-0 mb-4">
           <div className="text-zinc-800 dark:text-zinc-200 leading-relaxed">
             <Markdown>{content}</Markdown>
           </div>
@@ -99,7 +99,7 @@ export const Message = ({
     
       {/* Tool results and attachments without avatar/bubble */}
       {(toolInvocations || attachments) && (
-        <div className="w-full flex flex-col gap-3 px-1 sm:px-0">
+        <div className="w-full flex flex-col gap-4 px-1 sm:px-0">
           {toolInvocations && toolInvocations.map((toolInvocation) => {
             const { toolName, toolCallId, state } = toolInvocation;
   
@@ -107,7 +107,7 @@ export const Message = ({
               const { result } = toolInvocation;
   
               return (
-                <div key={toolCallId} className="w-full overflow-x-hidden">
+                <div key={toolCallId} className="w-full overflow-x-hidden mb-2">
                   {toolName === "getWeather" ? (
                     <Weather weatherAtLocation={result} />
                   ) : toolName === "displayFlightStatus" ? (
@@ -143,7 +143,7 @@ export const Message = ({
               );
             } else {
               return (
-                <div key={toolCallId} className="skeleton w-full overflow-x-hidden">
+                <div key={toolCallId} className="skeleton w-full overflow-x-hidden mb-2">
                   {toolName === "getWeather" ? (
                     <Weather />
                   ) : toolName === "displayFlightStatus" ? (
@@ -174,7 +174,7 @@ export const Message = ({
             }
           })}
           {attachments?.map((attachment) => (
-            <div key={attachment.url} className="w-full overflow-x-hidden">
+            <div key={attachment.url} className="w-full overflow-x-hidden mb-2">
               <PreviewAttachment attachment={attachment} />
             </div>
           ))}
