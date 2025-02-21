@@ -2,11 +2,10 @@
 
 import { Attachment, ChatRequestOptions, CreateMessage, Message } from "ai";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import React, { useRef, useEffect, useState, useCallback, Dispatch, SetStateAction, ChangeEvent } from "react";
 import { toast } from "sonner";
 
-import { ArrowUpIcon, PaperclipIcon, StopIcon, NewsIcon, ShoppingIcon, ScholarIcon, FileTextIcon, VideoIcon, NetworkIcon } from "./icons";
+import { ArrowUpIcon, PaperclipIcon, StopIcon, NewsIcon, ScholarIcon, FileTextIcon, VideoIcon, NetworkIcon } from "./icons";
 import { PreviewAttachment } from "./preview-attachment";
 import useWindowSize from "./use-window-size";
 import { Button } from "../ui/button";
@@ -30,12 +29,6 @@ const suggestedActions = [
     label: "Trending",
     action: "Show me trending videos",
     icon: <VideoIcon size={14} />
-  },
-  {
-    title: "Shopping",
-    label: "Products",
-    action: "Find me popular products to buy",
-    icon: <ShoppingIcon size={14} />
   },
   {
     title: "Scholar",
@@ -140,6 +133,7 @@ export function MultimodalInput({
         toast.error(error);
       }
     } catch (error) {
+      console.error("Upload error:", error);
       toast.error("Failed to upload file, please try again!");
     }
   };

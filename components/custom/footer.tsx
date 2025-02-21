@@ -1,8 +1,8 @@
 "use client";
 
-import { Info } from "lucide-react";
 import Link from 'next/link'
 import React from 'react'
+import { Info } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -30,9 +30,9 @@ export function Footer() {
             <DropdownMenuItem asChild>
               <Link href="/privacy">Privacy</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="https://evolveinterfaces.com" target="_blank">Company</Link>
-            </DropdownMenuItem>
+            {/* <DropdownMenuItem asChild>
+              <Link href="" target="_blank">Company</Link>
+            </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

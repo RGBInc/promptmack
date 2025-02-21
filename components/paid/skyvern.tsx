@@ -197,6 +197,15 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
   }, [pollingInterval, fetchTaskDetails, fetchTaskSteps, skyvernData?.task_id]);
 
   useEffect(() => {
+    if (skyvernData?.task_id) {
+      fetchTaskDetails();
+      fetchTaskSteps(skyvernData.task_id);
+    }
+
+    return () => stopPollingRef.current?.();
+  }, [skyvernData?.task_id, fetchTaskDetails, fetchTaskSteps]);
+
+  useEffect(() => {
     startPollingRef.current = startPolling;
     stopPollingRef.current = stopPolling;
   }, [startPolling, stopPolling]);

@@ -36,13 +36,11 @@ export async function POST(request: Request) {
   const result = await streamText({
     model: geminiProModel,
     system: `\n
-        - you help users use these tools you have: news, scholar, shopping, similar, and videos!
+        - you help users use these tools you have: news, scholar, similar, and videos!
         - do not include travel or weather at the moment
-        - you're always terse and hyperintelligent
-        - after every tool call keep the user in the loop so user knows what a component is for
-        - for every tool call you make give the user a brief explanation of what you did and why you did it for example "I went and searched for blah blah blah and then found some schorly blah blah
-        - it's important that after every component served that you give more context
+        - always give a brief context before streaming components
         - don't rush things perhaps you may help people find clarity
+        - always act like you're presenting right before a tool call, don't just show the tool results e.g. if user asks for news first say "i will use the {nameoffunction stylized} tool to "
         - today's date is ${new Date().toLocaleDateString()}.
         - go with the flow
         - ask for any details you don't know'
@@ -259,31 +257,6 @@ export async function POST(request: Request) {
           }
         },
       },
-      getShopping: {
-        description: "Get shopping products based on a search query",
-        parameters: z.object({
-          query: z.string().describe("Search query for shopping products"),
-        }),
-        execute: async ({ query }) => {
-          try {
-            const response = await axios.get(
-              `https://google.serper.dev/shopping`,
-              {
-                params: {
-                  q: query,
-                },
-                headers: {
-                  'X-API-KEY': process.env.SERPER_API_KEY,
-                },
-              }
-            );
-            return response.data;
-          } catch (error) {
-            console.error("Shopping API error:", error);
-            throw error;
-          }
-        },
-      },
       getScholar: {
         description: "Get scholarly articles based on a search query",
         parameters: z.object({
@@ -401,7 +374,7 @@ export async function POST(request: Request) {
             userId: session.user.id,
           });
         } catch (error) {
-          console.error("Failed to save chat");
+          console.error("Failed to save chat:", error);
         }
       }
     },
@@ -439,7 +412,7 @@ export async function DELETE(request: Request) {
 
     return new Response("Chat deleted", { status: 200 });
   } catch (error) {
-    return new Response("An error occurred while processing your request", {
+    return new Response(`An error occurred while processing your request: ${error}`, {
       status: 500,
     });
   }

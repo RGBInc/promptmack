@@ -20,7 +20,6 @@ import { SelectSeats } from "../flights/select-seats";
 import { VerifyPayment } from "../flights/verify-payment";
 import { News } from "../paid/news";
 import { Scholar } from "../paid/scholar";
-import { Shopping } from "../paid/shopping";
 import { Similar } from "../paid/similar";
 import { Skyvern } from "../paid/skyvern";
 import { Videos } from "../paid/videos";
@@ -61,43 +60,46 @@ export const Message = ({
 
   return (
     <motion.div
-      className={`flex flex-col w-full max-w-2xl first-of-type:pt-16 py-0.5 ${
-        visualMode === 'bubble' ? (role === "user" ? "items-end px-1 sm:px-2 md:px-0" : "items-start px-1 sm:px-2 md:px-0") : ""
-      }`}
+      className="flex flex-col w-full max-w-2xl first-of-type:pt-16 py-0.5"
       initial={{ y: 5, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
     >
-      <div className={`flex gap-3 w-full px-1 sm:px-0 overflow-x-hidden ${
-        visualMode === 'bubble' ? (role === "user" ? "justify-end" : "justify-start") : ""
-      }`}>
-        {visualMode === 'mechanical' && (
-          <div className="flex flex-col items-center h-fit">
-            <div className="size-5 mt-1 shrink-0">
-              {role === 'user'
-                ? <User className="size-5 text-blue-400" />
-                : <Bot className="size-5 text-zinc-400" />
-              }
-            </div>
-            {content && typeof content === "string" && (
+      {/* Regular message content with avatar and bubble */}
+      {content && typeof content === "string" && !toolInvocations?.length && !attachments?.length && (
+        <div className={`flex gap-3 w-full px-1 sm:px-0 overflow-x-hidden ${visualMode === 'bubble' ? (role === "user" ? "justify-end" : "justify-start") : ""}`}>
+          {visualMode === 'mechanical' && (
+            <div className="flex flex-col items-center h-fit">
+              <div className="size-5 mt-1 shrink-0">
+                {role === 'user'
+                  ? <User className="size-5 text-blue-400" />
+                  : <Bot className="size-5 text-zinc-400" />
+                }
+              </div>
               <div className="w-px h-full bg-zinc-200 dark:bg-zinc-700 mt-2" style={{ height: 'calc(100% - 1.75rem)' }} />
-            )}
-          </div>
-        )}
-        <div 
-          className={`flex flex-col gap-2 ${visualMode === 'mechanical' ? 'w-full md:w-[calc(100%-2rem)]' : 'inline-block max-w-[80%]'} ${
-            visualMode === 'bubble' ? bubbleStyles[role as keyof typeof bubbleStyles] : mechanicalStyles[role as keyof typeof mechanicalStyles]
-          }`}
-        >
-          {content && typeof content === "string" && (
+            </div>
+          )}
+          <div 
+            className={`flex flex-col gap-2 ${visualMode === 'mechanical' ? 'w-full md:w-[calc(100%-2rem)]' : 'inline-block max-w-[80%]'} ${visualMode === 'bubble' ? bubbleStyles[role as keyof typeof bubbleStyles] : mechanicalStyles[role as keyof typeof mechanicalStyles]}`}
+          >
             <div className="text-zinc-800 dark:text-zinc-200 flex flex-col gap-3 leading-relaxed">
               <Markdown>{content}</Markdown>
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      )}
 
+      {/* Message content when tool results are present */}
+      {content && typeof content === "string" && (toolInvocations?.length || attachments?.length) && (
+        <div className="w-full px-1 sm:px-0 mb-3">
+          <div className="text-zinc-800 dark:text-zinc-200 leading-relaxed">
+            <Markdown>{content}</Markdown>
+          </div>
+        </div>
+      )}
+    
+      {/* Tool results and attachments without avatar/bubble */}
       {(toolInvocations || attachments) && (
-        <div className={`w-full flex flex-col gap-3 mt-4 ${visualMode === 'bubble' ? 'px-1 sm:px-2 md:px-0' : ''}`}>
+        <div className="w-full flex flex-col gap-3 px-1 sm:px-0">
           {toolInvocations && toolInvocations.map((toolInvocation) => {
             const { toolName, toolCallId, state } = toolInvocation;
   
@@ -128,8 +130,6 @@ export const Message = ({
                     <News newsData={result} />
                   ) : toolName === "getVideos" ? (
                     <Videos videosData={result} />
-                  ) : toolName === "getShopping" ? (
-                    <Shopping shoppingData={result} />
                   ) : toolName === "getScholar" ? (
                     <Scholar scholarData={result} />
                   ) : toolName === "findSimilar" ? (
@@ -162,8 +162,6 @@ export const Message = ({
                     <News />
                   ) : toolName === "getVideos" ? (
                     <Videos />
-                  ) : toolName === "getShopping" ? (
-                    <Shopping />
                   ) : toolName === "getScholar" ? (
                     <Scholar />
                   ) : toolName === "findSimilar" ? (

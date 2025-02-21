@@ -2,10 +2,11 @@
 
 import cx from "classnames";
 import { History as HistoryIcon } from "lucide-react";
+import React from "react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { User } from "next-auth";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
 
@@ -97,7 +98,7 @@ export const History = ({ user }: { user: User | undefined }) => {
         </SheetTrigger>
         <SheetContent
           side="right"
-          className="w-[400px] sm:w-[540px] p-0 bg-white dark:bg-gradient-to-b dark:from-zinc-900/90 dark:to-zinc-950/90 backdrop-blur-xl border-l border-zinc-200 dark:border-zinc-800"
+          className="w-[300px] sm:w-[540px] p-0 bg-white dark:bg-gradient-to-b dark:from-zinc-900/90 dark:to-zinc-950/90 backdrop-blur-xl border-l border-zinc-200 dark:border-zinc-800"
         >
           <div className="p-6 border-b border-zinc-200 dark:border-zinc-800/50">
             <div className="flex items-center justify-between mb-4">
@@ -166,7 +167,6 @@ export const History = ({ user }: { user: User | undefined }) => {
                   <Link
                     key={chat.id}
                     href={`/chat/${chat.id}`}
-                    onClick={() => setIsHistoryVisible(false)}
                     className={cx(
                       "group p-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all duration-200",
                       {
