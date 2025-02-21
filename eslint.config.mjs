@@ -11,4 +11,11 @@ export default [
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
+  {
+    settings: {
+      react: {
+        version: "19.0.0-rc-7771d3a7-20240827"
+      }
+    }
+  },
 ];

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from 'next/image'
 import React from "react";
 
 interface NewsItem {
@@ -37,7 +38,7 @@ export const News = ({ newsData }: NewsProps) => {
               <div className="flex-1">
                 <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-3/4" />
               </div>
-              <div className="w-16 h-16 bg-zinc-200 dark:bg-zinc-800 rounded flex-shrink-0" />
+              <div className="size-16 bg-zinc-200 dark:bg-zinc-800 rounded shrink-0" />
             </div>
             <div className="h-3 bg-zinc-200 dark:bg-zinc-800 rounded w-1/2" />
             <div className="h-2 bg-zinc-200 dark:bg-zinc-800 rounded w-1/4" />
@@ -69,10 +70,12 @@ export const News = ({ newsData }: NewsProps) => {
               </a>
             </div>
             {item.imageUrl && (
-              <img 
-                src={item.imageUrl} 
-                alt="" 
-                className="w-16 h-16 object-cover rounded flex-shrink-0"
+              <Image
+                src={item.imageUrl}
+                alt={item.title}
+                width={64}
+                height={64}
+                className="size-16 shrink-0"
               />
             )}
           </div>

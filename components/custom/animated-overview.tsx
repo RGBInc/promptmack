@@ -1,7 +1,7 @@
 "use client";
 
-import React from 'react';
 import { motion } from 'framer-motion';
+import React from 'react';
 
 export const AnimatedOverview = () => {
   return (
@@ -33,7 +33,7 @@ export const AnimatedOverview = () => {
           <motion.img
             src="/images/promptmack-logo.svg"
             alt="Robot"
-            className="w-20 h-20"
+            className="size-20"
             animate={{ y: [-5, 5, -5] }}
             transition={{
               duration: 3,

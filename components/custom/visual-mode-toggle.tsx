@@ -1,10 +1,8 @@
 "use client";
 
-import React from "react";
-
 // Third-party imports
 import { MessageSquare, Terminal } from "lucide-react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // Local imports
 import { useVisualMode } from "./visual-mode-context";

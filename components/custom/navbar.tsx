@@ -1,13 +1,13 @@
-import React from "react";
 import Image from "next/image";
-import Link from "next/link";
+import Link from 'next/link'
+import React from 'react'
 
 import { auth, signOut } from "@/app/(auth)/auth";
 
 import { History } from "./history";
 import { ThemeToggle } from "./theme-toggle";
-import { Button } from "../ui/button";
 import { VisualModeToggle } from "./visual-mode-toggle";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,

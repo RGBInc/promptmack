@@ -1,5 +1,7 @@
 "use client";
 
+import { motion } from "framer-motion";
+import Image from 'next/image'
 import React from "react";
 
 interface VideoItem {
@@ -35,7 +37,7 @@ export const Videos = ({ videosData }: VideosProps) => {
               <div className="flex-1">
                 <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-3/4" />
               </div>
-              <div className="w-16 h-16 bg-zinc-200 dark:bg-zinc-800 rounded flex-shrink-0" />
+              <div className="size-16 bg-zinc-200 dark:bg-zinc-800 rounded shrink-0" />
             </div>
             <div className="h-3 bg-zinc-200 dark:bg-zinc-800 rounded w-1/2" />
             <div className="h-2 bg-zinc-200 dark:bg-zinc-800 rounded w-1/4" />
@@ -60,11 +62,13 @@ export const Videos = ({ videosData }: VideosProps) => {
               <h3 className="font-medium text-sm line-clamp-2 text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">{video.title}</h3>
             </div>
             {video.imageUrl && (
-              <div className="relative w-16 h-16 flex-shrink-0 overflow-hidden rounded">
-                <img
+              <div className="relative size-full shrink-0 overflow-hidden rounded">
+                <Image
                   src={video.imageUrl}
                   alt={video.title}
-                  className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+                  width={64}
+                  height={64}
+                  className="size-full object-cover transition-transform duration-200 group-hover:scale-105"
                 />
                 <div className="absolute bottom-1 right-1 bg-black/75 text-white text-xs px-1 rounded">
                   {video.duration}

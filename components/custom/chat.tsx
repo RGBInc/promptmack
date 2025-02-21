@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
 import { Attachment, Message } from "ai";
-import { useChat } from "ai/react";
+import { useChat } from 'ai/react';
 import { useState } from "react";
 
 import { Footer } from "./footer";

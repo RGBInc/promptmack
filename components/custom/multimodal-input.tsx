@@ -2,17 +2,9 @@
 
 import { Attachment, ChatRequestOptions, CreateMessage, Message } from "ai";
 import { motion } from "framer-motion";
-import React, {
-  useRef,
-  useEffect,
-  useState,
-  useCallback,
-  Dispatch,
-  SetStateAction,
-  ChangeEvent,
-} from "react";
-import { toast } from "sonner";
 import Link from "next/link";
+import React, { useRef, useEffect, useState, useCallback, Dispatch, SetStateAction, ChangeEvent } from "react";
+import { toast } from "sonner";
 
 import { ArrowUpIcon, PaperclipIcon, StopIcon, NewsIcon, ShoppingIcon, ScholarIcon, FileTextIcon, VideoIcon, NetworkIcon } from "./icons";
 import { PreviewAttachment } from "./preview-attachment";

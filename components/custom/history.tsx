@@ -1,12 +1,11 @@
 "use client";
 
-import React from "react";
-import { History as HistoryIcon } from "lucide-react";
 import cx from "classnames";
+import { History as HistoryIcon } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { User } from "next-auth";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
 
@@ -90,10 +89,10 @@ export const History = ({ user }: { user: User | undefined }) => {
         <SheetTrigger asChild>
           <Button
             variant="ghost"
-            className="h-9 w-9 p-0"
+            className="size-9 p-0"
             aria-label="Toggle history menu"
           >
-            <HistoryIcon className="h-[1.2rem] w-[1.2rem]" />
+            <HistoryIcon className="size-[1.2rem]" />
           </Button>
         </SheetTrigger>
         <SheetContent
@@ -126,7 +125,7 @@ export const History = ({ user }: { user: User | undefined }) => {
             <div className="flex flex-col overflow-y-scroll h-[calc(100dvh-180px)] custom-scrollbar">
               {!user ? (
                 <div className="flex flex-col items-center justify-center h-full gap-4 p-8 text-center">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-zinc-100 to-zinc-200 dark:from-zinc-700 dark:to-zinc-800 flex items-center justify-center">
+                  <div className="size-16 rounded-full bg-gradient-to-tr from-zinc-100 to-zinc-200 dark:from-zinc-700 dark:to-zinc-800 flex items-center justify-center">
                     <div className="text-zinc-600 dark:text-zinc-400">
                       <InfoIcon />
                     </div>
@@ -140,7 +139,7 @@ export const History = ({ user }: { user: User | undefined }) => {
 
               {!isLoading && history?.length === 0 && user ? (
                 <div className="flex flex-col items-center justify-center h-full gap-4 p-8 text-center">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-zinc-700 to-zinc-800 flex items-center justify-center">
+                  <div className="size-16 rounded-full bg-gradient-to-tr from-zinc-700 to-zinc-800 flex items-center justify-center">
                     <div className="text-zinc-400">
                       <InfoIcon />
                     </div>
@@ -188,7 +187,7 @@ export const History = ({ user }: { user: User | undefined }) => {
                       <DropdownMenu modal={true}>
                         <DropdownMenuTrigger asChild>
                           <Button
-                            className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="size-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
                             variant="ghost"
                           >
                             <MoreHorizontalIcon />

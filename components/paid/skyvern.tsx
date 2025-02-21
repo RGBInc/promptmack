@@ -1,8 +1,8 @@
 'use client';
 
 // Third-party imports first
-import { CheckCircle, Clock, AlertCircle, XCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { CheckCircle, Clock, AlertCircle, XCircle } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
 // Local imports last
@@ -200,7 +200,7 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
     }
 
     return () => stopPolling();
-  }, [skyvernData?.task_id]);
+  }, [skyvernData?.task_id, fetchTaskDetails, stopPolling, fetchTaskSteps]);
 
   if (!skyvernData) return null;
 
@@ -213,7 +213,7 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
         className="w-full bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4"
       >
         <div className="flex items-center justify-center py-4">
-          <Clock className="h-6 w-6 text-blue-500 dark:text-blue-400 animate-spin" />
+          <Clock className="size-6 text-blue-500 dark:text-blue-400 animate-spin" />
           <span className="ml-2 text-blue-700 dark:text-blue-300">Initializing task...</span>
         </div>
       </motion.div>
@@ -230,13 +230,13 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
       >
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
-            <AlertCircle className="h-5 w-5 text-red-500 dark:text-red-400" />
+            <AlertCircle className="size-5 text-red-500 dark:text-red-400" />
             <span className="text-red-700 dark:text-red-300 font-medium">Task Error</span>
           </div>
           <p className="text-sm text-red-600 dark:text-red-300">{error || 'Failed to load task details'}</p>
           {isRetrying && (
             <div className="flex items-center gap-2 text-yellow-600 dark:text-yellow-400">
-              <Clock className="h-4 w-4 animate-spin" />
+              <Clock className="size-4 animate-spin" />
               <span className="text-sm">Retrying request...</span>
             </div>
           )}
@@ -254,7 +254,7 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
     >
       {isRetrying && (
         <div className="flex items-center gap-2 px-3 py-2 bg-yellow-50 dark:bg-yellow-900/20 rounded border border-yellow-200 dark:border-yellow-800">
-          <Clock className="h-4 w-4 text-yellow-500 dark:text-yellow-400 animate-spin" />
+          <Clock className="size-4 text-yellow-500 dark:text-yellow-400 animate-spin" />
           <span className="text-sm text-yellow-700 dark:text-yellow-300">Retrying request...</span>
         </div>
       )}
@@ -279,7 +279,7 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
                 onClick={() => cancelTask(taskDetails.task_id)}
                 className="h-7 px-2 py-0"
               >
-                <XCircle className="h-4 w-4 mr-1" />
+                <XCircle className="size-4 mr-1" />
                 Cancel
               </Button>
             )}
@@ -320,7 +320,7 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
       )}
 
       <div className="flex items-start gap-3">
-        <CheckCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+        <CheckCircle className="size-5 shrink-0 mt-0.5" />
         <div className="flex-1 space-y-3">
           <h3 className="font-medium">Task Details</h3>
 
