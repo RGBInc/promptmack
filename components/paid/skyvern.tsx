@@ -3,7 +3,7 @@
 // Third-party imports first
 import { motion } from 'framer-motion';
 import { CheckCircle, Clock, AlertCircle, XCircle } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 
 // Local imports last
 import { Button } from '../ui/button';
@@ -57,7 +57,10 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
   const MIN_ERROR_INTERVAL = 3000;
   const MAX_BACKOFF_DELAY = 10000;
 
-  const handleError = (err: unknown, errorMessage: string) => {
+  const startPollingRef = useRef<() => void>();
+  const stopPollingRef = useRef<() => void>();
+
+  const handleError = useCallback((err: unknown, errorMessage: string) => {
     const errorDetails = err instanceof Error ? err.message : errorMessage;
     console.error(`Skyvern Error: ${errorMessage}`, {
       error: err,
@@ -69,13 +72,13 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
       setError(`${errorMessage}: ${errorDetails}`);
       setLastErrorTime(currentTime);
     }
-  };
+  }, [lastErrorTime, skyvernData?.task_id]);
 
   const calculateBackoffDelay = (currentRetry: number) => {
     return Math.min(1000 * Math.pow(2, currentRetry), MAX_BACKOFF_DELAY);
   };
 
-  const retryWithBackoff = async (fn: () => Promise<void>, currentRetry: number) => {
+  const retryWithBackoff = useCallback(async (fn: () => Promise<void>, currentRetry: number) => {
     if (currentRetry >= MAX_RETRIES) {
       setIsRetrying(false);
       return;
@@ -85,7 +88,7 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
     const backoffDelay = calculateBackoffDelay(currentRetry);
     await new Promise(resolve => setTimeout(resolve, backoffDelay));
     await fn();
-  };
+  }, []);
 
   const cancelTask = async (taskId: string) => {
     try {
@@ -125,7 +128,7 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
     return colors[status as keyof typeof colors] || colors.created;
   };
 
-  const fetchTaskSteps = async (taskId: string) => {
+  const fetchTaskSteps = useCallback(async (taskId: string) => {
     try {
       const response = await fetch(`/api/skyvern/tasks/${taskId}/steps`);
       if (response.ok) {
@@ -137,9 +140,16 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
     } catch (err) {
       console.error('Error fetching task steps:', err);
     }
-  };
+  }, []);
 
-  const fetchTaskDetails = async (currentRetry = 0) => {
+  const stopPolling = useCallback<() => void>(() => {
+    if (pollingInterval) {
+      clearInterval(pollingInterval);
+      setPollingInterval(null);
+    }
+  }, [pollingInterval]);
+
+  const fetchTaskDetails = useCallback<(currentRetry?: number) => Promise<void>>(async (currentRetry = 0) => {
     if (!skyvernData?.task_id) return;
     
     try {
@@ -161,9 +171,9 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
       setIsRetrying(false);
   
       if (['created', 'queued', 'running'].includes(data.status)) {
-        startPolling();
+        startPollingRef.current?.();
       } else {
-        stopPolling();
+        stopPollingRef.current?.();
       }
     } catch (err) {
       handleError(err, 'Failed to fetch task details');
@@ -171,9 +181,9 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
     } finally {
       setTimeout(() => setLoading(false), 1000);
     }
-  };
+  }, [skyvernData?.task_id, handleError, retryWithBackoff]);
 
-  const startPolling = () => {
+  const startPolling = useCallback<() => void>(() => {
     if (pollingInterval) return;
     
     const interval = setInterval(() => {
@@ -184,23 +194,12 @@ export function Skyvern({ skyvernData }: { skyvernData: { task_id: string } | nu
     }, 5000);
     
     setPollingInterval(interval);
-  };
-
-  const stopPolling = () => {
-    if (pollingInterval) {
-      clearInterval(pollingInterval);
-      setPollingInterval(null);
-    }
-  };
+  }, [pollingInterval, fetchTaskDetails, fetchTaskSteps, skyvernData?.task_id]);
 
   useEffect(() => {
-    if (skyvernData?.task_id) {
-      fetchTaskDetails();
-      fetchTaskSteps(skyvernData.task_id);
-    }
-
-    return () => stopPolling();
-  }, [skyvernData?.task_id, fetchTaskDetails, stopPolling, fetchTaskSteps]);
+    startPollingRef.current = startPolling;
+    stopPollingRef.current = stopPolling;
+  }, [startPolling, stopPolling]);
 
   if (!skyvernData) return null;
 

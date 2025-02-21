@@ -1,18 +1,16 @@
 "use client";
 
 // Third-party imports
-import React from "react";
-import { ReactNode } from "react";
-import { User, Bot } from "lucide-react";
-import { Attachment, ToolInvocation } from "ai";
+import { type Attachment, type ToolInvocation } from "ai";
 import { motion } from "framer-motion";
+import { Bot, User } from "lucide-react";
+import * as React from "react";
+import { type ReactNode } from "react";
 
 // Local component imports
 import { Markdown } from "./markdown";
 import { PreviewAttachment } from "./preview-attachment";
 import { useVisualMode } from "./visual-mode-context";
-
-// Flight-related components
 import { AuthorizePayment } from "../flights/authorize-payment";
 import { DisplayBoardingPass } from "../flights/boarding-pass";
 import { CreateReservation } from "../flights/create-reservation";
@@ -20,17 +18,13 @@ import { FlightStatus } from "../flights/flight-status";
 import { ListFlights } from "../flights/list-flights";
 import { SelectSeats } from "../flights/select-seats";
 import { VerifyPayment } from "../flights/verify-payment";
-
-// Weather component
-import { Weather } from "../weather/weather";
-
-// Paid feature components
 import { News } from "../paid/news";
-import { Videos } from "../paid/videos";
-import { Shopping } from "../paid/shopping";
 import { Scholar } from "../paid/scholar";
+import { Shopping } from "../paid/shopping";
 import { Similar } from "../paid/similar";
 import { Skyvern } from "../paid/skyvern";
+import { Videos } from "../paid/videos";
+import { Weather } from "../weather/weather";
 
 // Add this type near the top of the file, after imports
 type SkyvernData = {
@@ -78,14 +72,14 @@ export const Message = ({
       }`}>
         {visualMode === 'mechanical' && (
           <div className="flex flex-col items-center h-fit">
-            <div className="h-5 w-5 mt-1 flex-shrink-0">
+            <div className="size-5 mt-1 shrink-0">
               {role === 'user'
-                ? <User className="h-5 w-5 text-blue-400" />
-                : <Bot className="h-5 w-5 text-zinc-400" />
+                ? <User className="size-5 text-blue-400" />
+                : <Bot className="size-5 text-zinc-400" />
               }
             </div>
             {content && typeof content === "string" && (
-              <div className="w-[1px] h-full bg-zinc-200 dark:bg-zinc-700 mt-2" style={{ height: 'calc(100% - 1.75rem)' }} />
+              <div className="w-px h-full bg-zinc-200 dark:bg-zinc-700 mt-2" style={{ height: 'calc(100% - 1.75rem)' }} />
             )}
           </div>
         )}
