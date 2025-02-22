@@ -21,7 +21,7 @@ export const Navbar = async () => {
   return (
     <>
       <nav className="fixed inset-x-0 top-0 z-50 bg-white/60 dark:bg-background/60 backdrop-blur-xl">
-        <div className="flex h-16 items-center justify-between px-1 sm:px-2 lg:px-4">
+        <div className="flex h-16 items-center justify-between px-2 mx-auto max-w-screen-2xl">
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-2.5 group">
               <Image

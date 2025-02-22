@@ -60,7 +60,7 @@ export const Message = ({
 
   return (
     <motion.div
-      className="flex flex-col w-full max-w-2xl first-of-type:pt-16 py-3"
+      className="flex flex-col w-full max-w-2xl first-of-type:pt-20 pt-4 pb-3"
       initial={{ y: 5, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
     >
