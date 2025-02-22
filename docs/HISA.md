@@ -1,4 +1,4 @@
-# Promptmack: Hyper-Intelligent System Architecture Guide
+# Promptmack: Hyper-Intelligent System Architecture (HISA) Guide
 
 ## Core Philosophy
 - Universal chat history as primary storage → enables rich context injection
