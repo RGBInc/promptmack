@@ -262,7 +262,7 @@ export function MultimodalInput({
         </Button>
       ) : (
         <Button
-          className="rounded-full p-1.5 h-fit absolute bottom-2 right-2 m-0.5 text-white"
+          className="rounded-full p-1.5 h-fit absolute bottom-2 right-2 m-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white transition-all duration-200 ease-out hover:scale-105"
           onClick={(event) => {
             event.preventDefault();
             submitForm();
