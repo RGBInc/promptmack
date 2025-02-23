@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import React, { useRef, useEffect, useState, useCallback, Dispatch, SetStateAction, ChangeEvent } from "react";
 import { toast } from "sonner";
 
-import { ArrowUpIcon, PaperclipIcon, StopIcon, NewsIcon, ScholarIcon, FileTextIcon, VideoIcon, NetworkIcon } from "./icons";
+import { ArrowUpIcon, PaperclipIcon, StopIcon, NewsIcon, ScholarIcon, FileTextIcon, VideoIcon, NetworkIcon, BrainIcon } from "./icons";
 import { PreviewAttachment } from "./preview-attachment";
 import useWindowSize from "./use-window-size";
 import { Button } from "../ui/button";
@@ -41,6 +41,12 @@ const suggestedActions = [
     label: "Websites",
     action: "Find websites similar to",
     icon: <NetworkIcon size={14} />
+  },
+  {
+    title: "Brainstorm",
+    label: "Ideas",
+    action: "Help me brainstorm ideas about",
+    icon: <BrainIcon size={14} />
   }
 ];
 

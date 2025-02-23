@@ -835,3 +835,20 @@ export const NetworkIcon = ({ size = 16 }: { size?: number }) => {
     </svg>
   );
 };
+
+export const BrainIcon = ({ size = 14 }) => {
+  return (
+    <svg
+      height={size}
+      width={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5V5h.5A3.5 3.5 0 0 1 16 8.5a3.5 3.5 0 0 1 4 3.45c0 1.75-1.29 3.2-3 3.45v.6h-.5a2 2 0 0 1-2 2h-2a2 2 0 0 0-2 2v2h-2v-2a2 2 0 0 0-2-2h-2a2 2 0 0 1-2-2v-.6c-1.71-.25-3-1.7-3-3.45a3.5 3.5 0 0 1 4-3.45A3.5 3.5 0 0 1 7 5h.5v-.5A2.5 2.5 0 0 1 9.5 2z" />
+    </svg>
+  );
+};
