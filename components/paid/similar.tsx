@@ -76,18 +76,20 @@ export const Similar = ({ similarData }: SimilarProps) => {
           <p className="text-sm text-zinc-500 dark:text-zinc-500 break-words">
             {result.summary}
           </p>
-          <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-500 dark:text-zinc-500">
+          <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-zinc-500 dark:text-zinc-500">
             {result.publishedDate && (
               <span>{new Date(result.publishedDate).toLocaleDateString()}</span>
             )}
             {result.favicon && (
-              <Image
-                src={result.favicon}
-                alt={result.title}
-                width={24}
-                height={24}
-                className="size-6"
-              />
+              <div className="ml-auto">
+                <Image
+                  src={result.favicon}
+                  alt={result.title}
+                  width={24}
+                  height={24}
+                  className="size-6"
+                />
+              </div>
             )}
           </div>
         </motion.div>

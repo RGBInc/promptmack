@@ -45,7 +45,7 @@ const suggestedActions = [
   {
     title: "Brainstorm",
     label: "Ideas",
-    action: "Help me brainstorm ideas about",
+    action: "Help me brainstorm ideas, employ the principles of first principles and reason through with me, you take very highly abstract ideas and help me turn them into results.",
     icon: <BrainIcon size={14} />
   }
 ];
