@@ -21,21 +21,21 @@ export const Navbar = async () => {
   return (
     <>
       <nav className="fixed inset-x-0 top-0 z-50 bg-white/60 dark:bg-background/60 backdrop-blur-xl">
-        <div className="flex h-16 items-center justify-between px-4 sm:px-2 mx-auto max-w-screen-2xl">
-          <div className="flex items-center gap-3">
-            <Link href="/" className="flex items-center gap-2.5 group">
+        <div className="flex h-16 items-center justify-between px-4 sm:px-4 mx-auto max-w-screen-2xl">
+          <div className="flex items-center gap-3 pl-1 sm:pl-0.5">
+            <Link href="/" className="flex items-center gap-1 group">
               <Image
                 src="/images/promptmack-logo.svg"
-                height={36}
-                width={36}
+                height={32}
+                width={32}
                 alt="promptmack logo"
-                className="hover:scale-110 transition-all duration-300 ease-out sm:size-10"
+                className="hover:scale-110 transition-all duration-300 ease-out size-8"
               />
-              <span className="text-lg font-bold tracking-tight -ml-1 font-inter bg-gradient-to-r from-zinc-800 to-zinc-500 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent hidden sm:inline transition-colors duration-300">Promptmack</span>
+              <span className="text-lg font-bold tracking-tight -ml-0.5 font-inter bg-gradient-to-r from-zinc-800 to-zinc-500 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent hidden sm:inline transition-colors duration-300">Promptmack</span>
             </Link>
           </div>
 
-          <div className="flex items-center gap-1 sm:gap-2">
+          <div className="flex items-center gap-0.5 sm:gap-0.5 pr-1 sm:pr-0.5">
             <History user={session?.user} />
             <VisualModeToggle />
             <ThemeToggle />
@@ -43,7 +43,7 @@ export const Navbar = async () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
-                    className="py-1.5 px-2 h-fit font-normal flex items-center gap-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all duration-200"
+                    className="p-0"
                     variant="ghost"
                   >
                     <div className="size-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-medium shadow-md hover:shadow-lg transition-shadow">
