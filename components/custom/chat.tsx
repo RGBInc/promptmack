@@ -34,41 +34,45 @@ export function Chat({
   const [attachments, setAttachments] = useState<Array<Attachment>>([]);
 
   return (
-    <div className="flex flex-row justify-center pb-4 md:pb-8 h-dvh bg-background">
-      <div className="flex flex-col justify-between items-center gap-4 w-full max-w-3xl px-4">
-        <div
-          ref={messagesContainerRef}
-          className="flex flex-col gap-3 size-full items-center overflow-y-scroll"
-        >
-          {messages.map((message) => (
-            <PreviewMessage
-              key={message.id}
-              chatId={id}
-              role={message.role}
-              content={message.content}
-              attachments={message.experimental_attachments}
-              toolInvocations={message.toolInvocations}
-            />
-          ))}
-
+    <div className="flex flex-row justify-center h-dvh bg-background">
+      <div className="flex flex-col w-full max-w-3xl relative">
+        <div className="px-4 w-full">
           <div
-            ref={messagesEndRef}
-            className="shrink-0 min-w-[24px] min-h-[24px]"
-          />
+            ref={messagesContainerRef}
+            className="flex flex-col gap-3 w-full items-center overflow-y-auto pb-32">
+
+            {messages.map((message) => (
+              <PreviewMessage
+                key={message.id}
+                chatId={id}
+                role={message.role}
+                content={message.content}
+                attachments={message.experimental_attachments}
+                toolInvocations={message.toolInvocations}
+              />
+            ))}
+
+            <div
+              ref={messagesEndRef}
+              className="shrink-0 min-w-[24px] min-h-[24px]"
+            />
+          </div>
         </div>
 
-        <form className="sticky bottom-0 flex flex-row gap-2 items-end w-full bg-background/80 backdrop-blur-sm py-4">
-          <MultimodalInput
-            input={input}
-            setInput={setInput}
-            handleSubmit={handleSubmit}
-            isLoading={isLoading}
-            stop={stop}
-            attachments={attachments}
-            setAttachments={setAttachments}
-            messages={messages}
-            append={append}
-          />
+        <form className="fixed bottom-0 flex flex-row gap-2 items-end w-full max-w-3xl bg-background/80 backdrop-blur-sm">
+          <div className="w-full p-4">
+            <MultimodalInput
+              input={input}
+              setInput={setInput}
+              handleSubmit={handleSubmit}
+              isLoading={isLoading}
+              stop={stop}
+              attachments={attachments}
+              setAttachments={setAttachments}
+              messages={messages}
+              append={append}
+            />
+          </div>
         </form>
       </div>
       {/* <Footer /> */}
