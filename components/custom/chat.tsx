@@ -4,7 +4,7 @@ import { Attachment, Message } from "ai";
 import { useChat } from 'ai/react';
 import { useState } from "react";
 
-import { Footer } from "./footer";
+// import { Footer } from "./footer";
 import { Message as PreviewMessage } from "./message";
 import { MultimodalInput } from "./multimodal-input";
 import { useScrollToBottom } from "./use-scroll-to-bottom";
@@ -71,7 +71,7 @@ export function Chat({
           />
         </form>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

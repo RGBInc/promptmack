@@ -97,7 +97,6 @@ export function MultimodalInput({
 
   const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(event.target.value);
-    adjustHeight();
   };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -241,10 +240,11 @@ export function MultimodalInput({
         placeholder="Ask anything or describe what you'd like to do..."
         value={input}
         onChange={handleInput}
-        className="min-h-[24px] overflow-hidden resize-none rounded-lg text-base bg-muted border-none"
+        className="h-24 overflow-y-auto resize-none rounded-lg text-base bg-muted border-none"
         rows={3}
+        style={{ maxHeight: "96px" }}
         onKeyDown={(event) => {
-          if (event.key === "Enter" && !event.shiftKey) {
+          if (event.key === "Enter" && event.shiftKey) {
             event.preventDefault();
 
             if (isLoading) {

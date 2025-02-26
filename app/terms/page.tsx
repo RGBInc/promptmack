@@ -7,9 +7,21 @@ export default function TermsPage() {
       <p className="text-sm text-muted-foreground mb-8">Effective: January 1, 2025 (previous version)</p>
       
       <div className="prose dark:prose-invert">
-        <p className="lead mb-8">Thank you for using Evolve Interfaces!</p>
+        <p className="lead mb-8">Thank you for using Promptmack!</p>
+        
+        <p className="mb-6">These Terms of Use apply to your use of Promptmack&apos;s services for individuals, along with any associated software applications and websites (all together, &quot;Services&quot;). These Terms form an agreement between you and Promptmack, and they include our Service Terms and important provisions for resolving disputes through arbitration. By using our Services, you agree to these Terms.</p>
 
-        <p className="mb-6">These Terms of Use apply to your use of Promptmack and Evolve Interfaces&apos; other services for individuals, along with any associated software applications and websites (all together, &quot;Services&quot;). These Terms form an agreement between you and Evolve Interfaces, Inc., a Delaware company, and they include our Service Terms and important provisions for resolving disputes through arbitration. By using our Services, you agree to these Terms.</p>
+        <p className="mb-6">Promptmack is an artificial intelligence company focused on advancing human-computer interaction. Our mission is to create intuitive and powerful interfaces that enhance human capabilities and creativity. For more information about Promptmack, please visit https://promptmack.com/about.</p>
+
+        <p className="mb-6">Use Output to develop models that compete with Promptmack.</p>
+
+        <p className="mb-4">Ownership of content. As between you and Promptmack, and to the extent permitted by applicable law, you (a) retain your ownership rights in Input and (b) own the Output. We hereby assign to you all our right, title, and interest, if any, in and to Output.</p>
+
+        <p className="mb-6">When you use our Services you understand and agree that Output may not always be accurate. You should not rely on Output from our Services as a sole source of truth or factual information, or as a substitute for professional advice. You must evaluate Output for accuracy and appropriateness for your use case, including using human review as appropriate, before using or sharing Output from the Services. You must not use any Output relating to a person for any purpose that could have a legal or material impact on that person, such as making educational, employment, housing, insurance, legal, medical, or other important decisions about them. Our Services may provide incomplete, incorrect, or offensive Output that does not represent Promptmack&apos;s views.</p>
+
+        <p className="mb-4">You are free to stop using our Services at any time. We reserve the right to suspend or terminate your access to our Services or delete your account if we determine that you have breached these Terms or our Usage Policies, if we must do so to comply with the law, or if your use of our Services could cause risk or harm to Promptmack, our users, or anyone else.</p>
+
+        Promptmack<br />
 
         <p className="mb-6">If you reside in the European Economic Area, Switzerland, or the UK, your use of the Services is governed by these terms.</p>
 

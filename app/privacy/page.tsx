@@ -7,7 +7,7 @@ export default function PrivacyPage() {
       <p className="text-sm text-muted-foreground mb-8">Effective: January 1, 2025</p>
       
       <div className="prose dark:prose-invert">
-        <p className="mb-6">We at Evolve Interfaces, Inc. (together with our affiliates, &ldquo;Evolve Interfaces&rdquo;, &ldquo;we&rdquo;, &ldquo;our&rdquo; or &ldquo;us&rdquo;) respect your privacy and are strongly committed to keeping secure any information we obtain from you or about you. This Privacy Policy describes our practices with respect to Personal Data that we collect from or about you when you use our website, applications, and services (collectively, &ldquo;Services&rdquo;).</p>
+        <p className="mb-6">We at Promptmack (together with our affiliates, &ldquo;Promptmack&rdquo;, &ldquo;we&rdquo;, &ldquo;our&rdquo; or &ldquo;us&rdquo;) respect your privacy and are strongly committed to keeping secure any information we obtain from you or about you. This Privacy Policy describes our practices with respect to Personal Data that we collect from or about you when you use our website, applications, and services (collectively, &ldquo;Services&rdquo;).</p>
 
         <p className="mb-6">This Privacy Policy does not apply to content that we process on behalf of customers of our business offerings, such as our API. Our use of that data is governed by our customer agreements covering access to and use of those offerings.</p>
 
@@ -64,7 +64,7 @@ export default function PrivacyPage() {
 
         <h2 className="text-xl font-semibold mt-8 mb-4">8. Contact Information</h2>
         <p className="mb-6">If you have questions about this Privacy Policy or our privacy practices, please contact us at:<br />
-        Evolve Interfaces, Inc.<br />
+        Promptmack<br />
         Los Angeles, CA 91365<br />
         info@evolveinterfaces.com</p>
       </div>
