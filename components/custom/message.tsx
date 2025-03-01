@@ -66,7 +66,7 @@ export const Message = ({
     >
       {/* Regular message content with avatar and bubble */}
       {content && typeof content === "string" && !toolInvocations?.length && !attachments?.length && (
-        <div className={`flex gap-3 w-full px-1 sm:px-0 overflow-x-hidden mb-2 ${visualMode === 'bubble' ? (role === "user" ? "justify-end" : "justify-start") : ""}`}>
+        <div className={`flex gap-3 w-full px-1 sm:px-0 overflow-hidden mb-2 ${visualMode === 'bubble' ? (role === "user" ? "justify-end" : "justify-start") : ""}`}>
           {visualMode === 'mechanical' && (
             <div className="flex flex-col items-center h-fit">
               <div className="size-5 mt-1 shrink-0">
@@ -79,9 +79,9 @@ export const Message = ({
             </div>
           )}
           <div 
-            className={`flex flex-col gap-2 ${visualMode === 'mechanical' ? 'w-full md:w-[calc(100%-2rem)]' : 'inline-block max-w-[80%]'} ${visualMode === 'bubble' ? bubbleStyles[role as keyof typeof bubbleStyles] : mechanicalStyles[role as keyof typeof mechanicalStyles]}`}
+            className={`flex flex-col gap-2 break-words ${visualMode === 'mechanical' ? 'flex-1 max-w-full' : 'inline-block max-w-[80%]'} ${visualMode === 'bubble' ? bubbleStyles[role as keyof typeof bubbleStyles] : mechanicalStyles[role as keyof typeof mechanicalStyles]}`}
           >
-            <div className="text-zinc-800 dark:text-zinc-200 flex flex-col gap-3 leading-relaxed">
+            <div className="text-zinc-800 dark:text-zinc-200 flex flex-col gap-3 leading-relaxed overflow-hidden">
               <Markdown>{content}</Markdown>
             </div>
           </div>
@@ -90,8 +90,8 @@ export const Message = ({
     
       {/* Message content when tool results are present */}
       {content && typeof content === "string" && (toolInvocations?.length || attachments?.length) && (
-        <div className="w-full px-1 sm:px-0 mb-4">
-          <div className="text-zinc-800 dark:text-zinc-200 leading-relaxed">
+        <div className="w-full px-1 sm:px-0 mb-4 overflow-hidden">
+          <div className="text-zinc-800 dark:text-zinc-200 leading-relaxed break-words">
             <Markdown>{content}</Markdown>
           </div>
         </div>
@@ -107,7 +107,7 @@ export const Message = ({
               const { result } = toolInvocation;
   
               return (
-                <div key={toolCallId} className="w-full overflow-x-hidden mb-2">
+                <div key={toolCallId} className="w-full overflow-hidden mb-2">
                   {toolName === "getWeather" ? (
                     <Weather weatherAtLocation={result} />
                   ) : toolName === "displayFlightStatus" ? (
@@ -143,7 +143,7 @@ export const Message = ({
               );
             } else {
               return (
-                <div key={toolCallId} className="skeleton w-full overflow-x-hidden mb-2">
+                <div key={toolCallId} className="skeleton w-full overflow-hidden mb-2">
                   {toolName === "getWeather" ? (
                     <Weather />
                   ) : toolName === "displayFlightStatus" ? (
@@ -174,7 +174,7 @@ export const Message = ({
             }
           })}
           {attachments?.map((attachment) => (
-            <div key={attachment.url} className="w-full overflow-x-hidden mb-2">
+            <div key={attachment.url} className="w-full overflow-hidden mb-2">
               <PreviewAttachment attachment={attachment} />
             </div>
           ))}
