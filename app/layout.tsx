@@ -54,7 +54,7 @@ export default function RootLayout({
         
         {/* Android fullscreen mode */}
         <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-        <meta name="theme-color" content="#0e0e11" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)" />
         <meta name="full-screen" content="yes" />
         <meta name="browsermode" content="application" />
         <meta name="screen-orientation" content="portrait" />
