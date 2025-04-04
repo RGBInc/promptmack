@@ -3,7 +3,7 @@
   "short_name": "Promptmack",
   "description": "An adaptive AI agent that performs tasks and actions online for users",
   "start_url": "/",
-  "display": "fullscreen",
+  "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#4f46e5",
   "orientation": "portrait",

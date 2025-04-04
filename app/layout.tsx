@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   themeColor: "#4f46e5",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "default",
     title: "Promptmack",
   },
   viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover",
@@ -44,7 +44,7 @@ export default function RootLayout({
         {/* PWA specific meta tags */}
         <meta name="application-name" content="Promptmack" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Promptmack" />
         <meta name="mobile-web-app-capable" content="yes" />
         

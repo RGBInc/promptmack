@@ -1,12 +1,8 @@
-// This script helps enhance fullscreen mode on various browsers
+// This script helps enhance PWA behavior on various browsers
 document.addEventListener('DOMContentLoaded', function() {
   // Only run in standalone mode (when app is installed)
-  if (window.matchMedia('(display-mode: fullscreen)').matches || 
-      window.matchMedia('(display-mode: standalone)').matches ||
+  if (window.matchMedia('(display-mode: standalone)').matches ||
       window.navigator.standalone === true) {
-    
-    // Try to enter programmatic fullscreen on interaction
-    document.addEventListener('click', requestFullscreen, { once: true });
     
     // Prevent default touch behaviors that might interfere with app-like experience
     document.addEventListener('touchmove', function(e) {
@@ -22,35 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }, { passive: false });
 
-    // Support for older browsers
-    if (document.documentElement.requestFullscreen) {
-      document.documentElement.addEventListener('touchend', function() {
-        if (!document.fullscreenElement && !document.documentHidden) {
-          requestFullscreen();
-        }
+    // Optionally lock to portrait orientation if supported
+    if (screen.orientation && screen.orientation.lock) {
+      screen.orientation.lock('portrait').catch(function() {
+        // Silently fail if not supported
       });
     }
   }
-});
-
-// Try different fullscreen approaches
-function requestFullscreen() {
-  const elem = document.documentElement;
-  
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if (elem.webkitRequestFullscreen) { /* Safari */
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) { /* IE11 */
-    elem.msRequestFullscreen();
-  } else if (elem.webkitEnterFullscreen) { /* iOS Safari */
-    elem.webkitEnterFullscreen();
-  }
-  
-  // Optionally lock to portrait orientation if supported
-  if (screen.orientation && screen.orientation.lock) {
-    screen.orientation.lock('portrait').catch(function() {
-      // Silently fail if not supported
-    });
-  }
-} 
+}); 
