@@ -53,7 +53,8 @@ export default function RootLayout({
         <meta name="keyboard-scroll-fix" content="true" />
         
         {/* Android fullscreen mode */}
-        <meta name="theme-color" content="#4f46e5" />
+        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#1f2937" media="(prefers-color-scheme: dark)" />
         <meta name="full-screen" content="yes" />
         <meta name="browsermode" content="application" />
         <meta name="screen-orientation" content="portrait" />
@@ -76,6 +77,9 @@ export default function RootLayout({
         
         {/* Register service worker */}
         <script src="/register-sw.js" defer />
+        
+        {/* Adaptive theme color */}
+        <script src="/theme-color.js" defer />
         
         {/* Fullscreen mode enforcement */}
         <script src="/fullscreen.js" defer />
