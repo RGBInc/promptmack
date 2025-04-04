@@ -1,61 +1,186 @@
-<a href="https://chat.vercel.ai/">
-  <img alt="Next.js 14 and App Router-ready AI chatbot." src="app/(chat)/opengraph-image.png">
-  <h1 align="center">Next.js Gemini Chatbot</h1>
-</a>
+# Promptmack
+
+<div align="center">
+  <h2>An adaptive AI agent that performs tasks and actions online for users</h2>
+</div>
 
 <p align="center">
-  An Open-Source AI Chatbot Template Built With Next.js and the AI SDK by Vercel.
+  <img src="app/(chat)/opengraph-image.png" alt="Promptmack" width="600">
 </p>
 
 <p align="center">
   <a href="#features"><strong>Features</strong></a> ·
-  <a href="#model-providers"><strong>Model Providers</strong></a> ·
-  <a href="#deploy-your-own"><strong>Deploy Your Own</strong></a> ·
-  <a href="#running-locally"><strong>Running locally</strong></a>
+  <a href="#tools"><strong>Tools</strong></a> ·
+  <a href="#getting-started"><strong>Getting Started</strong></a> ·
+  <a href="#documentation"><strong>Documentation</strong></a> ·
+  <a href="#contributing"><strong>Contributing</strong></a>
 </p>
-<br/>
+
+## Introduction
+
+Promptmack is an adaptive AI agent platform designed to transform how humans interact with artificial intelligence. It orchestrates a powerful ecosystem of AI tools to perform tasks online for users through a natural language interface.
+
+Unlike traditional chat interfaces, Promptmack provides:
+
+- **Dynamic streaming UI** that materializes components in real-time
+- **Specialized tools** for news search, academic research, video discovery, and web interactions
+- **Multimodal input** supporting text, files, and structured data
+- **Adaptive responses** tailored to user needs
 
 ## Features
 
-- [Next.js](https://nextjs.org) App Router
-  - Advanced routing for seamless navigation and performance
-  - React Server Components (RSCs) and Server Actions for server-side rendering and increased performance
-- [AI SDK](https://sdk.vercel.ai/docs)
-  - Unified API for generating text, structured objects, and tool calls with LLMs
-  - Hooks for building dynamic chat and generative user interfaces
-  - Supports Google (default), OpenAI, Anthropic, Cohere, and other model providers
-- [shadcn/ui](https://ui.shadcn.com)
-  - Styling with [Tailwind CSS](https://tailwindcss.com)
-  - Component primitives from [Radix UI](https://radix-ui.com) for accessibility and flexibility
-- Data Persistence
-  - [Vercel Postgres powered by Neon](https://vercel.com/storage/postgres) for saving chat history and user data
-  - [Vercel Blob](https://vercel.com/storage/blob) for efficient object storage
-- [NextAuth.js](https://github.com/nextauthjs/next-auth)
-  - Simple and secure authentication
+- **Streaming Intelligence**
+  - Real-time streaming responses via Vercel AI SDK
+  - Dynamic UI component generation
+  - Progressive rendering of information
 
-## Model Providers
+- **Tool Orchestration**
+  - Parametric tool execution based on user intent
+  - Integration with multiple external APIs
+  - Structured results for improved readability
 
-This template ships with Google Gemini `gemini-1.5-pro` models as the default. However, with the [AI SDK](https://sdk.vercel.ai/docs), you can switch LLM providers to [OpenAI](https://openai.com), [Anthropic](https://anthropic.com), [Cohere](https://cohere.com/), and [many more](https://sdk.vercel.ai/providers/ai-sdk-providers) with just a few lines of code.
+- **Advanced UI**
+  - Component-based visual feedback
+  - Light and dark mode support
+  - Responsive design for all devices
+  - File attachment support
 
-## Deploy Your Own
+- **Technical Foundation**
+  - Next.js 14 App Router
+  - Google Gemini AI model integration
+  - PostgreSQL database (via Vercel Postgres)
+  - NextAuth.js authentication
 
-You can deploy your own version of the Next.js AI Chatbot to Vercel with one click:
+## Tools
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel-labs%2Fgemini-chatbot&env=AUTH_SECRET,GOOGLE_GENERATIVE_AI_API_KEY&envDescription=Learn%20more%20about%20how%20to%20get%20the%20API%20Keys%20for%20the%20application&envLink=https%3A%2F%2Fgithub.com%2Fvercel-labs%2Fgemini-chatbot%2Fblob%2Fmain%2F.env.example&demo-title=Next.js%20Gemini%20Chatbot&demo-description=An%20Open-Source%20AI%20Chatbot%20Template%20Built%20With%20Next.js%20and%20the%20AI%20SDK%20by%20Vercel.&demo-url=https%3A%2F%2Fgemini.vercel.ai&stores=[{%22type%22:%22postgres%22},{%22type%22:%22blob%22}])
+Promptmack includes several powerful tools out of the box:
 
-## Running locally
+| Tool | Description | Example Usage |
+|------|-------------|---------------|
+| News Search | Find current news articles | "Show me news about AI advancements" |
+| Scholar Search | Find academic papers and research | "Find scholarly articles about climate change" |
+| Similar Website | Find websites similar to a URL | "Find sites similar to twitter.com" |
+| Videos | Search for videos across the web | "Find tutorial videos for React" |
+| Form Submission | Automate web form submissions | "Fill out a contact form on example.com" |
+| Weather | Get current weather conditions | "What's the weather in New York?" |
 
-You will need to use the environment variables [defined in `.env.example`](.env.example) to run Next.js AI Chatbot. It's recommended you use [Vercel Environment Variables](https://vercel.com/docs/projects/environment-variables) for this, but a `.env` file is all that is necessary.
+See the [Tools Documentation](docs/tools.md) for a complete list of available tools and their capabilities.
 
-> Note: You should not commit your `.env` file or it will expose secrets that will allow others to control access to your various Google Cloud and authentication provider accounts.
+## Getting Started
 
-1. Install Vercel CLI: `npm i -g vercel`
-2. Link local instance with Vercel and GitHub accounts (creates `.vercel` directory): `vercel link`
-3. Download your environment variables: `vercel env pull`
+### Prerequisites
 
+- Node.js 18+
+- pnpm 9+
+- API keys for external services (Serper, Exa, Skyvern, etc.)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-organization/promptmack.git
+   cd promptmack
+   ```
+
+2. Install dependencies:
 ```bash
 pnpm install
+   ```
+
+3. Create a `.env` file based on `.env.example`:
+   ```bash
+   cp .env.example .env
+   ```
+
+4. Update `.env` with your API keys and configuration.
+
+5. Start the development server:
+   ```bash
 pnpm dev
 ```
 
-Your app template should now be running on [localhost:3000](http://localhost:3000/).
+6. Access the application at [http://localhost:3000](http://localhost:3000)
+
+## Architecture
+
+Promptmack follows a streaming-first architecture designed for real-time interactions:
+
+```mermaid
+graph TD
+    A[User Input] --> B[AI Processing]
+    B --> C[Intent Recognition]
+    C --> D[Tool Selection]
+    D --> E[Tool Execution]
+    E --> F[Component Generation]
+    F --> G[UI Update]
+    G --> H[User Interaction]
+    H --> A
+
+    style A fill:#e1f5fe
+    style B fill:#e8f5e9
+    style C fill:#fff3e0
+    style D fill:#fce4ec
+    style E fill:#f3e5f5
+    style F fill:#e8eaf6
+    style G fill:#e0f7fa
+    style H fill:#e0f2f1
+```
+
+See the [Technical Introduction](docs/technical_introduction.md) for a detailed architectural overview.
+
+## Documentation
+
+- [Project Overview](docs/promptmack_overview.md) - Comprehensive overview of Promptmack
+- [Technical Introduction](docs/technical_introduction.md) - Technical architecture and concepts
+- [Development Workflow](docs/development_workflow.md) - Guide for development workflow
+- [Tools Documentation](docs/tools.md) - Available tools and their usage
+- [Project Roadmap](docs/project_roadmap.md) - Future development plans
+- [Skyvern Integration Guide](docs/skyvern_integration_guide.md) - Form automation details
+
+## Adding New Tools
+
+Promptmack is designed to be easily extended with new tools. The basic process involves:
+
+1. Define the tool in `app/(chat)/api/chat/route.ts`
+2. Create a UI component for the tool results
+3. Add the component to the message renderer
+4. Update the system prompt to inform the AI about the new tool
+
+See the [Development Workflow](docs/development_workflow.md) for detailed instructions on adding new tools.
+
+## Best Practices
+
+When developing for Promptmack, follow these best practices:
+
+1. **Error Handling**: Implement robust error handling in tools and components
+2. **Loading States**: Provide meaningful loading states for all components
+3. **Responsive Design**: Ensure components work well on all screen sizes
+4. **Security**: Keep API keys server-side and validate all inputs
+5. **Performance**: Optimize API calls and component rendering
+
+## Contributing
+
+We welcome contributions to Promptmack! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
+
+## License
+
+This project is licensed under the terms specified in [LICENSE](LICENSE).
+
+## Roadmap
+
+See our [Project Roadmap](docs/project_roadmap.md) for planned features and enhancements.
+
+## Acknowledgements
+
+- [Vercel](https://vercel.com/) for the Next.js framework and AI SDK
+- [Google](https://deepmind.google/technologies/gemini/) for the Gemini AI model
+- [shadcn/ui](https://ui.shadcn.com/) for UI components
+- All contributors who have helped shape this project
