@@ -86,12 +86,36 @@ export function MultimodalInput({
     if (textareaRef.current) {
       adjustHeight();
     }
-  }, []);
+    
+    // Add event listener for viewport changes (like keyboard appearing)
+    window.addEventListener('resize', adjustHeight);
+    
+    // Auto focus the textarea on desktop
+    if (width && width > 768 && textareaRef.current) {
+      textareaRef.current.focus();
+    }
+    
+    return () => {
+      window.removeEventListener('resize', adjustHeight);
+    };
+  }, [width]);
+  
+  // Also adjust height when input changes
+  useEffect(() => {
+    adjustHeight();
+  }, [input]);
 
   const adjustHeight = () => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight + 0}px`;
+      
+      // Scroll to the textarea when focused on mobile
+      if (document.activeElement === textareaRef.current) {
+        setTimeout(() => {
+          textareaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
     }
   };
 
@@ -244,14 +268,18 @@ export function MultimodalInput({
         rows={3}
         style={{ maxHeight: "96px" }}
         onKeyDown={(event) => {
-          if (event.key === "Enter" && event.shiftKey) {
-            event.preventDefault();
-
-            if (isLoading) {
-              toast.error("Please wait for the model to finish its response!");
-            } else {
-              submitForm();
+          if (event.key === "Enter") {
+            if (!event.shiftKey) {
+              // Regular Enter - submit form
+              event.preventDefault();
+              
+              if (isLoading) {
+                toast.error("Please wait for the model to finish its response!");
+              } else if (input.trim().length > 0 || attachments.length > 0) {
+                submitForm();
+              }
             }
+            // If Shift+Enter, let the default behavior happen (create a new line)
           }
         }}
       />

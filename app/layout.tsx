@@ -8,6 +8,8 @@ import { ThemeProvider } from "@/components/custom/theme-provider";
 import { VisualModeProvider } from "@/components/custom/visual-mode-context";
 
 import "./globals.css";
+// Import custom CSS files
+import "./fullscreen.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
     statusBarStyle: "black-translucent",
     title: "Promptmack",
   },
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover",
   formatDetection: {
     telephone: false,
   },
@@ -46,6 +48,10 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="Promptmack" />
         <meta name="mobile-web-app-capable" content="yes" />
         
+        {/* Keyboard behavior for mobile */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+        <meta name="keyboard-scroll-fix" content="true" />
+        
         {/* Android fullscreen mode */}
         <meta name="theme-color" content="#4f46e5" />
         <meta name="full-screen" content="yes" />
@@ -68,14 +74,14 @@ export default function RootLayout({
         {/* PWA splash screens for iOS */}
         <link rel="apple-touch-startup-image" href="/icons/icon-512x512.png" />
         
-        {/* Fullscreen mode CSS */}
-        <link rel="stylesheet" href="/fullscreen.css" />
-        
         {/* Register service worker */}
         <script src="/register-sw.js" defer />
         
         {/* Fullscreen mode enforcement */}
         <script src="/fullscreen.js" defer />
+        
+        {/* Mobile keyboard fix */}
+        <script src="/keyboard-fix.js" defer />
         
         {/* PWA checker in development mode */}
         {isDevelopment && <script src="/pwa-check.js" defer />}
