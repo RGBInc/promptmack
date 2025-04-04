@@ -11,7 +11,6 @@ const nextConfig = {
   },
   // Enable PWA features
   reactStrictMode: true,
-  swcMinify: true,
   // Improve PWA capabilities with custom headers
   async headers() {
     return [

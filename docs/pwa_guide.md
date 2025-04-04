@@ -15,34 +15,17 @@ Promptmack has been configured as a PWA, which means:
 
 ## PWA Features in Promptmack
 
-### 1. Installation
+### Installation
+Promptmack can be installed as an app on your device without going through an app store. When visiting the site, you'll see an installation prompt or can use the browser's menu to "Add to Home Screen" or "Install".
 
-Promptmack can be installed on:
+### Full Screen Mode
+Promptmack runs in full screen mode when installed as a PWA, giving you a truly immersive app-like experience without browser UI elements like the address bar, navigation buttons, or status bar.
 
-- **Desktop devices** (Windows, macOS, Linux):
-  - Chrome, Edge: Look for the install icon (➕) in the address bar
-  - Firefox: Click the three dots (⋯) in the address bar, then "Install site as app"
+### Offline Support
+Once installed, Promptmack works even when you're offline or have a poor connection. Essential features and content are cached, and you'll see a friendly offline message for unavailable content.
 
-- **Mobile devices** (iOS, Android):
-  - iOS (Safari): Tap the share button, then "Add to Home Screen"
-  - Android (Chrome): Tap the three dots (⋮), then "Add to Home Screen"
-
-### 2. Offline Support
-
-Promptmack provides limited functionality when offline:
-
-- Cached assets and pages will load
-- A dedicated offline page appears when connectivity is lost
-- When connection is restored, the app will automatically reconnect
-
-### 3. App-like Experience
-
-When installed, Promptmack provides:
-
-- Full-screen experience without browser UI
-- Fast app-like transitions between pages
-- Custom splash screen on iOS devices
-- Custom app icon on your home screen/desktop
+### App-like Experience
+Promptmack offers smooth animations, responsive design, and native-feeling interactions that make it feel like a native app despite being web-based.
 
 ## Implementation Details
 
