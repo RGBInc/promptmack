@@ -17,14 +17,22 @@ export const {
   signOut,
 } = NextAuth({
   ...authConfig,
+  trustHost: true,
   providers: [
     Credentials({
       credentials: {},
-      async authorize({ email, password }: any) {
-        let users = await getUser(email);
+      async authorize(credentials) {
+        const credentialsObj = credentials as { email?: string; password?: string };
+        const email = credentialsObj.email;
+        const password = credentialsObj.password;
+        
+        if (!email || !password) return null;
+        
+        const users = await getUser(email);
         if (users.length === 0) return null;
-        let passwordsMatch = await compare(password, users[0].password!);
-        if (passwordsMatch) return users[0] as any;
+        const passwordsMatch = await compare(password, users[0].password!);
+        if (passwordsMatch) return users[0] as User;
+        return null;
       },
     }),
   ],
@@ -41,7 +49,7 @@ export const {
       token,
     }: {
       session: ExtendedSession;
-      token: any;
+      token: Record<string, unknown>;
     }) {
       if (session.user) {
         session.user.id = token.id as string;
@@ -49,5 +57,20 @@ export const {
 
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      if (!url || url === 'undefined') {
+        return baseUrl;
+      }
+      
+      if (url.startsWith('/')) {
+        return `${baseUrl}${url}`;
+      }
+      
+      if (url.startsWith(baseUrl)) {
+        return url;
+      }
+      
+      return baseUrl;
+    }
   },
 });
