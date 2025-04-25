@@ -11,7 +11,7 @@ import { type ReactNode } from "react";
 import { Markdown } from "./markdown";
 import { PreviewAttachment } from "./preview-attachment";
 import { useVisualMode } from "./visual-mode-context";
-import { FirecrawlAgent } from "../firecrawl/agent";
+// FirecrawlAgent import removed - FIRE-1 agent is now disabled
 import { FirecrawlCrawl } from "../firecrawl/crawl";
 import { FirecrawlExtract } from "../firecrawl/extract";
 import { FirecrawlMap } from "../firecrawl/map";
@@ -154,7 +154,14 @@ export const Message = ({
                   ) : toolName === "firecrawlExtract" ? (
                     <FirecrawlExtract extractData={result} />
                   ) : toolName === "firecrawlAgent" ? (
-                    <FirecrawlAgent agentData={result} />
+                    // FIRE-1 agent is disabled
+                    <div className="p-4 rounded-lg bg-zinc-100/80 dark:bg-zinc-800/30 border border-amber-200 dark:border-amber-900/30">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Bot size={18} className="text-amber-500" />
+                        <h3 className="font-medium text-amber-600 dark:text-amber-400">FIRE-1 Agent Disabled</h3>
+                      </div>
+                      <p className="text-sm text-zinc-600 dark:text-zinc-400">The FIRE-1 agent has been disabled. Please use other search or extraction tools instead.</p>
+                    </div>
                   ) : toolName === "imagegen" ? (
                     <Imagen imagegenData={result} />
                   ) : (
@@ -200,7 +207,14 @@ export const Message = ({
                   ) : toolName === "firecrawlExtract" ? (
                     <FirecrawlExtract />
                   ) : toolName === "firecrawlAgent" ? (
-                    <FirecrawlAgent />
+                    // FIRE-1 agent is disabled
+                    <div className="p-4 rounded-lg bg-zinc-100/80 dark:bg-zinc-800/30 border border-amber-200 dark:border-amber-900/30">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Bot size={18} className="text-amber-500" />
+                        <h3 className="font-medium text-amber-600 dark:text-amber-400">FIRE-1 Agent Disabled</h3>
+                      </div>
+                      <p className="text-sm text-zinc-600 dark:text-zinc-400">The FIRE-1 agent has been disabled. Please use other search or extraction tools instead.</p>
+                    </div>
                   ) : toolName === "imagegen" ? (
                     <Imagen />
                   ) : null}

@@ -74,12 +74,6 @@ const suggestedActions = [
     icon: <Globe size={14} strokeWidth={1.5} />
   },
   {
-    title: "Agent",
-    label: "Navigate",
-    action: "Navigate a website with AI",
-    icon: <NetworkIcon size={14} />
-  },
-  {
     title: "Imagen",
     label: "Generate",
     action: "Generate an image of",

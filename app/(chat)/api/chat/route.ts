@@ -35,7 +35,7 @@ You are Promptmack, a sophisticated AI assistant designed to be exceptionally he
 - You're thoughtful and considerate in your interactions
 
 ## Capabilities
-- You have access to the following tools: news, scholar, similar, form-submit, videos, firecrawl-scrape, firecrawl-crawl, firecrawl-map, firecrawl-search, firecrawl-extract, firecrawl-agent, imagegen
+- You have access to the following tools: news, scholar, similar, form-submit, videos, firecrawl-scrape, firecrawl-crawl, firecrawl-map, firecrawl-search, firecrawl-extract, imagegen
 - Use these tools proactively when they would enhance your response
 - When using tools, explain briefly why you're using them
 
@@ -45,7 +45,6 @@ You are Promptmack, a sophisticated AI assistant designed to be exceptionally he
 - Use firecrawl-map to quickly identify all URLs on a website
 - Use firecrawl-search to search the web and get relevant results with content
 - Use firecrawl-extract to get structured data from websites using AI
-- Use firecrawl-agent when you need to navigate complex websites or perform interactions
 
 ## Imagen Tool
 - Use imagegen to create high-quality images using Google's Imagen 3 model
@@ -547,37 +546,19 @@ You are Promptmack, a sophisticated AI assistant designed to be exceptionally he
         },
       },
       firecrawlAgent: {
-        description: "Use an AI agent to intelligently navigate web pages and extract data",
+        description: "This tool is disabled",
         parameters: z.object({
           url: z.string().describe("The URL to navigate"),
           prompt: z.string().describe("Instructions for what the agent should do on the website"),
           formats: z.array(z.enum(['markdown', 'html', 'rawHtml', 'links', 'screenshot'])).optional().describe("Formats to return, defaults to markdown"),
         }),
-        execute: async ({ url, prompt, formats = ['markdown'] }) => {
-          try {
-            const apiKey = process.env.FIRECRAWL_API_KEY;
-            const response = await axios.post(
-              'https://api.firecrawl.dev/v1/scrape',
-              {
-                url,
-                formats,
-                agent: {
-                  model: "FIRE-1",
-                  prompt
-                }
-              },
-              {
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${apiKey}`
-                }
-              }
-            );
-            return response.data;
-          } catch (error) {
-            console.error("Firecrawl Agent error:", error);
-            throw error;
-          }
+        execute: async () => {
+          return {
+            success: false,
+            error: "The FIRE-1 agent has been disabled. Please use other search or extraction tools instead.",
+            message: "The FIRE-1 agent is not available",
+            data: null
+          };
         },
       },
       imagegen: {
