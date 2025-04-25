@@ -19,27 +19,27 @@ export const Navbar = async () => {
   const session = await auth();
 
   return (
-    <nav className="fixed inset-x-0 top-0 z-50 bg-white/60 dark:bg-background/60 backdrop-blur-xl">
+      <nav className="fixed inset-x-0 top-0 z-50 bg-white/60 dark:bg-background/60 backdrop-blur-xl">
       <div className="flex h-16 items-center justify-between px-4 md:px-6 mx-auto max-w-screen-2xl">
         {/* Logo and brand section */}
         <div className="flex items-center gap-2.5">
           <Link href="/" className="flex items-center gap-2 group">
-            <Image
-              src="/images/promptmack-logo.svg"
-              height={32}
-              width={32}
-              alt="promptmack logo"
-              className="hover:scale-110 transition-all duration-300 ease-out size-8"
-            />
+              <Image
+                src="/images/promptmack-logo.svg"
+                height={32}
+                width={32}
+                alt="promptmack logo"
+                className="hover:scale-110 transition-all duration-300 ease-out size-8"
+              />
             <span className="text-lg font-bold tracking-tight font-inter bg-gradient-to-r from-zinc-800 to-zinc-500 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent hidden sm:inline transition-colors duration-300">
               Promptmack
             </span>
-          </Link>
-        </div>
+            </Link>
+          </div>
 
         {/* Actions section */}
         <div className="flex items-center gap-2">
-          <History user={session?.user} />
+            <History user={session?.user} />
           <div className="flex items-center gap-1.5">
             <VisualModeToggle />
             <ThemeToggle />
@@ -89,8 +89,8 @@ export const Navbar = async () => {
               </Button>
             )}
           </div>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
   );
 };
