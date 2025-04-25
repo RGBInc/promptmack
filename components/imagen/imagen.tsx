@@ -136,6 +136,9 @@ export const Imagen = ({ imagegenData, isLoading }: ImagegenProps) => {
     );
   }
 
+  // At this point, imagegenData.images is guaranteed to exist and have at least one item
+  const images = imagegenData.images;
+  
   return (
     <div className="w-full">
       <motion.div
@@ -153,7 +156,7 @@ export const Imagen = ({ imagegenData, isLoading }: ImagegenProps) => {
         <div className="mb-4">
           <div className="relative aspect-square bg-zinc-200 dark:bg-zinc-700 rounded-lg overflow-hidden mb-3 shadow-sm">
             <Image
-              src={imagegenData.images[selectedImageIndex].url}
+              src={images[selectedImageIndex].url}
               alt={`Generated image ${selectedImageIndex + 1}`}
               fill
               sizes="(max-width: 768px) 100vw, 600px"
@@ -161,13 +164,13 @@ export const Imagen = ({ imagegenData, isLoading }: ImagegenProps) => {
             />
             <div className="absolute bottom-0 inset-x-0 px-4 py-2 bg-gradient-to-t from-zinc-900/80 to-transparent">
               <div className="flex justify-between items-center">
-                <div className="text-xs text-white">Image {selectedImageIndex + 1} of {imagegenData.images.length}</div>
+                <div className="text-xs text-white">Image {selectedImageIndex + 1} of {images.length}</div>
                 <div className="flex gap-1">
                   <Button
                     variant="ghost"
                     size="icon"
                     className="size-7 bg-white/20 hover:bg-white/30 text-white"
-                    onClick={() => handleCopy(imagegenData.images[selectedImageIndex].url)}
+                    onClick={() => handleCopy(images[selectedImageIndex].url)}
                   >
                     <Copy size={14} />
                   </Button>
@@ -175,7 +178,7 @@ export const Imagen = ({ imagegenData, isLoading }: ImagegenProps) => {
                     variant="ghost"
                     size="icon"
                     className="size-7 bg-white/20 hover:bg-white/30 text-white"
-                    onClick={() => handleDownload(imagegenData.images[selectedImageIndex].url, selectedImageIndex)}
+                    onClick={() => handleDownload(images[selectedImageIndex].url, selectedImageIndex)}
                   >
                     <Download size={14} />
                   </Button>
@@ -186,10 +189,10 @@ export const Imagen = ({ imagegenData, isLoading }: ImagegenProps) => {
         </div>
         
         {/* Thumbnail gallery */}
-        {imagegenData.images.length > 1 && (
+        {images.length > 1 && (
           <div className="mb-4">
             <div className="grid grid-cols-4 gap-2">
-              {imagegenData.images.map((image, index) => (
+              {images.map((image, index) => (
                 <div
                   key={index}
                   className={`relative aspect-square rounded-md overflow-hidden cursor-pointer transition-all ${
@@ -216,7 +219,7 @@ export const Imagen = ({ imagegenData, isLoading }: ImagegenProps) => {
         <div className="mt-3 p-3 bg-zinc-200/80 dark:bg-zinc-700/30 rounded-md">
           <div className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">Prompt</div>
           <div className="text-sm text-zinc-700 dark:text-zinc-300">
-            {imagegenData.images[0].prompt}
+            {images[0].prompt}
           </div>
         </div>
         
