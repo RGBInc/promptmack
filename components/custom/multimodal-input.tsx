@@ -2,22 +2,17 @@
 
 import { Attachment, ChatRequestOptions, CreateMessage, Message } from "ai";
 import { motion } from "framer-motion";
+import { Search, Globe, Map, Database, ImageIcon } from "lucide-react";
 import React, { useRef, useEffect, useState, useCallback, Dispatch, SetStateAction, ChangeEvent } from "react";
 import { toast } from "sonner";
 
-import { ArrowUpIcon, PaperclipIcon, StopIcon, NewsIcon, ScholarIcon, FileTextIcon, VideoIcon, NetworkIcon, BrainIcon } from "./icons";
+import { ArrowUpIcon, PaperclipIcon, StopIcon, NewsIcon, ScholarIcon, FileTextIcon, VideoIcon, NetworkIcon } from "./icons";
 import { PreviewAttachment } from "./preview-attachment";
 import useWindowSize from "./use-window-size";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 
 const suggestedActions = [
-  {
-    title: "Form",
-    label: "Submit",
-    action: "Fill out and submit a form on a website",
-    icon: <FileTextIcon size={14} />
-  },
   {
     title: "News",
     label: "Latest",
@@ -37,16 +32,58 @@ const suggestedActions = [
     icon: <ScholarIcon size={14} />
   },
   {
+    title: "Form",
+    label: "Submit",
+    action: "Fill out and submit a form on a website",
+    icon: <FileTextIcon size={14} />
+  },
+  {
     title: "Similar",
     label: "Websites",
     action: "Find websites similar to",
     icon: <NetworkIcon size={14} />
   },
   {
-    title: "Brainstorm",
-    label: "Ideas",
-    action: "Help me brainstorm ideas, employ the principles of first principles and reason through with me, you take very highly abstract ideas and help me turn them into results.",
-    icon: <BrainIcon size={14} />
+    title: "Search",
+    label: "Web",
+    action: "Search the web for information about",
+    icon: <Search size={14} />
+  },
+  {
+    title: "Scrape",
+    label: "Content",
+    action: "Extract content from a specific URL",
+    icon: <Globe size={14} />
+  },
+  {
+    title: "Map",
+    label: "Website",
+    action: "Map all URLs on a website",
+    icon: <Map size={14} />
+  },
+  {
+    title: "Extract",
+    label: "Data",
+    action: "Extract structured data from a website",
+    icon: <Database size={14} />
+  },
+  {
+    title: "Crawl",
+    label: "Website",
+    action: "Crawl an entire website for content",
+    icon: <Globe size={14} strokeWidth={1.5} />
+  },
+  {
+    title: "Agent",
+    label: "Navigate",
+    action: "Navigate a website with AI",
+    icon: <NetworkIcon size={14} />
+  },
+  {
+    title: "Imagen",
+    label: "Generate",
+    action: "Generate an image of",
+    icon: <ImageIcon size={14} />
   }
 ];
 

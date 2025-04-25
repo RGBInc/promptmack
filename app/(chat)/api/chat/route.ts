@@ -35,9 +35,20 @@ You are Promptmack, a sophisticated AI assistant designed to be exceptionally he
 - You're thoughtful and considerate in your interactions
 
 ## Capabilities
-- You have access to the following tools: news, scholar, similar, form-submit, and videos
+- You have access to the following tools: news, scholar, similar, form-submit, videos, firecrawl-scrape, firecrawl-crawl, firecrawl-map, firecrawl-search, firecrawl-extract, firecrawl-agent, imagegen
 - Use these tools proactively when they would enhance your response
 - When using tools, explain briefly why you're using them
+
+## Firecrawl Tools
+- Use firecrawl-scrape to get clean content from specific web pages
+- Use firecrawl-crawl to extract content from entire websites (multiple pages)
+- Use firecrawl-map to quickly identify all URLs on a website
+- Use firecrawl-search to search the web and get relevant results with content
+- Use firecrawl-extract to get structured data from websites using AI
+- Use firecrawl-agent when you need to navigate complex websites or perform interactions
+
+## Imagen Tool
+- Use imagegen to create high-quality images using Google's Imagen 3 model
 
 ## Response Style
 - Be concise but comprehensive
@@ -215,6 +226,406 @@ You are Promptmack, a sophisticated AI assistant designed to be exceptionally he
           } catch (error) {
             console.error("Exa API error:", error);
             throw error;
+          }
+        },
+      },
+      firecrawlScrape: {
+        description: "Scrape and extract clean content from a specific URL",
+        parameters: z.object({
+          url: z.string().describe("The URL to scrape content from"),
+          formats: z.array(z.enum(['markdown', 'html', 'rawHtml', 'links', 'screenshot'])).optional().describe("Formats to return, defaults to markdown"),
+          actions: z.array(z.object({
+            type: z.string(),
+            milliseconds: z.number().optional(),
+            selector: z.string().optional(),
+            text: z.string().optional(),
+            key: z.string().optional()
+          })).optional().describe("Optional actions to perform before scraping (click, wait, scroll, etc.)"),
+        }),
+        execute: async ({ url, formats = ['markdown'], actions }) => {
+          try {
+            const apiKey = process.env.FIRECRAWL_API_KEY;
+            const response = await axios.post(
+              'https://api.firecrawl.dev/v1/scrape',
+              {
+                url,
+                formats,
+                actions
+              },
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${apiKey}`
+                }
+              }
+            );
+            return response.data;
+          } catch (error) {
+            console.error("Firecrawl Scrape error:", error);
+            throw error;
+          }
+        },
+      },
+      firecrawlCrawl: {
+        description: "Crawl an entire website and extract content from all pages",
+        parameters: z.object({
+          url: z.string().describe("The base URL to start crawling from"),
+          limit: z.number().optional().describe("Maximum number of pages to crawl"),
+          formats: z.array(z.enum(['markdown', 'html', 'rawHtml', 'links', 'screenshot'])).optional().describe("Formats to return, defaults to markdown"),
+          excludePaths: z.array(z.string()).optional().describe("Path patterns to exclude from crawling"),
+        }),
+        execute: async ({ url, limit = 10, formats = ['markdown'], excludePaths }) => {
+          try {
+            const apiKey = process.env.FIRECRAWL_API_KEY;
+            const response = await axios.post(
+              'https://api.firecrawl.dev/v1/crawl',
+              {
+                url,
+                limit,
+                scrapeOptions: { formats },
+                excludePaths
+              },
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${apiKey}`
+                }
+              }
+            );
+            
+            // For crawl, we need to poll for results
+            const jobId = response.data.id;
+            let crawlComplete = false;
+            let crawlData = null;
+            let attempts = 0;
+            
+            while (!crawlComplete && attempts < 10) {
+              attempts++;
+              await new Promise(resolve => setTimeout(resolve, 3000)); // Wait 3 seconds
+              
+              const statusResponse = await axios.get(
+                `https://api.firecrawl.dev/v1/crawl/${jobId}`,
+                {
+                  headers: {
+                    'Authorization': `Bearer ${apiKey}`
+                  }
+                }
+              );
+              
+              if (statusResponse.data.status === 'completed') {
+                crawlComplete = true;
+                crawlData = statusResponse.data;
+              }
+            }
+            
+            return crawlData || { status: 'pending', message: 'Crawl is still in progress. The results will be available soon.' };
+          } catch (error) {
+            console.error("Firecrawl Crawl error:", error);
+            throw error;
+          }
+        },
+      },
+      firecrawlMap: {
+        description: "Map all URLs on a website quickly",
+        parameters: z.object({
+          url: z.string().describe("The URL of the website to map"),
+          search: z.string().optional().describe("Optional search term to filter URLs"),
+          includeSubdomains: z.boolean().optional().describe("Whether to include subdomains in the mapping"),
+        }),
+        execute: async ({ url, search, includeSubdomains = false }) => {
+          try {
+            const apiKey = process.env.FIRECRAWL_API_KEY;
+            const response = await axios.post(
+              'https://api.firecrawl.dev/v1/map',
+              {
+                url,
+                search,
+                includeSubdomains
+              },
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${apiKey}`
+                }
+              }
+            );
+            
+            // Transform the response to match the expected format for the component
+            if (response.data.status === "success" && Array.isArray(response.data.links)) {
+              // Create nodes from the links
+              const nodes = response.data.links.map((link: string, index: number) => {
+                let level = 0;
+                // Try to determine the level based on URL path depth
+                try {
+                  const pathname = new URL(link).pathname;
+                  level = pathname.split('/').filter(Boolean).length;
+                } catch {
+                  // Keep level 0 if URL parsing fails
+                }
+                
+                return {
+                  id: `node-${index}`,
+                  url: link,
+                  name: link.replace(/^https?:\/\//, '').replace(/\/$/, ''),
+                  group: level < 1 ? 1 : level < 2 ? 2 : 3,
+                  level: level
+                };
+              });
+              
+              // Create links (connections) between nodes based on URL structure
+              const links = [];
+              for (let i = 0; i < nodes.length; i++) {
+                const sourceUrl = nodes[i].url;
+                
+                for (let j = 0; j < nodes.length; j++) {
+                  if (i !== j) {
+                    const targetUrl = nodes[j].url;
+                    // Connect if one URL is a parent of the other
+                    if (targetUrl.startsWith(sourceUrl + '/')) {
+                      links.push({
+                        source: `node-${i}`,
+                        target: `node-${j}`,
+                        value: 1
+                      });
+                    }
+                  }
+                }
+              }
+              
+              return {
+                nodes,
+                links,
+                total: nodes.length,
+                message: nodes.length === 0 ? "No URLs found on this website" : undefined
+              };
+            }
+            
+            // If not successful or links not available
+            if (response.data.error) {
+              return {
+                nodes: [],
+                links: [],
+                error: response.data.error
+              };
+            }
+            
+            return response.data;
+          } catch (error) {
+            console.error("Firecrawl Map error:", error);
+            throw error;
+          }
+        },
+      },
+      firecrawlSearch: {
+        description: "Search the web and retrieve content from search results",
+        parameters: z.object({
+          query: z.string().describe("The search query"),
+          limit: z.number().optional().describe("Number of results to return"),
+          scrapeResults: z.boolean().optional().describe("Whether to also scrape content from the search results"),
+          formats: z.array(z.enum(['markdown', 'html', 'rawHtml', 'links'])).optional().describe("Formats to return if scraping results"),
+        }),
+        execute: async ({ query, limit = 5, scrapeResults = false, formats = ['markdown'] }) => {
+          try {
+            const apiKey = process.env.FIRECRAWL_API_KEY;
+            const response = await axios.post(
+              'https://api.firecrawl.dev/v1/search',
+              {
+                query,
+                limit,
+                scrapeOptions: scrapeResults ? { formats } : undefined
+              },
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${apiKey}`
+                }
+              }
+            );
+            
+            // Transform API response to match component expectations
+            if (response.data && response.data.success && Array.isArray(response.data.data)) {
+              return {
+                query: query,
+                results: response.data.data.map((item: {
+                  title: string;
+                  url: string;
+                  description?: string;
+                  markdown?: string;
+                  html?: string;
+                  metadata?: {
+                    title?: string;
+                    description?: string;
+                    sourceURL?: string;
+                    language?: string;
+                    [key: string]: unknown;
+                  };
+                  [key: string]: unknown;
+                }) => ({
+                  title: item.title,
+                  url: item.url,
+                  description: item.description,
+                  markdown: item.markdown,
+                  html: item.html,
+                  metadata: item.metadata
+                }))
+              };
+            }
+            
+            // Handle error cases
+            if (response.data.error) {
+              return { 
+                query: query,
+                error: response.data.error 
+              };
+            }
+            
+            return response.data;
+          } catch (error) {
+            console.error("Firecrawl Search error:", error);
+            return { 
+              query: query, 
+              error: "Failed to perform search. Please try again later." 
+            };
+          }
+        },
+      },
+      firecrawlExtract: {
+        description: "Extract structured data from web pages using AI",
+        parameters: z.object({
+          urls: z.array(z.string()).describe("URLs to extract data from (can include wildcards like domain.com/*)"),
+          prompt: z.string().describe("Description of what data to extract"),
+          enableWebSearch: z.boolean().optional().describe("Whether to allow following links outside the specified domain"),
+        }),
+        execute: async ({ urls, prompt, enableWebSearch = false }) => {
+          try {
+            const apiKey = process.env.FIRECRAWL_API_KEY;
+            const response = await axios.post(
+              'https://api.firecrawl.dev/v1/extract',
+              {
+                urls,
+                prompt,
+                enableWebSearch
+              },
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${apiKey}`
+                }
+              }
+            );
+            
+            // Extract might need polling similar to crawl
+            const jobId = response.data.id;
+            let extractComplete = false;
+            let extractData = null;
+            let attempts = 0;
+            
+            while (!extractComplete && attempts < 10) {
+              attempts++;
+              await new Promise(resolve => setTimeout(resolve, 3000)); // Wait 3 seconds
+              
+              const statusResponse = await axios.get(
+                `https://api.firecrawl.dev/v1/extract/${jobId}`,
+                {
+                  headers: {
+                    'Authorization': `Bearer ${apiKey}`
+                  }
+                }
+              );
+              
+              if (statusResponse.data.status === 'completed') {
+                extractComplete = true;
+                extractData = statusResponse.data;
+              }
+            }
+            
+            return extractData || { status: 'pending', message: 'Extraction is still in progress. The results will be available soon.' };
+          } catch (error) {
+            console.error("Firecrawl Extract error:", error);
+            throw error;
+          }
+        },
+      },
+      firecrawlAgent: {
+        description: "Use an AI agent to intelligently navigate web pages and extract data",
+        parameters: z.object({
+          url: z.string().describe("The URL to navigate"),
+          prompt: z.string().describe("Instructions for what the agent should do on the website"),
+          formats: z.array(z.enum(['markdown', 'html', 'rawHtml', 'links', 'screenshot'])).optional().describe("Formats to return, defaults to markdown"),
+        }),
+        execute: async ({ url, prompt, formats = ['markdown'] }) => {
+          try {
+            const apiKey = process.env.FIRECRAWL_API_KEY;
+            const response = await axios.post(
+              'https://api.firecrawl.dev/v1/scrape',
+              {
+                url,
+                formats,
+                agent: {
+                  model: "FIRE-1",
+                  prompt
+                }
+              },
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${apiKey}`
+                }
+              }
+            );
+            return response.data;
+          } catch (error) {
+            console.error("Firecrawl Agent error:", error);
+            throw error;
+          }
+        },
+      },
+      imagegen: {
+        description: "Generate images using Google's Imagen 3 model. Perfect for creating visual content based on text prompts.",
+        parameters: z.object({
+          prompt: z.string().describe("A detailed description of the image to generate."),
+          numberOfImages: z.number().optional().describe("The number of images to generate (1-4). Default is 1."),
+          aspectRatio: z.string().optional().describe("The aspect ratio of the generated image. Supported values are '1:1' (default), '3:4', '4:3', '9:16', and '16:9'."),
+        }),
+        execute: async ({ prompt, numberOfImages = 1, aspectRatio = "1:1" }) => {
+          try {
+            const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+            
+            if (!GEMINI_API_KEY) {
+              throw new Error("GEMINI_API_KEY is not set");
+            }
+
+            // Dynamically import the GoogleGenAI package
+            const { GoogleGenAI } = await import("@google/genai");
+            const genAI = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+
+            console.log("Generating images with prompt:", prompt);
+            
+            const response = await genAI.models.generateImages({
+              model: 'imagen-3.0-generate-002',
+              prompt: prompt,
+              config: {
+                numberOfImages: Math.min(4, Math.max(1, numberOfImages)),
+                aspectRatio: aspectRatio,
+              },
+            });
+
+            // Format response for the frontend
+            const imageUrls = response.generatedImages?.map(img => ({
+              url: `data:image/png;base64,${img.image?.imageBytes || ''}`,
+              prompt: prompt
+            })) || [];
+
+            return { 
+              success: true, 
+              images: imageUrls 
+            };
+          } catch (error) {
+            console.error("Error generating images:", error);
+            return { 
+              success: false, 
+              error: error instanceof Error ? error.message : "Failed to generate images" 
+            };
           }
         },
       },

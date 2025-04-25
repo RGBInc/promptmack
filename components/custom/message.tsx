@@ -11,6 +11,12 @@ import { type ReactNode } from "react";
 import { Markdown } from "./markdown";
 import { PreviewAttachment } from "./preview-attachment";
 import { useVisualMode } from "./visual-mode-context";
+import { FirecrawlAgent } from "../firecrawl/agent";
+import { FirecrawlCrawl } from "../firecrawl/crawl";
+import { FirecrawlExtract } from "../firecrawl/extract";
+import { FirecrawlMap } from "../firecrawl/map";
+import { FirecrawlScrape } from "../firecrawl/scrape";
+import { FirecrawlSearch } from "../firecrawl/search";
 import { AuthorizePayment } from "../flights/authorize-payment";
 import { DisplayBoardingPass } from "../flights/boarding-pass";
 import { CreateReservation } from "../flights/create-reservation";
@@ -18,6 +24,7 @@ import { FlightStatus } from "../flights/flight-status";
 import { ListFlights } from "../flights/list-flights";
 import { SelectSeats } from "../flights/select-seats";
 import { VerifyPayment } from "../flights/verify-payment";
+import { Imagen } from "../imagen/imagen";
 import { News } from "../paid/news";
 import { Scholar } from "../paid/scholar";
 import { Similar } from "../paid/similar";
@@ -136,6 +143,20 @@ export const Message = ({
                     <Similar similarData={result} />
                   ) : toolName === "skyvernFormSubmit" ? (
                     <Skyvern skyvernData={result as SkyvernData} />
+                  ) : toolName === "firecrawlScrape" ? (
+                    <FirecrawlScrape scrapeData={result} />
+                  ) : toolName === "firecrawlCrawl" ? (
+                    <FirecrawlCrawl crawlData={result} />
+                  ) : toolName === "firecrawlMap" ? (
+                    <FirecrawlMap mapData={result} />
+                  ) : toolName === "firecrawlSearch" ? (
+                    <FirecrawlSearch searchData={result} />
+                  ) : toolName === "firecrawlExtract" ? (
+                    <FirecrawlExtract extractData={result} />
+                  ) : toolName === "firecrawlAgent" ? (
+                    <FirecrawlAgent agentData={result} />
+                  ) : toolName === "imagegen" ? (
+                    <Imagen imagegenData={result} />
                   ) : (
                     <div>{JSON.stringify(result, null, 2)}</div>
                   )}
@@ -168,6 +189,20 @@ export const Message = ({
                     <Similar />
                   ) : toolName === "skyvernFormSubmit" ? (
                     <Skyvern skyvernData={null as unknown as SkyvernData} />
+                  ) : toolName === "firecrawlScrape" ? (
+                    <FirecrawlScrape />
+                  ) : toolName === "firecrawlCrawl" ? (
+                    <FirecrawlCrawl />
+                  ) : toolName === "firecrawlMap" ? (
+                    <FirecrawlMap />
+                  ) : toolName === "firecrawlSearch" ? (
+                    <FirecrawlSearch />
+                  ) : toolName === "firecrawlExtract" ? (
+                    <FirecrawlExtract />
+                  ) : toolName === "firecrawlAgent" ? (
+                    <FirecrawlAgent />
+                  ) : toolName === "imagegen" ? (
+                    <Imagen />
                   ) : null}
                 </div>
               );
