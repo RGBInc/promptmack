@@ -10,7 +10,12 @@ import { user, chat, User } from "./schema";
 // Optionally, if not using email/pass login, you can
 // use the Drizzle adapter for Auth.js / NextAuth
 // https://authjs.dev/reference/adapter/drizzle
-let client = postgres(`${process.env.POSTGRES_URL!}?sslmode=require`);
+
+if (!process.env.POSTGRES_URL) {
+  throw new Error('POSTGRES_URL environment variable is not set');
+}
+
+let client = postgres(`${process.env.POSTGRES_URL}?sslmode=require`);
 let db = drizzle(client);
 
 export async function getUser(email: string): Promise<Array<User>> {
