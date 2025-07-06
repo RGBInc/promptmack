@@ -83,14 +83,7 @@ CREATE TABLE threads (
   updated_at TIMESTAMP
 );
 
--- Reservations table (for flight bookings)
-CREATE TABLE reservations (
-  id UUID PRIMARY KEY,
-  user_id UUID REFERENCES users(id),
-  details JSONB,
-  payment_status BOOLEAN,
-  created_at TIMESTAMP
-);
+-- Reservations table removed as part of dummy flight functionality cleanup
 ```
 
 ## Integration Patterns
@@ -395,4 +388,4 @@ To contribute to Promptmack:
 
 - Check existing implementations in `/components`
 - Review similar patterns in `route.ts`
-- Examine `message.tsx` for integration examples 
+- Examine `message.tsx` for integration examples

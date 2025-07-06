@@ -132,12 +132,10 @@ interface Tool {
 - Video Search
 - Shopping Analysis
 
-**Travel Suite:**
-- Flight Search
-- Seat Selection
-- Boarding Passes
-- Reservation Management
-- Payment Processing
+**Web Automation:**
+- Form Submission
+- Web Scraping
+- Content Extraction
 
 **Weather Services:**
 - Current Conditions
@@ -221,12 +219,7 @@ Schema:
    - Created At
    - Updated At
 
-3. Reservations
-   - UUID Primary Key
-   - User ID (foreign key)
-   - Details (JSONB)
-   - Payment Status
-   - Created At
+// Reservations table removed as part of dummy flight functionality cleanup
 
 Features:
 - Real-time Subscriptions
@@ -265,17 +258,17 @@ System:
 Output: Comprehensive market analysis
 ```
 
-#### The Travel Planner
+#### The Content Researcher
 ```
-Input: "Plan trip to Rome"
+Input: "Research latest AI developments"
 ↓
 System:
-1. Flight search activation
-2. Weather data retrieval
-3. Local news gathering
-4. Real-time itinerary building
+1. Web search activation
+2. Content extraction
+3. Scholar article retrieval
+4. Real-time analysis building
 ↓
-Output: Complete travel plan
+Output: Comprehensive research summary
 ```
 
 ## Future State
@@ -353,13 +346,7 @@ CREATE TABLE threads (
   updated_at TIMESTAMP
 );
 
-CREATE TABLE reservations (
-  id UUID PRIMARY KEY,
-  user_id UUID REFERENCES users(id),
-  details JSONB,
-  payment_status BOOLEAN,
-  created_at TIMESTAMP
-);
+-- Reservations table removed as part of dummy flight functionality cleanup
 
 -- Future Schema
 CREATE TABLE agents (

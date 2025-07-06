@@ -333,85 +333,7 @@ getWeather: {
 }
 ```
 
-### 7. Flight Status Tool (Currently Deactivated)
-
-The Flight Status Tool retrieves the status of a specific flight.
-
-#### Parameters
-
-| Parameter    | Type   | Required | Description               |
-|--------------|--------|----------|---------------------------|
-| flightNumber | string | Yes      | Flight number             |
-| date         | string | Yes      | Date of the flight        |
-
-#### Usage Examples
-
-- "Check the status of flight AA123 today"
-- "Is flight DL456 on time for tomorrow?"
-- "When will flight UA789 arrive?"
-
-#### Implementation Details
-
-This tool simulates flight status data for demonstration purposes.
-
-```typescript
-// Tool definition
-displayFlightStatus: {
-  description: "Display the status of a flight",
-  parameters: z.object({
-    flightNumber: z.string().describe("Flight number"),
-    date: z.string().describe("Date of the flight"),
-  }),
-  execute: async ({ flightNumber, date }) => {
-    const flightStatus = await generateSampleFlightStatus({
-      flightNumber,
-      date,
-    });
-
-    return flightStatus;
-  },
-}
-```
-
-### 8. Flight Search Tool (Currently Deactivated)
-
-The Flight Search Tool searches for flights between specified locations.
-
-#### Parameters
-
-| Parameter   | Type   | Required | Description                  |
-|-------------|--------|----------|------------------------------|
-| origin      | string | Yes      | Origin airport or city       |
-| destination | string | Yes      | Destination airport or city  |
-
-#### Usage Examples
-
-- "Find flights from New York to London"
-- "Show me flights to Paris next week"
-- "What are the cheapest flights from Chicago to Miami?"
-
-#### Implementation Details
-
-This tool simulates flight search results for demonstration purposes.
-
-```typescript
-// Tool definition
-searchFlights: {
-  description: "Search for flights based on the given parameters",
-  parameters: z.object({
-    origin: z.string().describe("Origin airport or city"),
-    destination: z.string().describe("Destination airport or city"),
-  }),
-  execute: async ({ origin, destination }) => {
-    const results = await generateSampleFlightSearchResults({
-      origin,
-      destination,
-    });
-
-    return results;
-  },
-}
-```
+// Flight-related tools have been removed as they contained dummy data
 
 ## Adding New Tools
 
@@ -441,4 +363,4 @@ The following tools are planned for future releases:
 1. **Shopping Search Tool**: Compare prices across online retailers
 2. **Translation Tool**: Translate text between languages
 3. **Calendar Integration**: Schedule events and set reminders
-4. **Document Analysis**: Extract insights from uploaded documents 
+4. **Document Analysis**: Extract insights from uploaded documents

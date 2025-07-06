@@ -2,7 +2,7 @@
 
 import { Attachment, ChatRequestOptions, CreateMessage, Message } from "ai";
 import { motion } from "framer-motion";
-import { Search, Globe, Map, Database, ImageIcon, Check, Copy, Eye, X, ChevronLeft, ChevronRight, X as CloseIcon } from "lucide-react";
+import { Search, Globe, Map, Database, X, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import React, { useRef, useEffect, useState, useCallback, Dispatch, SetStateAction, ChangeEvent } from "react";
 import { toast } from "sonner";
 
@@ -12,7 +12,6 @@ import { PreviewAttachment } from "./preview-attachment";
 import useWindowSize from "./use-window-size";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
-import { Dialog, DialogContent } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
@@ -107,15 +106,6 @@ const suggestedActions = [
     icon: <Globe size={16} strokeWidth={1.5} />,
     category: "Data",
     tags: ["Crawling", "Complete"]
-  },
-  {
-    title: "Imagen",
-    label: "Generate",
-    action: "Generate an image of",
-    description: "Create images using AI generation",
-    icon: <ImageIcon size={16} />,
-    category: "Creation",
-    tags: ["Images", "AI"]
   }
 ];
 
@@ -163,28 +153,18 @@ export function MultimodalInput({
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { width } = useWindowSize();
-  const [selectedAction, setSelectedAction] = useState<typeof suggestedActions[0] | null>(null);
-  const [promptInput, setPromptInput] = useState("");
-  const [openDialog, setOpenDialog] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [copiedItemId, setCopiedItemId] = useState<number | null>(null);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [isPageChanging, setIsPageChanging] = useState(false);
   const [promptSubmitted, setPromptSubmitted] = useState(false);
+  const [editingPrompt, setEditingPrompt] = useState<string | null>(null);
+  const [editedPromptText, setEditedPromptText] = useState("");
   
   // Adjust cards per page based on screen size
   const cardsPerPage = width && width < 640 ? 5 : 8; // 5 on mobile (updated), 8 on larger screens
 
-  // Make sure we clear the dialog state when it's closed
-  useEffect(() => {
-    if (!openDialog) {
-      // Wait a bit to avoid flicker when reopening
-      setTimeout(() => {
-        setSelectedAction(null);
-        setPromptInput("");
-      }, 200);
-    }
-  }, [openDialog]);
+
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -226,32 +206,37 @@ export function MultimodalInput({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadQueue, setUploadQueue] = useState<Array<string>>([]);
 
-  const handlePromptSubmit = (e: React.MouseEvent) => {
-    e.preventDefault();
-    append({
-      role: "user",
-      content: promptInput,
-    });
-    setPromptSubmitted(true);
-    setOpenDialog(false);
-  };
-
-  const handleActionClick = (e: React.MouseEvent, action: typeof suggestedActions[0]) => {
+  const handleUseClick = (e: React.MouseEvent, action: string, shouldEdit: boolean = false) => {
     e.preventDefault();
     e.stopPropagation();
-    setSelectedAction(action);
-    setPromptInput(action.action);
-    setOpenDialog(true);
+    
+    if (shouldEdit) {
+      setEditingPrompt(action);
+      setEditedPromptText(action);
+    } else {
+      append({
+        role: "user",
+        content: action,
+      });
+      setPromptSubmitted(true);
+    }
   };
 
-  const handleUseClick = (e: React.MouseEvent, action: string) => {
-    e.preventDefault();
-    e.stopPropagation();
-    append({
-      role: "user",
-      content: action,
-    });
-    setPromptSubmitted(true);
+  const handlePromptEdit = () => {
+    if (editedPromptText.trim()) {
+      append({
+        role: "user",
+        content: editedPromptText,
+      });
+      setPromptSubmitted(true);
+    }
+    setEditingPrompt(null);
+    setEditedPromptText("");
+  };
+
+  const handleCancelEdit = () => {
+    setEditingPrompt(null);
+    setEditedPromptText("");
   };
 
   const uploadFile = async (file: File) => {
@@ -327,6 +312,8 @@ export function MultimodalInput({
       toast.error("Failed to copy text!");
     });
   };
+
+
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -430,7 +417,7 @@ export function MultimodalInput({
               </div>
               
               {/* Clearer grid layout with better spacing for mobile */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 w-full mb-8">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 w-full mb-8">
                 {filteredActions.length > 0 ? (
                   currentCards.map((suggestedAction, index) => (
               <motion.div
@@ -445,75 +432,52 @@ export function MultimodalInput({
                       key={indexOfFirstCard + index}
                 className="w-full"
               >
-                      <Card className="overflow-hidden transition-all hover:ring-1 hover:ring-primary/20 h-full shadow-sm dark:shadow-none bg-card/60 backdrop-blur-sm border-muted/60">
+                      <Card 
+                        className="overflow-hidden transition-all hover:ring-2 hover:ring-primary/30 hover:shadow-md hover:scale-[1.02] h-full shadow-sm dark:shadow-none bg-card/60 backdrop-blur-sm border-muted/60 cursor-pointer group"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleUseClick(e, suggestedAction.action, true);
+                        }}
+                      >
                         <div className="px-4 pt-4 pb-2">
                           <div className="flex items-baseline justify-between">
-                            <h3 className="font-medium text-sm tracking-tight">
+                            <h3 className="font-medium text-sm tracking-tight group-hover:text-primary transition-colors">
                               {suggestedAction.title}
                             </h3>
                             <div 
-                              className="rounded-full size-1.5"
+                              className="rounded-full size-1.5 transition-all group-hover:size-2"
                               style={{ backgroundColor: categoryColors[suggestedAction.category] }}
                             />
                           </div>
                           
-                          <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                          <p className="text-xs text-muted-foreground mt-1 line-clamp-2 group-hover:text-foreground/80 transition-colors">
                             {suggestedAction.description}
                           </p>
                         </div>
                         
                         <div className="px-4 pb-3 pt-1 flex items-center justify-between mt-auto">
-                          <span className="text-xs font-medium text-muted-foreground">
+                          <span className="text-xs font-medium text-muted-foreground group-hover:text-primary transition-colors">
                             {suggestedAction.label}
                           </span>
                           
-                          <div className="flex gap-1">
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Button 
-                                  variant="ghost" 
-                                  size="icon" 
-                                  className="size-7 rounded-full opacity-80 hover:opacity-100" 
-                                  onClick={(e) => handleActionClick(e, suggestedAction)}
-                                  onMouseDown={(e) => e.stopPropagation()}
-                                >
-                                  <Eye className="size-3.5" />
-                                </Button>
-                              </TooltipTrigger>
-                              <TooltipContent side="bottom" className="text-xs">
-                                <p>Edit prompt</p>
-                              </TooltipContent>
-                            </Tooltip>
-                            
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Button 
-                                  variant="ghost" 
-                                  size="icon" 
-                                  className="size-7 rounded-full opacity-80 hover:opacity-100" 
-                                  onClick={(e) => handleCopy(e, suggestedAction.action, index)}
-                                  onMouseDown={(e) => e.stopPropagation()}
-                                >
-                                  {copiedItemId === index ? 
-                                    <Check className="size-3.5 text-primary" /> : 
-                                    <Copy className="size-3.5" />
-                                  }
-                                </Button>
-                              </TooltipTrigger>
-                              <TooltipContent side="bottom" className="text-xs">
-                                <p>{copiedItemId === index ? 'Copied!' : 'Copy prompt'}</p>
-                              </TooltipContent>
-                            </Tooltip>
-                            
-                            <Button 
-                              className="h-7 text-xs px-2.5 rounded-full"
-                              variant="secondary" 
-                              onClick={(e) => handleUseClick(e, suggestedAction.action)}
-                              onMouseDown={(e) => e.stopPropagation()}
-                            >
-                              Use
-                            </Button>
-                          </div>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="h-7 w-7 p-0 bg-background/50 hover:bg-primary hover:text-primary-foreground transition-all duration-200"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleUseClick(e, suggestedAction.action, true);
+                                }}
+                              >
+                                <Play className="h-3 w-3" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Use this prompt</p>
+                            </TooltipContent>
+                          </Tooltip>
                         </div>
                       </Card>
                     </motion.div>
@@ -667,12 +631,12 @@ export function MultimodalInput({
         </div>
       )}
 
-      {/* Show textarea after a prompt has been submitted */}
-      {promptSubmitted && (
+      {/* Show textarea only after user interaction or prompt submission */}
+      {(promptSubmitted || input.length > 0 || attachments.length > 0) && (
         <div className="transition-all duration-300 ease-in-out">
           <Textarea
             ref={textareaRef}
-            placeholder="Add more context or refine your request..."
+            placeholder={promptSubmitted ? "Add more context or refine your request..." : "Ask me anything or use a suggested prompt above..."}
             value={input}
             onChange={(event) => setInput(event.target.value)}
             className="h-24 overflow-y-auto resize-none rounded-lg text-base bg-muted border-none"
@@ -750,73 +714,52 @@ export function MultimodalInput({
       )}
       </TooltipProvider>
 
-      {/* Completely redesigned Edit Prompt Dialog */}
-      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogContent className="sm:max-w-md p-0 gap-0 overflow-hidden border-none shadow-lg">
-          {selectedAction && (
-            <div className="flex flex-col">
-              {/* Header with dot color indicator */}
-              <div className="relative border-b border-border/30 p-4">
-                <div className="pr-8">
-                  <div className="flex items-center gap-2">
-                    <div 
-                      className="rounded-full size-2 shrink-0"
-                      style={{ backgroundColor: categoryColors[selectedAction.category] }}
-                    />
-                    <h2 className="text-base font-medium">{selectedAction.title}</h2>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-1">{selectedAction.description}</p>
-                </div>
-
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute right-4 top-3 size-6 rounded-full"
-                  onClick={() => setOpenDialog(false)}
-                >
-                  <CloseIcon className="size-3.5" />
-                </Button>
-              </div>
-
-              {/* Prompt editor */}
-              <div className="p-4 pt-3 bg-muted/20">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-medium">Customize your prompt</span>
-                  <span className="text-xs font-medium text-muted-foreground">{selectedAction.label}</span>
-                </div>
-                
-                <Textarea
-                  value={promptInput}
-                  onChange={(e) => setPromptInput(e.target.value)}
-                  className="min-h-[120px] text-sm resize-none bg-background/40 border-muted/50 focus-visible:ring-primary/30 rounded-md"
-                  placeholder="Edit your prompt..."
-                  autoFocus
-                />
-              </div>
-
-              {/* Action buttons */}
-              <div className="p-4 flex items-center justify-end gap-2 border-t border-border/30">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-8 rounded-full px-3 text-xs font-normal"
-                  onClick={() => setOpenDialog(false)}
-                >
-                  Cancel
-                </Button>
-                <Button 
-                  size="sm"
-                  className="h-8 rounded-full px-3 text-xs font-normal"
-                  onClick={handlePromptSubmit}
-                  disabled={!promptInput.trim()}
-                >
-                  Submit
-                </Button>
-              </div>
+      {/* Sleek Prompt Editor Modal */}
+      {editingPrompt && (
+        <div className="fixed inset-0 bg-white/80 dark:bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            className="bg-background border rounded-xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden"
+          >
+            <div className="p-6 border-b">
+              <h3 className="text-lg font-semibold">Customize Your Request</h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                Tailor this prompt to your specific needs
+              </p>
             </div>
-          )}
-        </DialogContent>
-      </Dialog>
+            
+            <div className="p-6">
+              <textarea
+                value={editedPromptText}
+                onChange={(e) => setEditedPromptText(e.target.value)}
+                className="w-full h-32 p-4 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                placeholder="Enter your prompt..."
+                autoFocus
+              />
+            </div>
+            
+            <div className="p-6 pt-0 flex items-center justify-end gap-3">
+              <Button
+                variant="outline"
+                onClick={handleCancelEdit}
+                className="px-6"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handlePromptEdit}
+                disabled={!editedPromptText.trim()}
+                className="px-6 bg-primary hover:bg-primary/90"
+              >
+                <Play className="h-4 w-4 mr-2" />
+                Get AI Response
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }

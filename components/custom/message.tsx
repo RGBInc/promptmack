@@ -17,14 +17,7 @@ import { FirecrawlExtract } from "../firecrawl/extract";
 import { FirecrawlMap } from "../firecrawl/map";
 import { FirecrawlScrape } from "../firecrawl/scrape";
 import { FirecrawlSearch } from "../firecrawl/search";
-import { AuthorizePayment } from "../flights/authorize-payment";
-import { DisplayBoardingPass } from "../flights/boarding-pass";
-import { CreateReservation } from "../flights/create-reservation";
-import { FlightStatus } from "../flights/flight-status";
-import { ListFlights } from "../flights/list-flights";
-import { SelectSeats } from "../flights/select-seats";
-import { VerifyPayment } from "../flights/verify-payment";
-import { Imagen } from "../imagen/imagen";
+// Flight components removed - dummy functionality cleaned up
 import { News } from "../paid/news";
 import { Scholar } from "../paid/scholar";
 import { Similar } from "../paid/similar";
@@ -117,22 +110,6 @@ export const Message = ({
                 <div key={toolCallId} className="w-full overflow-hidden mb-2">
                   {toolName === "getWeather" ? (
                     <Weather weatherAtLocation={result} />
-                  ) : toolName === "displayFlightStatus" ? (
-                    <FlightStatus flightStatus={result} />
-                  ) : toolName === "searchFlights" ? (
-                    <ListFlights chatId={chatId} results={result} />
-                  ) : toolName === "selectSeats" ? (
-                    <SelectSeats chatId={chatId} availability={result} />
-                  ) : toolName === "createReservation" ? (
-                    Object.keys(result).includes("error") ? null : (
-                      <CreateReservation reservation={result} />
-                    )
-                  ) : toolName === "authorizePayment" ? (
-                    <AuthorizePayment intent={result} />
-                  ) : toolName === "displayBoardingPass" ? (
-                    <DisplayBoardingPass boardingPass={result} />
-                  ) : toolName === "verifyPayment" ? (
-                    <VerifyPayment result={result} />
                   ) : toolName === "getNews" ? (
                     <News newsData={result} />
                   ) : toolName === "getVideos" ? (
@@ -162,8 +139,7 @@ export const Message = ({
                       </div>
                       <p className="text-sm text-zinc-600 dark:text-zinc-400">The FIRE-1 agent has been disabled. Please use other search or extraction tools instead.</p>
                     </div>
-                  ) : toolName === "imagegen" ? (
-                    <Imagen imagegenData={result} />
+
                   ) : (
                     <div>{JSON.stringify(result, null, 2)}</div>
                   )}
@@ -174,18 +150,6 @@ export const Message = ({
                 <div key={toolCallId} className="skeleton w-full overflow-hidden mb-2">
                   {toolName === "getWeather" ? (
                     <Weather />
-                  ) : toolName === "displayFlightStatus" ? (
-                    <FlightStatus />
-                  ) : toolName === "searchFlights" ? (
-                    <ListFlights chatId={chatId} />
-                  ) : toolName === "selectSeats" ? (
-                    <SelectSeats chatId={chatId} />
-                  ) : toolName === "createReservation" ? (
-                    <CreateReservation />
-                  ) : toolName === "authorizePayment" ? (
-                    <AuthorizePayment />
-                  ) : toolName === "displayBoardingPass" ? (
-                    <DisplayBoardingPass />
                   ) : toolName === "getNews" ? (
                     <News />
                   ) : toolName === "getVideos" ? (
@@ -215,8 +179,7 @@ export const Message = ({
                       </div>
                       <p className="text-sm text-zinc-600 dark:text-zinc-400">The FIRE-1 agent has been disabled. Please use other search or extraction tools instead.</p>
                     </div>
-                  ) : toolName === "imagegen" ? (
-                    <Imagen />
+
                   ) : null}
                 </div>
               );

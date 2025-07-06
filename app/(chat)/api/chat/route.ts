@@ -35,7 +35,7 @@ You are Promptmack, a sophisticated AI assistant designed to be exceptionally he
 - You're thoughtful and considerate in your interactions
 
 ## Capabilities
-- You have access to the following tools: news, scholar, similar, form-submit, videos, firecrawl-scrape, firecrawl-crawl, firecrawl-map, firecrawl-search, firecrawl-extract, imagegen
+- You have access to the following tools: getNews, getScholar, getVideos, findSimilar, skyvernFormSubmit, firecrawlScrape, firecrawlCrawl, firecrawlMap, firecrawlSearch, firecrawlExtract
 - Use these tools proactively when they would enhance your response
 - When using tools, explain briefly why you're using them
 
@@ -46,8 +46,7 @@ You are Promptmack, a sophisticated AI assistant designed to be exceptionally he
 - Use firecrawl-search to search the web and get relevant results with content
 - Use firecrawl-extract to get structured data from websites using AI
 
-## Imagen Tool
-- Use imagegen to create high-quality images using Google's Imagen 3 model
+
 
 ## Response Style
 - Be concise but comprehensive
@@ -561,55 +560,7 @@ You are Promptmack, a sophisticated AI assistant designed to be exceptionally he
           };
         },
       },
-      imagegen: {
-        description: "Generate images using Google's Imagen 3 model. Perfect for creating visual content based on text prompts.",
-        parameters: z.object({
-          prompt: z.string().describe("A detailed description of the image to generate."),
-          numberOfImages: z.number().optional().describe("The number of images to generate (1-4). Default is 1."),
-          aspectRatio: z.string().optional().describe("The aspect ratio of the generated image. Supported values are '1:1' (default), '3:4', '4:3', '9:16', and '16:9'."),
-        }),
-        execute: async ({ prompt, numberOfImages = 1, aspectRatio = "1:1" }) => {
-          try {
-            const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-            
-            if (!GEMINI_API_KEY) {
-              throw new Error("GEMINI_API_KEY is not set");
-            }
 
-            // Dynamically import the GoogleGenAI package
-            const { GoogleGenAI } = await import("@google/genai");
-            const genAI = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-
-            console.log("Generating images with prompt:", prompt);
-            
-            const response = await genAI.models.generateImages({
-              model: 'imagen-3.0-generate-002',
-              prompt: prompt,
-              config: {
-                numberOfImages: Math.min(4, Math.max(1, numberOfImages)),
-                aspectRatio: aspectRatio,
-              },
-            });
-
-            // Format response for the frontend
-            const imageUrls = response.generatedImages?.map(img => ({
-              url: `data:image/png;base64,${img.image?.imageBytes || ''}`,
-              prompt: prompt
-            })) || [];
-
-            return { 
-              success: true, 
-              images: imageUrls 
-            };
-          } catch (error) {
-            console.error("Error generating images:", error);
-            return { 
-              success: false, 
-              error: error instanceof Error ? error.message : "Failed to generate images" 
-            };
-          }
-        },
-      },
     },
     onFinish: async ({ responseMessages }) => {
       if (session.user && session.user.id) {

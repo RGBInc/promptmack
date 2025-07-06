@@ -84,8 +84,7 @@ promptmack/
 │   │   └── multimodal-input.tsx # User input interface
 │   ├── ui/                   # shadcn/ui components
 │   ├── paid/                 # Premium tool components
-│   ├── weather/              # Weather components
-│   └── flights/              # Flight-related components
+│   └── weather/              # Weather components
 ├── db/                       # Database integration
 │   ├── index.ts              # Database connection
 │   ├── schema.ts             # Drizzle schema
@@ -377,4 +376,4 @@ Promptmack's architecture combines modern web technologies with AI capabilities 
 For more detailed documentation, refer to:
 - [Development Workflow](./development_workflow.md)
 - [Tools Documentation](./tools.md)
-- [Project Roadmap](./project_roadmap.md) 
+- [Project Roadmap](./project_roadmap.md)
