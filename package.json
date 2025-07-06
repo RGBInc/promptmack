@@ -5,7 +5,8 @@
   "description": "An adaptive AI agent that performs tasks and actions online for users.",
   "scripts": {
     "dev": "next dev --turbo",
-    "build": "tsx db/migrate && next build",
+    "build": "next build",
+    "build:migrate": "tsx db/migrate && next build",
     "start": "next start",
     "lint": "next lint"
   },
