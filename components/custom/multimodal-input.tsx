@@ -160,6 +160,7 @@ export function MultimodalInput({
   const [promptSubmitted, setPromptSubmitted] = useState(false);
   const [editingPrompt, setEditingPrompt] = useState<string | null>(null);
   const [editedPromptText, setEditedPromptText] = useState("");
+  const [copiedItemId, setCopiedItemId] = useState<number | null>(null);
   
   // Adjust cards per page based on screen size
   const cardsPerPage = width && width < 640 ? 5 : 8; // 5 on mobile (updated), 8 on larger screens
