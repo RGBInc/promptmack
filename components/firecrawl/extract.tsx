@@ -128,10 +128,10 @@ export const FirecrawlExtract = ({ extractData }: ExtractProps) => {
               transition={{ delay: index * 0.05 }}
               className="border border-zinc-200 dark:border-zinc-700 rounded-md p-3 transition-all hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50"
             >
-              <div className="flex justify-between items-start mb-2">
-                <div className="font-medium">Item {index + 1}</div>
+              <div className="flex justify-between items-start mb-2 gap-3">
+                <div className="font-medium min-w-0 flex-1">Item {index + 1}</div>
                 <button
-                  className="text-xs px-2 py-1 rounded bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors"
+                  className="text-xs px-2 py-1 rounded bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors shrink-0 whitespace-nowrap"
                   onClick={() => setExpandedItem(expandedItem === index ? null : index)}
                 >
                   {expandedItem === index ? 'Hide' : 'View'}
@@ -155,4 +155,4 @@ export const FirecrawlExtract = ({ extractData }: ExtractProps) => {
       </motion.div>
     </div>
   );
-}; 
+};

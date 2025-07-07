@@ -1,8 +1,7 @@
 "use client";
 
-import { Attachment, ChatRequestOptions, CreateMessage, Message } from "ai";
-import { motion } from "framer-motion";
-import { Search, Globe, Map, Database, X, ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { Attachment, ChatRequestOptions, Message } from "ai";
+import { Search, Globe, Map, Database, X, ChevronLeft, ChevronRight , Sparkles } from "lucide-react";
 import React, { useRef, useEffect, useState, useCallback, Dispatch, SetStateAction, ChangeEvent } from "react";
 import { toast } from "sonner";
 
@@ -130,7 +129,6 @@ export function MultimodalInput({
   attachments,
   setAttachments,
   messages,
-  append,
   handleSubmit,
 }: {
   input: string;
@@ -140,10 +138,6 @@ export function MultimodalInput({
   attachments: Array<Attachment>;
   setAttachments: Dispatch<SetStateAction<Array<Attachment>>>;
   messages: Array<Message>;
-  append: (
-    message: Message | CreateMessage,
-    chatRequestOptions?: ChatRequestOptions,
-  ) => Promise<string | null | undefined>;
   handleSubmit: (
     event?: {
       preventDefault?: () => void;
@@ -157,10 +151,7 @@ export function MultimodalInput({
 
   const [currentPage, setCurrentPage] = useState(1);
   const [isPageChanging, setIsPageChanging] = useState(false);
-  const [promptSubmitted, setPromptSubmitted] = useState(false);
-  const [editingPrompt, setEditingPrompt] = useState<string | null>(null);
-  const [editedPromptText, setEditedPromptText] = useState("");
-  const [copiedItemId, setCopiedItemId] = useState<number | null>(null);
+  const [showTextInput, setShowTextInput] = useState(false);
   
   // Adjust cards per page based on screen size
   const cardsPerPage = width && width < 640 ? 5 : 8; // 5 on mobile (updated), 8 on larger screens
@@ -207,38 +198,26 @@ export function MultimodalInput({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadQueue, setUploadQueue] = useState<Array<string>>([]);
 
-  const handleUseClick = (e: React.MouseEvent, action: string, shouldEdit: boolean = false) => {
+  const handleUseClick = (e: React.MouseEvent, action: string) => {
     e.preventDefault();
     e.stopPropagation();
     
-    if (shouldEdit) {
-      setEditingPrompt(action);
-      setEditedPromptText(action);
-    } else {
-      append({
-        role: "user",
-        content: action,
-      });
-      setPromptSubmitted(true);
-    }
+    // Always populate the input field instead of showing modal or auto-submitting
+    setInput(action);
+    setShowTextInput(false); // Hide quick prompts after selection
+    
+    // Focus the textarea for immediate editing
+    setTimeout(() => {
+      textareaRef.current?.focus();
+      // Position cursor at the end of the text
+      if (textareaRef.current) {
+        const length = action.length;
+        textareaRef.current.setSelectionRange(length, length);
+      }
+    }, 100);
   };
 
-  const handlePromptEdit = () => {
-    if (editedPromptText.trim()) {
-      append({
-        role: "user",
-        content: editedPromptText,
-      });
-      setPromptSubmitted(true);
-    }
-    setEditingPrompt(null);
-    setEditedPromptText("");
-  };
 
-  const handleCancelEdit = () => {
-    setEditingPrompt(null);
-    setEditedPromptText("");
-  };
 
   const uploadFile = async (file: File) => {
     const formData = new FormData();
@@ -295,24 +274,7 @@ export function MultimodalInput({
     [setAttachments],
   );
   
-  const handleCopy = (e: React.MouseEvent, action: string, index: number) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    navigator.clipboard.writeText(action).then(() => {
-      setCopiedItemId(index);
-      toast.success("Copied to clipboard!");
-      
-      setTimeout(() => {
-        if (copiedItemId === index) {
-          setCopiedItemId(null);
-        }
-      }, 2000);
-    }).catch(err => {
-      console.error('Could not copy text: ', err);
-      toast.error("Failed to copy text!");
-    });
-  };
+
 
 
 
@@ -346,17 +308,6 @@ export function MultimodalInput({
   const currentCards = filteredActions.slice(indexOfFirstCard, indexOfLastCard);
   
   // Update the page change handlers with debounce to prevent rapid re-renders
-  const goToPage = useCallback((pageNumber: number) => {
-    if (isPageChanging) return; // Prevent multiple rapid page changes
-    
-    setIsPageChanging(true);
-    setCurrentPage(pageNumber);
-    
-    // Add a small delay to prevent rapid re-renders
-    setTimeout(() => {
-      setIsPageChanging(false);
-    }, 300);
-  }, [isPageChanging]);
 
   const nextPage = useCallback(() => {
     if (currentPage < totalPages && !isPageChanging) {
@@ -388,17 +339,113 @@ export function MultimodalInput({
   }, [searchTerm]);
 
   return (
-    <div className="relative w-full flex flex-col gap-4">
+    <div className="relative w-full flex flex-col gap-2">
       <TooltipProvider>
-      {messages.length === 0 &&
-        attachments.length === 0 &&
-        uploadQueue.length === 0 && (
-            <div className="flex flex-col gap-6">
-              {/* Always show search at top, with better mobile styling */}
+
+      {/* Hover-activated quick prompts for existing chats */}
+      {messages.length > 0 && (
+        <div 
+          className="group mb-2 relative"
+          onMouseEnter={() => setShowTextInput(true)}
+          onMouseLeave={() => setShowTextInput(false)}
+        >
+          {/* Invisible hover trigger area */}
+          <div className="absolute -top-2 -inset-x-4 h-8 z-10" />
+          
+          {/* Subtle indicator when not hovered */}
+          {!showTextInput && (
+            <div className="flex items-center justify-end mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <div className="flex items-center gap-1 text-xs text-muted-foreground/60">
+                <Sparkles className="size-3" />
+                <span className="text-xs">Hover for prompts</span>
+              </div>
+            </div>
+          )}
+          
+          {/* Quick prompts panel */}
+          {showTextInput && (
+            <div className="space-y-2 p-3 rounded-lg bg-background/95 backdrop-blur-sm border border-muted/50 shadow-lg">
+              {/* Ultra-minimal header */}
+              <div className="flex items-center gap-2">
+                <div className="relative flex-1">
+                  <Input
+                    placeholder="Search prompts (title, description, tags)..."
+                    value={searchTerm}
+                    onChange={handleSearch}
+                    className="h-7 text-xs px-6 bg-background/80 border-0 ring-1 ring-muted/60 focus-visible:ring-primary/40"
+                  />
+                  <Search className="absolute left-2 top-1/2 -translate-y-1/2 size-3 text-muted-foreground" />
+                  {searchTerm && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-1 top-1/2 -translate-y-1/2 size-4 p-0 hover:bg-muted"
+                      onClick={clearSearch}
+                    >
+                      <X className="size-3" />
+                    </Button>
+                  )}
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowTextInput(false)}
+                  className="size-7 p-0 text-muted-foreground hover:text-foreground hover:bg-muted rounded-full"
+                >
+                  <X className="size-3" />
+                </Button>
+              </div>
+              
+              {/* Horizontal scrolling pills for existing chats */}
+              <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
+                {filteredActions.slice(0, 8).map((suggestedAction, index) => (
+                  <button
+                    key={index}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleUseClick(e, suggestedAction.action);
+                    }}
+                    className="shrink-0 px-3 py-1.5 text-xs font-medium rounded-full bg-background/80 hover:bg-primary/10 hover:text-primary border border-muted/60 hover:border-primary/30 transition-all duration-200 whitespace-nowrap group"
+                    title={suggestedAction.description}
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <div 
+                        className="rounded-full size-1.5 transition-all group-hover:size-2"
+                        style={{ backgroundColor: categoryColors[suggestedAction.category] }}
+                      />
+                      {suggestedAction.title}
+                    </span>
+                  </button>
+                ))}
+                
+                {filteredActions.length > 8 && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="shrink-0 text-xs h-auto py-1.5 px-3 text-muted-foreground hover:text-foreground rounded-full border border-dashed border-muted/60 hover:border-muted"
+                    onClick={() => {
+                      setShowTextInput(false);
+                      // Scroll to the main page prompts
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  >
+                    +{filteredActions.length - 8}
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Full prompt view for home page or when expanded */}
+      {messages.length === 0 && (
+            <div className="flex flex-col gap-4">
+              {/* Header with search */}
               <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm pt-2 pb-3 -mx-4 px-4 border-b border-border/40">
                 <div className="flex items-center gap-2 relative">
                   <Input
-                    placeholder="Search prompts..."
+                    placeholder="Search prompts (title, description, tags)..."
                     value={searchTerm}
                     onChange={handleSearch}
                     className="pl-9 bg-background/50 border-0 ring-1 ring-muted focus-visible:ring-2"
@@ -418,18 +465,10 @@ export function MultimodalInput({
               </div>
               
               {/* Clearer grid layout with better spacing for mobile */}
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 w-full mb-8">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 w-full">
                 {filteredActions.length > 0 ? (
                   currentCards.map((suggestedAction, index) => (
-              <motion.div
-                      initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 15 }}
-                      transition={{ 
-                        delay: 0.03 * index,
-                        duration: 0.2,
-                        ease: "easeOut"
-                      }}
+              <div
                       key={indexOfFirstCard + index}
                 className="w-full"
               >
@@ -437,7 +476,7 @@ export function MultimodalInput({
                         className="overflow-hidden transition-all hover:ring-2 hover:ring-primary/30 hover:shadow-md hover:scale-[1.02] h-full shadow-sm dark:shadow-none bg-card/60 backdrop-blur-sm border-muted/60 cursor-pointer group"
                         onClick={(e) => {
                           e.preventDefault();
-                          handleUseClick(e, suggestedAction.action, true);
+                          handleUseClick(e, suggestedAction.action);
                         }}
                       >
                         <div className="px-4 pt-4 pb-2">
@@ -466,13 +505,13 @@ export function MultimodalInput({
                               <Button
                                 variant="outline"
                                 size="sm"
-                                className="h-7 w-7 p-0 bg-background/50 hover:bg-primary hover:text-primary-foreground transition-all duration-200"
+                                className="size-7 p-0 bg-background/50 hover:bg-primary hover:text-primary-foreground transition-all duration-200"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  handleUseClick(e, suggestedAction.action, true);
+                                  handleUseClick(e, suggestedAction.action);
                                 }}
                               >
-                                <Play className="h-3 w-3" />
+                                <ArrowUpIcon size={12} />
                               </Button>
                             </TooltipTrigger>
                             <TooltipContent>
@@ -481,7 +520,7 @@ export function MultimodalInput({
                           </Tooltip>
                         </div>
                       </Card>
-                    </motion.div>
+                    </div>
                   ))
                 ) : (
                   <div className="col-span-full flex flex-col items-center justify-center py-12 text-center">
@@ -495,117 +534,48 @@ export function MultimodalInput({
                     </Button>
                   </div>
                 )}
-              </div>
-              
-              {/* Mobile-friendly pagination */}
-              {totalPages > 1 && (
-                <div className="flex items-center justify-center gap-1.5 mb-6">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="size-10 rounded-full" // Increased size for better mobile tapping
-                    onClick={(e) => {
-                      e.preventDefault(); // Prevent any default behavior
-                      e.stopPropagation(); // Stop event propagation
-                      prevPage();
-                    }}
-                    disabled={currentPage === 1 || isPageChanging}
-                  >
-                    <ChevronLeft className="size-4" />
-                  </Button>
-                  
-                  {/* Show simplified pagination on mobile */}
-                  {width && width < 640 ? (
-                    <span className="text-sm font-medium px-4 py-2"> {/* Increased touch target */}
-                      {currentPage} / ∞
-                    </span>
-                  ) : (
-                    <div className="flex items-center gap-1">
-                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                        // Show first page, last page, current page, and pages around current
-                        let pageToShow: number | null = null;
-                        
-                        if (totalPages <= 5) {
-                          // If 5 or fewer pages, show all
-                          pageToShow = i + 1;
-                        } else if (currentPage <= 3) {
-                          // Near start
-                          if (i < 4) {
-                            pageToShow = i + 1;
-                          } else {
-                            // Instead of showing last page, show infinity symbol
-                            return (
-                              <div key={`infinity-${i}`} className="size-9 flex items-center justify-center text-muted-foreground">
-                                ∞
-                              </div>
-                            );
-                          }
-                        } else if (currentPage >= totalPages - 2) {
-                          // Near end - but we won't reach this in an infinite system
-                          if (i === 0) {
-                            pageToShow = 1;
-                          } else {
-                            pageToShow = totalPages - (4 - i);
-                          }
-                        } else {
-                          // Middle
-                          if (i === 0) {
-                            pageToShow = 1;
-                          } else if (i === 4) {
-                            // Instead of showing last page, show infinity symbol
-                            return (
-                              <div key={`infinity-${i}`} className="size-9 flex items-center justify-center text-muted-foreground">
-                                ∞
-                              </div>
-                            );
-                          } else {
-                            pageToShow = currentPage + (i - 2);
-                          }
-                        }
-                        
-                        return (
-                          <Button
-                            key={`page-${pageToShow}`}
-                            variant={currentPage === pageToShow ? "default" : "outline"}
-                            size="sm"
-                            className={`size-9 rounded-full ${
-                              currentPage === pageToShow ? "" : "text-muted-foreground"
-                            }`}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              goToPage(pageToShow!);
-                            }}
-                            disabled={isPageChanging}
-                          >
-                            {pageToShow}
-                          </Button>
-                        );
-                      })}
+                
+                {/* Seamless pagination - integrated into the grid and closer to prompts */}
+                {totalPages > 1 && (
+                  <div className="col-span-full flex items-center justify-center mt-1 mb-4">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground/80">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          prevPage();
+                        }}
+                        disabled={currentPage === 1 || isPageChanging}
+                        className="p-2 rounded-md hover:bg-muted/50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      >
+                        <ChevronLeft className="size-4" />
+                      </button>
+                      
+                      <span className="px-3 text-sm font-medium">
+                        {currentPage} of {totalPages}
+                      </span>
+                      
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          nextPage();
+                        }}
+                        disabled={currentPage === totalPages || isPageChanging}
+                        className="p-2 rounded-md hover:bg-muted/50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      >
+                        <ChevronRight className="size-4" />
+                      </button>
                     </div>
-                  )}
-                  
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="size-10 rounded-full" // Increased size for better mobile tapping
-                    onClick={(e) => {
-                      e.preventDefault(); // Prevent any default behavior
-                      e.stopPropagation(); // Stop event propagation  
-                      nextPage();
-                    }}
-                    disabled={currentPage === totalPages || isPageChanging}
-                  >
-                    <ChevronRight className="size-4" />
-                  </Button>
-                </div>
-              )}
+                  </div>
+                )}
+              </div>
           </div>
         )}
 
       <input
         type="file"
-        className="fixed -top-4 -left-4 size-0.5 opacity-0 pointer-events-none"
+        className="absolute inset-0 size-0 opacity-0 pointer-events-none"
         ref={fileInputRef}
         multiple
         onChange={handleFileChange}
@@ -632,12 +602,18 @@ export function MultimodalInput({
         </div>
       )}
 
-      {/* Show textarea only after user interaction or prompt submission */}
-      {(promptSubmitted || input.length > 0 || attachments.length > 0) && (
+      {/* Always show textarea for better UX - users can freely type or use quick prompts */}
+      <div className="relative">
         <div className="transition-all duration-300 ease-in-out">
           <Textarea
             ref={textareaRef}
-            placeholder={promptSubmitted ? "Add more context or refine your request..." : "Ask me anything or use a suggested prompt above..."}
+            placeholder={
+              messages.length === 0 
+                ? "Ask me anything or use a quick prompt above..." 
+                : showTextInput
+                  ? "Type your message or use a quick prompt above..."
+                  : "Type your message here..."
+            }
             value={input}
             onChange={(event) => setInput(event.target.value)}
             className="h-24 overflow-y-auto resize-none rounded-lg text-base bg-muted border-none"
@@ -711,56 +687,29 @@ export function MultimodalInput({
           >
             <PaperclipIcon size={14} />
           </Button>
+
+          {/* Quick Prompts button for all devices - only show in existing chats */}
+          {messages.length > 0 && (
+            <Button
+              className="rounded-full p-1.5 h-fit absolute bottom-2 right-[4.5rem] m-0.5 dark:border-zinc-700"
+              onClick={(event) => {
+                event.preventDefault();
+                setShowTextInput(!showTextInput);
+              }}
+              variant="outline"
+              disabled={isLoading}
+              title="Quick Prompts"
+            >
+              <svg className="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </Button>
+          )}
         </div>
-      )}
+      </div>
       </TooltipProvider>
 
-      {/* Sleek Prompt Editor Modal */}
-      {editingPrompt && (
-        <div className="fixed inset-0 bg-white/80 dark:bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="bg-background border rounded-xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden"
-          >
-            <div className="p-6 border-b">
-              <h3 className="text-lg font-semibold">Customize Your Request</h3>
-              <p className="text-sm text-muted-foreground mt-1">
-                Tailor this prompt to your specific needs
-              </p>
-            </div>
-            
-            <div className="p-6">
-              <textarea
-                value={editedPromptText}
-                onChange={(e) => setEditedPromptText(e.target.value)}
-                className="w-full h-32 p-4 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                placeholder="Enter your prompt..."
-                autoFocus
-              />
-            </div>
-            
-            <div className="p-6 pt-0 flex items-center justify-end gap-3">
-              <Button
-                variant="outline"
-                onClick={handleCancelEdit}
-                className="px-6"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handlePromptEdit}
-                disabled={!editedPromptText.trim()}
-                className="px-6 bg-primary hover:bg-primary/90"
-              >
-                <Play className="h-4 w-4 mr-2" />
-                Get AI Response
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      )}
+
     </div>
   );
 }

@@ -35,9 +35,10 @@ You are Promptmack, a sophisticated AI assistant designed to be exceptionally he
 - You're thoughtful and considerate in your interactions
 
 ## Capabilities
-- You have access to the following tools: getNews, getScholar, getVideos, findSimilar, skyvernFormSubmit, firecrawlScrape, firecrawlCrawl, firecrawlMap, firecrawlSearch, firecrawlExtract
+- You have access to the following tools: getNews, getScholar, getVideos, findSimilar, skyvernFormSubmit, firecrawlScrape, firecrawlCrawl, firecrawlMap, firecrawlSearch, firecrawlExtract, dataTable
 - Use these tools proactively when they would enhance your response
 - When using tools, explain briefly why you're using them
+- Use dataTable to display structured data (arrays of objects) in a clean, formatted table when appropriate
 
 ## Firecrawl Tools
 - Use firecrawl-scrape to get clean content from specific web pages
@@ -542,6 +543,22 @@ You are Promptmack, a sophisticated AI assistant designed to be exceptionally he
             console.error("Firecrawl Extract error:", error);
             throw error;
           }
+        },
+      },
+      dataTable: {
+        description: "Create a formatted data table from structured data (arrays of objects or single objects)",
+        parameters: z.object({
+          data: z.any().describe("The data to display in table format - can be an array of objects or a single object"),
+          title: z.string().optional().describe("Optional title for the table"),
+          maxRows: z.number().optional().describe("Maximum number of rows to display (default: 50)"),
+        }),
+        execute: async ({ data, title, maxRows = 50 }) => {
+          return {
+            data,
+            title: title || "Data Table",
+            maxRows,
+            timestamp: new Date().toISOString()
+          };
         },
       },
       firecrawlAgent: {

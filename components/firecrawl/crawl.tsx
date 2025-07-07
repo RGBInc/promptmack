@@ -116,9 +116,9 @@ export const FirecrawlCrawl = ({ crawlData }: CrawlProps) => {
                 transition={{ delay: index * 0.05 }}
                 className="border border-zinc-200 dark:border-zinc-700 rounded-md p-3 transition-all hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50"
               >
-                <div className="flex justify-between items-start">
-                  <div className="space-y-1">
-                    <h4 className="font-medium">
+                <div className="flex justify-between items-start gap-3">
+                  <div className="space-y-1 min-w-0 flex-1">
+                    <h4 className="font-medium break-words">
                       {item.metadata?.title || 'Untitled Page'}
                     </h4>
                     {item.metadata?.sourceURL && (
@@ -126,15 +126,15 @@ export const FirecrawlCrawl = ({ crawlData }: CrawlProps) => {
                         href={item.metadata.sourceURL} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-blue-600 dark:text-blue-400 text-sm hover:underline flex items-center gap-1"
+                        className="text-blue-600 dark:text-blue-400 text-sm hover:underline flex items-center gap-1 break-all"
                       >
                         {item.metadata.sourceURL.replace(/^https?:\/\//, '').replace(/^www\./, '')}
-                        <ExternalLink size={12} />
+                        <ExternalLink size={12} className="shrink-0" />
                       </a>
                     )}
                   </div>
                   <button
-                    className="text-xs px-2 py-1 rounded bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors"
+                    className="text-xs px-2 py-1 rounded bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors shrink-0 whitespace-nowrap"
                     onClick={() => setExpandedItem(expandedItem === index ? null : index)}
                   >
                     {expandedItem === index ? 'Hide' : 'View'}
@@ -178,4 +178,4 @@ export const FirecrawlCrawl = ({ crawlData }: CrawlProps) => {
       <p>No results returned from the crawl operation.</p>
     </div>
   );
-}; 
+};

@@ -79,7 +79,7 @@ export function Chat({
           </div>
         </div>
 
-        <form className="fixed bottom-0 flex flex-row gap-2 items-end w-full max-w-3xl bg-background/80 backdrop-blur-sm input-container">
+        <form className="fixed bottom-0 flex flex-row gap-2 items-end w-full max-w-3xl input-container">
           <div className="w-full p-4">
             <MultimodalInput
               input={input}

@@ -12,6 +12,7 @@ import { Markdown } from "./markdown";
 import { PreviewAttachment } from "./preview-attachment";
 import { useVisualMode } from "./visual-mode-context";
 // FirecrawlAgent import removed - FIRE-1 agent is now disabled
+import { DataTableComponent } from "../data-table";
 import { FirecrawlCrawl } from "../firecrawl/crawl";
 import { FirecrawlExtract } from "../firecrawl/extract";
 import { FirecrawlMap } from "../firecrawl/map";
@@ -34,13 +35,11 @@ type SkyvernData = {
 };
 
 export const Message = ({
-  chatId,
   role,
   content,
   toolInvocations,
   attachments,
 }: {
-  chatId: string;
   role: string;
   content: string | ReactNode;
   toolInvocations: Array<ToolInvocation> | undefined;
@@ -130,6 +129,8 @@ export const Message = ({
                     <FirecrawlSearch searchData={result} />
                   ) : toolName === "firecrawlExtract" ? (
                     <FirecrawlExtract extractData={result} />
+                  ) : toolName === "dataTable" ? (
+                    <DataTableComponent result={result} />
                   ) : toolName === "firecrawlAgent" ? (
                     // FIRE-1 agent is disabled
                     <div className="p-4 rounded-lg bg-zinc-100/80 dark:bg-zinc-800/30 border border-amber-200 dark:border-amber-900/30">
@@ -170,6 +171,8 @@ export const Message = ({
                     <FirecrawlSearch />
                   ) : toolName === "firecrawlExtract" ? (
                     <FirecrawlExtract />
+                  ) : toolName === "dataTable" ? (
+                    <div className="animate-pulse bg-zinc-100 dark:bg-zinc-800 rounded-lg h-32 w-full" />
                   ) : toolName === "firecrawlAgent" ? (
                     // FIRE-1 agent is disabled
                     <div className="p-4 rounded-lg bg-zinc-100/80 dark:bg-zinc-800/30 border border-amber-200 dark:border-amber-900/30">
