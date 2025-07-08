@@ -1,11 +1,10 @@
 "use client";
 
-import * as React from "react";
-import { type ReactNode, useState } from "react";
-
 import { type Attachment, type ToolInvocation } from "ai";
 import { motion } from "framer-motion";
 import { Bot, User, ChevronDown, ChevronRight } from "lucide-react";
+import * as React from "react";
+import { type ReactNode, useState } from "react";
 
 // Local component imports
 import { Markdown } from "./markdown";
