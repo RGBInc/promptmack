@@ -1,5 +1,7 @@
 "use client";
 
+import cx from "classnames";
+import { History as HistoryIcon } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { User } from "next-auth";
@@ -7,9 +9,6 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
-
-import cx from "classnames";
-import { History as HistoryIcon } from "lucide-react";
 
 import { Chat } from "@/db/schema";
 import { fetcher, getTitleFromChat } from "@/lib/utils";

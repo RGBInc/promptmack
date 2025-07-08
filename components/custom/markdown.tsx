@@ -1,6 +1,6 @@
+import { Check, Copy } from "lucide-react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { Check, Copy } from "lucide-react";
 import React, { memo, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
