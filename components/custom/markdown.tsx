@@ -1,12 +1,10 @@
-import React, { memo, useState } from "react";
-
 import Link from "next/link";
 import { useTheme } from "next-themes";
-
 import { Check, Copy } from "lucide-react";
+import React, { memo, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark, oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { oneLight, oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkGfm from "remark-gfm";
 
 import { Button } from "@/components/ui/button";

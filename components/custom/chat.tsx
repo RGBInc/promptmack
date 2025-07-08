@@ -1,10 +1,9 @@
 /* eslint-disable react/react-in-jsx-scope */
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
-
 import { Attachment, Message } from "ai";
 import { useChat } from 'ai/react';
+import React, { useEffect, useState, useCallback } from "react";
 
 import { Message as PreviewMessage } from "./message";
 import { MultimodalInput } from "./multimodal-input";
