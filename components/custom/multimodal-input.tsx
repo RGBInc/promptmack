@@ -1,8 +1,9 @@
 "use client";
 
+import React, { useRef, useEffect, useState, useCallback, Dispatch, SetStateAction, ChangeEvent } from "react";
+
 import { Attachment, ChatRequestOptions, Message } from "ai";
 import { Search, Globe, Map, Database, X, ChevronLeft, ChevronRight , Sparkles } from "lucide-react";
-import React, { useRef, useEffect, useState, useCallback, Dispatch, SetStateAction, ChangeEvent } from "react";
 import { toast } from "sonner";
 
 import { ArrowUpIcon, PaperclipIcon, StopIcon, NewsIcon, ScholarIcon, FileTextIcon, VideoIcon, NetworkIcon } from "./icons";
