@@ -1,7 +1,10 @@
-import { Check, Copy } from "lucide-react";
-import Link from "next/link";
 import React, { memo, useState } from "react";
+import Link from "next/link";
+import { useTheme } from "next-themes";
+import { Check, Copy } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark, oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkGfm from "remark-gfm";
 
 import { Button } from "@/components/ui/button";
@@ -36,19 +39,40 @@ const CopyButton = ({ text }: { text: string }) => {
 };
 
 const NonMemoizedMarkdown = ({ children }: { children: string }) => {
+  const { theme } = useTheme();
+  
   const components = {
     code: ({ node, inline, className, children, ...props }: any) => {
       const match = /language-(\w+)/.exec(className || "");
       const codeText = String(children).replace(/\n$/, '');
+      const language = match ? match[1] : 'text';
       
       return !inline && match ? (
-        <div className="relative group">
-          <pre
+        <div className="relative group my-4">
+          {/* Language label */}
+          <div className="absolute top-2 left-2 z-10 px-2 py-1 text-xs font-medium text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 rounded border border-zinc-200 dark:border-zinc-700 select-none">
+            {language}
+          </div>
+          <SyntaxHighlighter
+            style={theme === 'dark' ? oneDark : oneLight}
+            language={language}
+            PreTag="div"
+            className="text-sm rounded-lg"
+            customStyle={{
+              margin: 0,
+              padding: '16px',
+              paddingTop: '40px', // Extra padding to accommodate language label
+              paddingRight: '48px',
+              borderRadius: '8px',
+              fontSize: '14px',
+              lineHeight: '1.5',
+            }}
+            wrapLines={true}
+            wrapLongLines={true}
             {...props}
-            className={`${className} text-sm max-w-full overflow-x-auto bg-zinc-100 p-3 pr-12 rounded-lg mt-2 dark:bg-zinc-800 whitespace-pre-wrap break-words`}
           >
-            <code className={`${match[1]} block`}>{children}</code>
-          </pre>
+            {codeText}
+          </SyntaxHighlighter>
           <CopyButton text={codeText} />
         </div>
       ) : (

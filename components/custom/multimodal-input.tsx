@@ -152,9 +152,10 @@ export function MultimodalInput({
   const [currentPage, setCurrentPage] = useState(1);
   const [isPageChanging, setIsPageChanging] = useState(false);
   const [showTextInput, setShowTextInput] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   
   // Adjust cards per page based on screen size
-  const cardsPerPage = width && width < 640 ? 5 : 8; // 5 on mobile (updated), 8 on larger screens
+  const cardsPerPage = width && width < 640 ? 6 : 8; // 6 on mobile, 8 on larger screens
 
 
 
@@ -205,6 +206,7 @@ export function MultimodalInput({
     // Always populate the input field instead of showing modal or auto-submitting
     setInput(action);
     setShowTextInput(false); // Hide quick prompts after selection
+    setIsExpanded(false); // Reset expanded state
     
     // Focus the textarea for immediate editing
     setTimeout(() => {
@@ -347,7 +349,10 @@ export function MultimodalInput({
         <div 
           className="group mb-2 relative"
           onMouseEnter={() => setShowTextInput(true)}
-          onMouseLeave={() => setShowTextInput(false)}
+          onMouseLeave={() => {
+            setShowTextInput(false);
+            setIsExpanded(false);
+          }}
         >
           {/* Invisible hover trigger area */}
           <div className="absolute -top-2 -inset-x-4 h-8 z-10" />
@@ -396,43 +401,112 @@ export function MultimodalInput({
                 </Button>
               </div>
               
-              {/* Horizontal scrolling pills for existing chats */}
-              <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
-                {filteredActions.slice(0, 8).map((suggestedAction, index) => (
-                  <button
-                    key={index}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleUseClick(e, suggestedAction.action);
-                    }}
-                    className="shrink-0 px-3 py-1.5 text-xs font-medium rounded-full bg-background/80 hover:bg-primary/10 hover:text-primary border border-muted/60 hover:border-primary/30 transition-all duration-200 whitespace-nowrap group"
-                    title={suggestedAction.description}
-                  >
-                    <span className="flex items-center gap-1.5">
-                      <div 
-                        className="rounded-full size-1.5 transition-all group-hover:size-2"
-                        style={{ backgroundColor: categoryColors[suggestedAction.category] }}
-                      />
-                      {suggestedAction.title}
-                    </span>
-                  </button>
-                ))}
-                
-                {filteredActions.length > 8 && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="shrink-0 text-xs h-auto py-1.5 px-3 text-muted-foreground hover:text-foreground rounded-full border border-dashed border-muted/60 hover:border-muted"
-                    onClick={() => {
-                      setShowTextInput(false);
-                      // Scroll to the main page prompts
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                  >
-                    +{filteredActions.length - 8}
-                  </Button>
-                )}
-              </div>
+              {/* Prompts display - either horizontal scroll or expanded grid */}
+              {!isExpanded ? (
+                <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
+                  {filteredActions.slice(0, 8).map((suggestedAction, index) => (
+                    <button
+                      key={index}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleUseClick(e, suggestedAction.action);
+                      }}
+                      className="shrink-0 px-3 py-1.5 text-xs font-medium rounded-full bg-background/80 hover:bg-primary/10 hover:text-primary border border-muted/60 hover:border-primary/30 transition-all duration-200 whitespace-nowrap group"
+                      title={suggestedAction.description}
+                    >
+                      <span className="flex items-center gap-1.5">
+                        <div 
+                          className="rounded-full size-1.5 transition-all group-hover:size-2"
+                          style={{ backgroundColor: categoryColors[suggestedAction.category] }}
+                        />
+                        {suggestedAction.title}
+                      </span>
+                    </button>
+                  ))}
+                  
+                  {filteredActions.length > 8 && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="shrink-0 text-xs h-auto py-1.5 px-3 text-muted-foreground hover:text-foreground rounded-full border border-dashed border-muted/60 hover:border-muted"
+                      onClick={() => setIsExpanded(true)}
+                    >
+                      +{filteredActions.length - 8}
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <div className="max-h-64 overflow-y-auto">
+                  <div className="grid grid-cols-2 gap-2 pr-2">
+                    {currentCards.map((suggestedAction, index) => (
+                      <button
+                        key={indexOfFirstCard + index}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleUseClick(e, suggestedAction.action);
+                        }}
+                        className="p-2 text-xs font-medium rounded-lg bg-background/80 hover:bg-primary/10 hover:text-primary border border-muted/60 hover:border-primary/30 transition-all duration-200 text-left group"
+                        title={suggestedAction.description}
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <div 
+                            className="rounded-full size-1.5 transition-all group-hover:size-2 shrink-0"
+                            style={{ backgroundColor: categoryColors[suggestedAction.category] }}
+                          />
+                          <span className="font-medium truncate">{suggestedAction.title}</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground line-clamp-2 group-hover:text-foreground/80">
+                          {suggestedAction.description}
+                        </p>
+                      </button>
+                    ))}
+                  </div>
+                  
+                  {/* Pagination for expanded view */}
+                  <div className="flex items-center justify-between mt-2 pt-2 border-t border-muted/30">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-xs text-muted-foreground hover:text-foreground"
+                      onClick={() => setIsExpanded(false)}
+                    >
+                      Show less
+                    </Button>
+                    
+                    {totalPages > 1 && (
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            prevPage();
+                          }}
+                          disabled={currentPage === 1 || isPageChanging}
+                          className="p-1 rounded hover:bg-muted/50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        >
+                          <ChevronLeft className="size-3" />
+                        </button>
+                        
+                        <span className="px-2 text-xs font-medium">
+                          {currentPage}/{totalPages}
+                        </span>
+                        
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            nextPage();
+                          }}
+                          disabled={currentPage === totalPages || isPageChanging}
+                          className="p-1 rounded hover:bg-muted/50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        >
+                          <ChevronRight className="size-3" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

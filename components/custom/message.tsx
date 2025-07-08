@@ -3,9 +3,9 @@
 // Third-party imports
 import { type Attachment, type ToolInvocation } from "ai";
 import { motion } from "framer-motion";
-import { Bot, User } from "lucide-react";
+import { Bot, User, ChevronDown, ChevronRight } from "lucide-react";
 import * as React from "react";
-import { type ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 
 // Local component imports
 import { Markdown } from "./markdown";
@@ -32,6 +32,71 @@ type SkyvernData = {
   success: boolean;
   data?: Record<string, unknown>;
   error?: string;
+};
+
+// Tool call details component
+const ToolCallDetails = ({ toolInvocation }: { toolInvocation: ToolInvocation }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const { toolName, args, state } = toolInvocation;
+
+  return (
+    <div className="mb-2 border border-zinc-200 dark:border-zinc-700 rounded-lg overflow-hidden">
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex items-center justify-between text-sm"
+      >
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
+            {isExpanded ? (
+              <ChevronDown className="size-4 text-zinc-500" />
+            ) : (
+              <ChevronRight className="size-4 text-zinc-500" />
+            )}
+            <span className="font-medium text-zinc-700 dark:text-zinc-300">
+              {toolName}
+            </span>
+          </div>
+          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+            state === 'result' 
+              ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+              : state === 'call'
+              ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
+              : 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
+          }`}>
+            {state}
+          </span>
+        </div>
+      </button>
+      {isExpanded && (
+        <div className="p-3 bg-zinc-50/50 dark:bg-zinc-900/50 border-t border-zinc-200 dark:border-zinc-700">
+          <div className="space-y-2">
+            <div>
+              <h4 className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1">Function Call</h4>
+              <div className="bg-zinc-100 dark:bg-zinc-800 rounded p-2 text-xs font-mono">
+                <span className="text-blue-600 dark:text-blue-400">{toolName}</span>
+                <span className="text-zinc-600 dark:text-zinc-400">(</span>
+                {args && Object.keys(args).length > 0 && (
+                  <div className="ml-2 mt-1">
+                    {Object.entries(args).map(([key, value], index) => (
+                      <div key={key}>
+                        <span className="text-purple-600 dark:text-purple-400">{key}</span>
+                        <span className="text-zinc-600 dark:text-zinc-400">: </span>
+                        <span className="text-green-600 dark:text-green-400">
+                          {typeof value === 'string' ? `"${value}"` : JSON.stringify(value)}
+                        </span>
+                        {index < Object.keys(args).length - 1 && <span className="text-zinc-600 dark:text-zinc-400">,</span>}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <span className="text-zinc-600 dark:text-zinc-400">)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export const Message = ({
@@ -107,6 +172,7 @@ export const Message = ({
   
               return (
                 <div key={toolCallId} className="w-full overflow-hidden mb-2">
+                  <ToolCallDetails toolInvocation={toolInvocation} />
                   {toolName === "getWeather" ? (
                     <Weather weatherAtLocation={result} />
                   ) : toolName === "getNews" ? (
@@ -149,6 +215,7 @@ export const Message = ({
             } else {
               return (
                 <div key={toolCallId} className="skeleton w-full overflow-hidden mb-2">
+                  <ToolCallDetails toolInvocation={toolInvocation} />
                   {toolName === "getWeather" ? (
                     <Weather />
                   ) : toolName === "getNews" ? (
