@@ -1,15 +1,14 @@
 /* eslint-disable react/react-in-jsx-scope */
 "use client";
 
-import { Attachment, Message } from "ai";
-import { useChat } from 'ai/react';
 import React, { useEffect, useState, useCallback } from "react";
 
-// import { Footer } from "./footer";
+import { Attachment, Message } from "ai";
+import { useChat } from 'ai/react';
+
 import { Message as PreviewMessage } from "./message";
 import { MultimodalInput } from "./multimodal-input";
 import { useScrollToBottom } from "./use-scroll-to-bottom";
-// import { Overview } from "./overview";
 
 export function Chat({
   id,

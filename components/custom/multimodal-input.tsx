@@ -1,11 +1,11 @@
 "use client";
 
+import React, { useRef, useEffect, useState, useCallback, Dispatch, SetStateAction, ChangeEvent } from "react";
+
 import { Attachment, ChatRequestOptions, Message } from "ai";
 import { Search, Globe, Map, Database, X, ChevronLeft, ChevronRight , Sparkles } from "lucide-react";
-import React, { useRef, useEffect, useState, useCallback, Dispatch, SetStateAction, ChangeEvent } from "react";
 import { toast } from "sonner";
 
-// Uncomment these icons that we need now
 import { ArrowUpIcon, PaperclipIcon, StopIcon, NewsIcon, ScholarIcon, FileTextIcon, VideoIcon, NetworkIcon } from "./icons";
 import { PreviewAttachment } from "./preview-attachment";
 import useWindowSize from "./use-window-size";
