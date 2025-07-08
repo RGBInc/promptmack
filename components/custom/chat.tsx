@@ -93,7 +93,6 @@ export function Chat({
               attachments={attachments}
               setAttachments={setAttachments}
               messages={messages}
-              append={append}
             />
           </div>
         </form>
