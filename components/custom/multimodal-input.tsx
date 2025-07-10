@@ -156,7 +156,24 @@ export function MultimodalInput({
   // Adjust cards per page based on screen size
   const cardsPerPage = width && width < 640 ? 6 : 8; // 6 on mobile, 8 on larger screens
 
-
+  const adjustHeight = useCallback(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+      
+      // Handle mobile keyboard visibility
+      if (document.activeElement === textareaRef.current && width && width <= 768) {
+        // On mobile, ensure the input stays visible when keyboard appears
+        setTimeout(() => {
+          textareaRef.current?.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'nearest',
+            inline: 'nearest'
+          });
+        }, 150);
+      }
+    }
+  }, [width]);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -195,25 +212,6 @@ export function MultimodalInput({
       }
     };
   }, [width, adjustHeight]);
-
-  const adjustHeight = useCallback(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-      
-      // Handle mobile keyboard visibility
-      if (document.activeElement === textareaRef.current && width && width <= 768) {
-        // On mobile, ensure the input stays visible when keyboard appears
-        setTimeout(() => {
-          textareaRef.current?.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'nearest',
-            inline: 'nearest'
-          });
-        }, 150);
-      }
-    }
-  }, [width]);
 
   // Call adjustHeight when window resizes
   useEffect(() => {
