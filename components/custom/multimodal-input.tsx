@@ -163,37 +163,67 @@ export function MultimodalInput({
       adjustHeight();
     }
     
-    // Add event listener for viewport changes (like keyboard appearing)
-    window.addEventListener('resize', adjustHeight);
+    // Add event listeners for viewport changes (like keyboard appearing)
+    const handleResize = () => {
+      // Debounce resize events for better performance
+      setTimeout(adjustHeight, 100);
+    };
     
-    // Auto focus the textarea on desktop
+    const handleVisualViewportChange = () => {
+      // Handle virtual keyboard on mobile
+      if ('visualViewport' in window) {
+        setTimeout(adjustHeight, 150);
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    
+    // Listen for visual viewport changes (mobile keyboard)
+    if ('visualViewport' in window) {
+      window.visualViewport?.addEventListener('resize', handleVisualViewportChange);
+    }
+    
+    // Auto focus the textarea on desktop only
     if (width && width > 768 && textareaRef.current) {
       textareaRef.current.focus();
     }
     
     return () => {
-      window.removeEventListener('resize', adjustHeight);
+      window.removeEventListener('resize', handleResize);
+      if ('visualViewport' in window) {
+        window.visualViewport?.removeEventListener('resize', handleVisualViewportChange);
+      }
     };
+  }, [width, adjustHeight]);
+
+  const adjustHeight = useCallback(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+      
+      // Handle mobile keyboard visibility
+      if (document.activeElement === textareaRef.current && width && width <= 768) {
+        // On mobile, ensure the input stays visible when keyboard appears
+        setTimeout(() => {
+          textareaRef.current?.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'nearest',
+            inline: 'nearest'
+          });
+        }, 150);
+      }
+    }
   }, [width]);
+
+  // Call adjustHeight when window resizes
+  useEffect(() => {
+    adjustHeight();
+  }, [adjustHeight]);
   
   // Also adjust height when input changes
   useEffect(() => {
     adjustHeight();
-  }, [input]);
-
-  const adjustHeight = () => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight + 0}px`;
-      
-      // Scroll to the textarea when focused on mobile
-      if (document.activeElement === textareaRef.current) {
-        setTimeout(() => {
-          textareaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100);
-      }
-    }
-  };
+  }, [input, adjustHeight]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadQueue, setUploadQueue] = useState<Array<string>>([]);
@@ -207,13 +237,27 @@ export function MultimodalInput({
     setShowTextInput(false); // Hide quick prompts after selection
     setIsExpanded(false); // Reset expanded state
     
-    // Focus the textarea for immediate editing
+    // Focus the textarea for immediate editing - especially important on mobile
     setTimeout(() => {
       textareaRef.current?.focus();
       // Position cursor at the end of the text
       if (textareaRef.current) {
         const length = action.length;
         textareaRef.current.setSelectionRange(length, length);
+        
+        // On mobile, ensure keyboard appears and input is visible
+        if (width && width <= 768) {
+          // Force keyboard to appear by triggering input event
+          textareaRef.current.dispatchEvent(new Event('input', { bubbles: true }));
+          // Ensure the input scrolls into view
+          setTimeout(() => {
+            textareaRef.current?.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'center',
+              inline: 'nearest'
+            });
+          }, 100);
+        }
       }
     }, 100);
   };
@@ -685,7 +729,9 @@ export function MultimodalInput({
                 ? "Ask me anything or use a quick prompt above..." 
                 : showTextInput
                   ? "Type your message or use a quick prompt above..."
-                  : "Type your message here..."
+                  : width && width <= 768
+                    ? "Type your message here... (Shift+Enter to send)"
+                    : "Type your message here... (Enter to send)"
             }
             value={input}
             onChange={(event) => setInput(event.target.value)}
@@ -694,8 +740,13 @@ export function MultimodalInput({
             style={{ maxHeight: "96px" }}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
-                if (!event.shiftKey) {
-                  // Regular Enter - submit form
+                // On mobile (width <= 768), Enter creates new line, Shift+Enter submits
+                // On desktop (width > 768), Enter submits, Shift+Enter creates new line
+                const isMobile = width && width <= 768;
+                const shouldSubmit = isMobile ? event.shiftKey : !event.shiftKey;
+                
+                if (shouldSubmit) {
+                  // Submit form
                   event.preventDefault();
                   
                   if (isLoading) {
@@ -708,13 +759,30 @@ export function MultimodalInput({
                     // Reset state
                     setAttachments([]);
                     
-                    if (width && width > 768) {
-                      textareaRef.current?.focus();
+                    // Keep focus on desktop, blur on mobile to hide keyboard
+                    if (!isMobile) {
+                      setTimeout(() => textareaRef.current?.focus(), 100);
+                    } else {
+                      // On mobile, briefly blur to hide keyboard, then refocus
+                      textareaRef.current?.blur();
+                      setTimeout(() => {
+                        if (textareaRef.current && !isLoading) {
+                          textareaRef.current.focus();
+                        }
+                      }, 300);
                     }
                   }
+                } else {
+                  // Let default behavior happen (create new line)
+                  // No need to prevent default - textarea will handle line break
                 }
               }
-              // If Shift+Enter, let the default behavior happen (create a new line)
+            }}
+            onFocus={() => {
+              // Ensure proper scrolling when input is focused on mobile
+              if (width && width <= 768) {
+                setTimeout(adjustHeight, 200);
+              }
             }}
           />
 
@@ -739,8 +807,18 @@ export function MultimodalInput({
                 
                 setAttachments([]);
                 
-                if (width && width > 768) {
-                  textareaRef.current?.focus();
+                // Handle focus differently for mobile vs desktop
+                const isMobile = width && width <= 768;
+                if (!isMobile) {
+                  setTimeout(() => textareaRef.current?.focus(), 100);
+                } else {
+                  // On mobile, briefly blur to hide keyboard, then refocus
+                  textareaRef.current?.blur();
+                  setTimeout(() => {
+                    if (textareaRef.current && !isLoading) {
+                      textareaRef.current.focus();
+                    }
+                  }, 300);
                 }
               }}
               disabled={input.length === 0 || uploadQueue.length > 0}

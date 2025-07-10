@@ -39,7 +39,7 @@ export default function RootLayout({
   const isDevelopment = process.env.NODE_ENV === 'development';
   
   return (
-    <html lang="en" className={inter.className}>
+    <html lang="en" className={inter.className} suppressHydrationWarning>
       <head>
         {/* PWA specific meta tags */}
         <meta name="application-name" content="Promptmack" />

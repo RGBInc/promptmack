@@ -1,9 +1,9 @@
 "use client";
 
 import cx from "classnames";
-import { History as HistoryIcon } from "lucide-react";
+import { History as HistoryIcon, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { User } from "next-auth";
 import * as React from "react";
 import { useEffect, useState } from "react";
@@ -45,8 +45,10 @@ import {
 export const History = ({ user }: { user: User | undefined }) => {
   const { id } = useParams();
   const pathname = usePathname();
+  const router = useRouter();
 
   const [isHistoryVisible, setIsHistoryVisible] = useState(false);
+  const [loadingChatId, setLoadingChatId] = useState<string | null>(null);
   const {
     data: history,
     isLoading,
@@ -61,6 +63,40 @@ export const History = ({ user }: { user: User | undefined }) => {
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  const handleChatNavigation = async (chatId: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    
+    // Don't navigate if already on this chat
+    if (chatId === id) {
+      setIsHistoryVisible(false);
+      // Scroll to top of current chat
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    // Set loading state for visual feedback
+    setLoadingChatId(chatId);
+    
+    try {
+      // Close history panel immediately for smooth UX
+      setIsHistoryVisible(false);
+      
+      // Navigate to the chat
+      router.push(`/chat/${chatId}`);
+      
+      // Scroll to top after a brief delay to ensure page has loaded
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setLoadingChatId(null);
+      }, 100);
+      
+    } catch (error) {
+      console.error('Navigation error:', error);
+      setLoadingChatId(null);
+      toast.error('Failed to load chat');
+    }
+  };
 
   const handleDelete = async () => {
     const deletePromise = fetch(`/api/chat?id=${deleteId}`, {
@@ -113,7 +149,13 @@ export const History = ({ user }: { user: User | undefined }) => {
             {user && (
               <Button
                 className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 ease-out hover:scale-105 w-full"
-                onClick={() => (window.location.href = "/")}
+                onClick={() => {
+                  setIsHistoryVisible(false);
+                  router.push('/');
+                  setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }, 100);
+                }}
               >
                 <PencilEditIcon size={14} />
                 New Chat
@@ -163,16 +205,23 @@ export const History = ({ user }: { user: User | undefined }) => {
 
               {history &&
                 history.map((chat) => (
-                  <Link
+                  <button
                     key={chat.id}
-                    href={`/chat/${chat.id}`}
+                    onClick={(e) => handleChatNavigation(chat.id, e)}
+                    disabled={loadingChatId === chat.id}
                     className={cx(
-                      "group p-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all duration-200",
+                      "group p-4 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all duration-200 w-full text-left relative",
                       {
                         "bg-zinc-100 dark:bg-zinc-800/80 shadow-lg": id === chat.id,
+                        "opacity-75 cursor-not-allowed": loadingChatId === chat.id,
                       }
                     )}
                   >
+                    {loadingChatId === chat.id && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-zinc-100/80 dark:bg-zinc-800/80 backdrop-blur-sm rounded">
+                        <Loader2 className="size-4 animate-spin text-zinc-600 dark:text-zinc-400" />
+                      </div>
+                    )}
                     <div className="flex items-center justify-between w-full">
                       <div className="flex flex-col gap-1 flex-1 min-w-0">
                         <div className="text-sm font-medium text-zinc-800 dark:text-zinc-200 truncate">
@@ -213,7 +262,7 @@ export const History = ({ user }: { user: User | undefined }) => {
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>
-                  </Link>
+                  </button>
                 ))}
             </div>
           </div>

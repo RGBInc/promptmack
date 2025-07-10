@@ -24,31 +24,25 @@ export function Chat({
       maxSteps: 10,
       onFinish: () => {
         window.history.replaceState({}, "", `/chat/${id}`);
-        setTimeout(() => scrollToBottom(), 100);
+        // Let the auto-scroll hook handle scrolling for smoother experience
       },
     });
 
   const [messagesContainerRef, messagesEndRef] =
     useScrollToBottom<HTMLDivElement>();
-    
-  // Manual scroll to bottom function
-  const scrollToBottom = useCallback(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'end'
-      });
-    }
-  }, [messagesEndRef]);
-  
-  // Force scroll to bottom when messages change
-  useEffect(() => {
-    if (messages.length > 0) {
-      setTimeout(() => scrollToBottom(), 100);
-    }
-  }, [messages.length, scrollToBottom]);
 
   const [attachments, setAttachments] = useState<Array<Attachment>>([]);
+
+  // Auto-scroll to top when chat ID changes (navigation from history)
+  useEffect(() => {
+    // Scroll to top of the page for fluid navigation experience
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Also scroll the messages container to top for new chats
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = 0;
+    }
+  }, [id, messagesContainerRef]);
 
   return (
     <div className="flex flex-row justify-center h-dvh bg-background overflow-hidden">
@@ -57,7 +51,11 @@ export function Chat({
           <div
             ref={messagesContainerRef}
             className="flex flex-col gap-3 w-full items-center h-[calc(100%-80px)] overflow-y-auto pb-32 chat-container scrollbar-hide"
-            style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}>
+            style={{ 
+              WebkitOverflowScrolling: 'touch', 
+              overscrollBehavior: 'contain',
+              scrollBehavior: 'smooth'
+            }}>
 
             {messages.map((message) => (
               <PreviewMessage
@@ -81,11 +79,7 @@ export function Chat({
             <MultimodalInput
               input={input}
               setInput={setInput}
-              handleSubmit={(e, opts) => {
-                handleSubmit(e, opts);
-                // Schedule a scroll to bottom after submission
-                setTimeout(() => scrollToBottom(), 100);
-              }}
+              handleSubmit={handleSubmit}
               isLoading={isLoading}
               stop={stop}
               attachments={attachments}
